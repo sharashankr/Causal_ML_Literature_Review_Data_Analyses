@@ -20,11 +20,11 @@ library(tibble)
 
 Users do **not** need to manually create the `.RDS` file or worry about how the `.R` build file works.
 
-Just run this code. It pulls the latest `build_20_papers.R` file from GitHub, creates the review tables, and automatically saves `causal_ml_review.rds`.
+Just run this code. It pulls the latest `data_loading_module.R` file from GitHub, creates the review tables, and automatically saves `causal_ml_review.rds`.
 
 ```{r load-from-github}
 source(
-  "https://raw.githubusercontent.com/sharashankr/Causal_ML_Literature_Review_Data_Analyses/main/build_20_papers.R",
+  "https://raw.githubusercontent.com/sharashankr/Causal_ML_Literature_Review_Data_Analyses/main/data_loading_module.R",
   encoding = "UTF-8"
 )
 ```
@@ -304,7 +304,7 @@ library(tidyr)
 library(readr)
 
 source(
-  "https://raw.githubusercontent.com/sharashankr/Causal_ML_Literature_Review_Data_Analyses/main/build_20_papers.R",
+  "https://raw.githubusercontent.com/sharashankr/Causal_ML_Literature_Review_Data_Analyses/main/data_loading_module.R",
   encoding = "UTF-8"
 )
 
