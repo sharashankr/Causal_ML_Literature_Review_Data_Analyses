@@ -35,12 +35,12 @@ papers <- tribble(
   "RCT reanalysis; CPH meta-learner; primary trial I-SABR",
 
   "Pryce_2025",     "Pryce",        2025,  2L,
-  "Breast",         "UK",           686L,
-  "npj Breast Cancer",
-  "Heterogeneous treatment effects of abemaciclib in hormone-receptor-positive HER2-negative early breast cancer: a causal machine learning analysis",
-  "10.1038/s41523-025-00732-5",
-  "Pryce A, et al.",
-  "RCT; mDR/mEP-learner; monarchE trial data",
+  "Breast",         "German Data",           686L,
+  "Biometrics",
+  "Causal machine learning for heterogeneous treatment effects in the presence of missing outcome data",
+  "10.1093/biomtc/ujaf098",
+  "Matthew Pryce, Karla Diaz-Ordaz, Ruth H. Keogh, Stijn Vansteelandt",
+  "Methods paper proposing mDR-learner and mEP-learner for CATE with missing outcome data; simulations plus GBSG2 breast cancer RCT application",
 
   "Ge_2020",        "Ge",           2020,  1L,
   "AML",            "USA",          212L,
@@ -224,13 +224,13 @@ scores <- tribble(
   "Pryce_2025",
   2L, 3L, 3L,
   NA, NA, NA, NA,
-  2L, 2L,
-  3L, 3L, 3L,
-  2L, 2L,
-  2L,
-  2L, 3L,
-  2L, 3L,
   1L, 2L,
+  3L, 4L, 3L,
+  4L, 2L,
+  2L,
+  3L, 3L,
+  1L, 3L,
+  1L, 3L,
 
   "Ge_2020",
   1L, 2L, 2L,
@@ -564,25 +564,48 @@ ev_Saad_2025$page_ref <- c(
 )
 
 ev_Pryce_2025 <- make_evidence("Pryce_2025",
-  2L,"monarchE randomised trial... hormone-receptor-positive HER2-negative early breast cancer","RCT",
-  3L,"HR+ HER2- early breast cancer... monarchE eligibility criteria: high-risk node-positive or node-negative with additional risk factors","Clear IC/EC + dataset",
-  3L,"abemaciclib plus endocrine therapy vs endocrine therapy alone... 2-year abemaciclib per protocol","Defined; missing full dosing timing",
+  2L,"Methods paper with simulation study and applied example using the GBSG 2 randomized trial","RCT",
+  3L,"GBSG2 breast cancer trial patients after surgery; baseline covariates included demographics, medical history, and disease progression, with missing outcome data due to loss to follow-up before 3 years.","detailed original GBSG2 IC/EC would require citing Schumacher et al. 1994",
+  3L,"Hormonal therapy versus no hormonal therapy after surgery","Defined; missing full dosing timing",
   NA_integer_,NA_character_,"RCT",NA_integer_,NA_character_,"RCT",
   NA_integer_,NA_character_,"RCT",NA_integer_,NA_character_,"RCT",
-  2L,"mDR and mEP-learner applied to clinical covariates; clinical rationale cited","Listed, weak justification",
-  2L,"SHAP values used to describe variable contributions to ITE","SHAP misinterpreted as HTE partially",
-  3L,"modified DR-learner and EP-learner: nuisance models estimated then ITE via pseudo-outcome regression","Custom CATE",
-  3L,"mDR-learner: first-stage propensity and outcome models, second-stage ITE regression; partially described","Partial description",
-  3L,"survival outcomes (iDFS); censoring-aware pseudo-outcome construction","Survival-aware",
-  2L,"cross-validation for hyperparameter selection; not fully detailed","CV done but unclear",
-  2L,"cross-fitted nuisance models in DR-learner","Cross-fitting used",
-  2L,"mDR-learner and mEP-learner compared","Limited comparison",
-  2L,"conditional average treatment effect (CATE) estimated... ITE defined","Explicit ITE/CATE",
-  3L,"invasive disease-free survival (iDFS) at 4 years... absolute risk reduction per patient","Defined with horizon",
-  2L,"patients stratified by predicted benefit; subgroup comparison","Recommended vs non-recommended",
-  3L,"bootstrap confidence intervals for ITE estimates","Summary + individual-level CI",
-  1L,"Ki67, tumour size, nodal burden associated with greater benefit","Briefly discussed",
-  2L,"code partially available","Partial"
+  1L,"Methods study using the GBSG2 trial to demonstrate mDR/mEP learners; the paper estimates CATEs using baseline covariates and progesterone receptor levels but does not present a pre-specified clinical effect-modifier plan.","-",
+  2L,"Model-derived CATE estimates were plotted by progesterone receptor level and summarized across progesterone receptor groups in the GBSG2 application.","Post-hoc/model-derived CATE heterogeneity; no SHAP",
+  3L,"Modified DR-learner and EP-learner estimators were proposed for CATE estimation with missing outcome data, using nuisance models and pseudo-outcome regression with IPCW adjustment.","Custom CATE",
+  4L,"The mDR-learner and mEP-learner are described with identification assumptions, nuisance functions, EIF-based pseudo-outcomes, sample splitting/cross-fitting, implementation steps, and algorithm diagrams","Fully described methods paper",
+  3L,"GBSG2 used a binary fixed-horizon outcome: recurrence or death within 3 years; mDR/mEP handled missing outcomes, but this was not full survival/TTE modeling.","Not Survival-aware",
+  2L,"Choices include - Super Learner, 10-fold cross-fitting, repeated sample-splitting seeds, sieve choices, and bootstrap/random forests","Robust implementation/tuning framework described",
+  2L,"All estimators were implemented using 10-fold cross-fitting; the paper also discusses repeated sample-splitting seeds for stability.","Cross-fitting used",
+  2L,"mDR-learner and mEP-learner were compared against DR-learner, EP-learner, T-learner, IPTW-IPCW learner, available-case analyses, and imputed-outcome versions in simulations and the GBSG2 application.","Robust comparison",
+  3L,"CATE was explicitly defined as the contrast in potential outcomes under treatment versus control conditional on covariates: E[Y(1)|X=x] - E[Y(0)|X=x].","Explicit ITE/CATE",
+  3L,"The GBSG2 application used a binary fixed-horizon outcome: breast cancer recurrence or death within 3 years of surgery; this is clinically time-indexed but not full survival/TTE modeling.","Defined with horizon",
+  1L,"GBSG2 application did not implement a clinical treatment recommendation rule or recommended-versus-not-recommended groups.","No implementation policy results",
+  3L,"The paper discusses half-sample bootstrap confidence intervals for non-parametric CATE estimates and evaluates conditional CI coverage in simulations/supplementary analyses.","uncertainity reported. Limitation noted",
+  1L,"Progesterone receptor level was used to display treatment-effect heterogeneity in the GBSG2 application","Very Limited",
+  3L,"code available","public repo"
+)
+ev_Pryce_2025$page_ref <- c(
+  "p.1, p.8",     # study_design
+  "p.8",          # patient_population
+  "p.8",          # comparators
+  NA,             # confounders_identified
+  NA,             # confounding_adjustment
+  NA,             # balance_diagnostics
+  NA,             # unmeasured_confounding
+  "p.8",          # predefined_effect_mod
+  "p.9",          # posthoc_effect_mod
+  "p.1, p.3–5",   # method_type
+  "p.3–6",        # method_clarity
+  "p.8",          # outcome_method_alignment
+  "p.5–8",        # hyperparameter_tuning
+  "p.5, p.8–9",   # sample_splitting
+  "p.7–9",        # multi_model_comparison
+  "p.1–2",        # causal_estimand
+  "p.8",          # survival_estimand
+  "p.1, p.10",    # clinical_decision_readiness
+  "p.6, p.8, p.10", # uncertainty_quantification
+  "p.8–9",        # effect_mod_plausibility
+  "p.10"          # code_availability
 )
 
 ev_Ge_2020 <- make_evidence("Ge_2020",
