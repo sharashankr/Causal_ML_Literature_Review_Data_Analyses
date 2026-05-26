@@ -1,0 +1,333 @@
+---
+title: "Causal ML Review Data: Simple User Guide"
+author: "Sharath Chandra Shankar"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    theme: readable
+---
+
+```{r setup, message=FALSE, warning=FALSE}
+library(dplyr)
+library(tidyr)
+library(readr)
+library(tibble)
+```
+
+# 1. Start here: load the review tables
+
+Users do **not** need to manually create the `.RDS` file or worry about how the `.R` build file works.
+
+Just run this code. It pulls the latest `build_20_papers.R` file from GitHub, creates the review tables, and automatically saves `causal_ml_review.rds`.
+
+```{r load-from-github}
+source(
+  "https://raw.githubusercontent.com/sharashankr/Causal_ML_Literature_Review_Data_Analyses/main/build_20_papers.R",
+  encoding = "UTF-8"
+)
+```
+
+After running the code above, these tables are available in your R session:
+
+| Table | What it contains |
+|---|---|
+| `papers` | One row per paper with paper details |
+| `scores` | One row per paper with framework scores |
+| `evidence` | Long table with one row per paper × scoring dimension |
+| `review` | A list containing `papers`, `scores`, and `evidence` |
+
+The script also saves a local file called:
+
+```{r rds-note, eval=FALSE}
+causal_ml_review.rds
+```
+
+# 2. Look at the tables
+
+```{r inspect-tables, eval=FALSE}
+# Basic dimensions
+dim(papers)
+dim(scores)
+dim(evidence)
+
+# Column names
+names(papers)
+names(scores)
+names(evidence)
+
+# First few rows
+head(papers)
+head(scores)
+head(evidence)
+```
+
+In RStudio, open the tables like this:
+
+```{r view-tables, eval=FALSE}
+View(papers)
+View(scores)
+View(evidence)
+```
+
+# 3. List all papers
+
+```{r list-papers, eval=FALSE}
+papers %>%
+  select(paper_id, first_author, year, cancer_type, title)
+```
+
+# 4. Join paper details with scores
+
+Both `papers` and `scores` contain a column called `study_design`.
+
+To avoid confusing `.x` and `.y` columns after the join, rename them before joining.
+
+```{r join-papers-scores, eval=FALSE}
+paper_scores <- papers %>%
+  rename(study_design_metadata = study_design) %>%
+  left_join(
+    scores %>% rename(study_design_score = study_design),
+    by = "paper_id"
+  )
+
+View(paper_scores)
+```
+
+Example: select only a few useful columns.
+
+```{r selected-paper-scores, eval=FALSE}
+paper_scores %>%
+  select(
+    paper_id,
+    first_author,
+    year,
+    cancer_type,
+    study_design_metadata,
+    study_design_score,
+    method_type,
+    causal_estimand,
+    survival_estimand,
+    uncertainty_quantification
+  )
+```
+
+# 5. Make scores long format
+
+The `scores` table is wide. Each scoring dimension is a column.
+
+For joins with `evidence`, it is easier to convert it to long format.
+
+```{r scores-long, eval=FALSE}
+scores_long <- scores %>%
+  pivot_longer(
+    cols = -paper_id,
+    names_to = "dimension",
+    values_to = "score"
+  )
+
+head(scores_long)
+```
+
+# 6. Join scores with evidence
+
+This lets you see the numeric score and the evidence excerpt together.
+
+```{r join-scores-evidence, eval=FALSE}
+score_evidence <- scores_long %>%
+  left_join(
+    evidence,
+    by = c("paper_id", "dimension")
+  )
+
+View(score_evidence)
+```
+
+Useful selected version:
+
+```{r selected-score-evidence, eval=FALSE}
+score_evidence %>%
+  select(
+    paper_id,
+    dimension,
+    score,
+    score_assigned,
+    excerpt,
+    rater_note
+  )
+```
+
+# 7. Check one paper
+
+Example: see all scores and evidence for one paper.
+
+```{r one-paper, eval=FALSE}
+score_evidence %>%
+  filter(paper_id == "Ma_2018") %>%
+  select(dimension, score, excerpt, rater_note)
+```
+
+Change `"Ma_2018"` to any other `paper_id`.
+
+# 8. Check one scoring dimension across papers
+
+Example: compare survival estimand scoring across all papers.
+
+```{r one-dimension, eval=FALSE}
+score_evidence %>%
+  filter(dimension == "survival_estimand") %>%
+  select(paper_id, score, excerpt, rater_note)
+```
+
+Other useful dimensions:
+
+```{r useful-dimensions, eval=FALSE}
+score_evidence %>%
+  filter(dimension == "uncertainty_quantification")
+
+score_evidence %>%
+  filter(dimension == "balance_diagnostics")
+
+score_evidence %>%
+  filter(dimension == "causal_estimand")
+```
+
+# 9. Simple summary tables
+
+Average scores by dimension:
+
+```{r avg-by-dimension, eval=FALSE}
+scores_long %>%
+  group_by(dimension) %>%
+  summarise(
+    mean_score = mean(score, na.rm = TRUE),
+    n_scored = sum(!is.na(score)),
+    .groups = "drop"
+  ) %>%
+  arrange(mean_score)
+```
+
+Number of papers by cancer type:
+
+```{r cancer-counts, eval=FALSE}
+papers %>%
+  count(cancer_type, sort = TRUE)
+```
+
+Number of papers by study design score:
+
+```{r study-design-counts, eval=FALSE}
+scores %>%
+  count(study_design)
+```
+
+# 10. Export tables
+
+Save as CSV:
+
+```{r export-csv, eval=FALSE}
+write_csv(papers, "papers.csv")
+write_csv(scores, "scores.csv")
+write_csv(evidence, "evidence.csv")
+write_csv(score_evidence, "score_evidence_joined.csv")
+```
+
+Save as TSV:
+
+```{r export-tsv, eval=FALSE}
+write_tsv(papers, "papers.tsv")
+write_tsv(scores, "scores.tsv")
+write_tsv(evidence, "evidence.tsv")
+```
+
+# 11. Optional: read the saved RDS in a future session
+
+The GitHub `source()` step automatically saves `causal_ml_review.rds`.
+
+In a future R session, if you already have that RDS file locally, you can read it directly without sourcing GitHub again.
+
+```{r read-rds-future, eval=FALSE}
+review <- readRDS("causal_ml_review.rds")
+
+papers   <- review$papers
+scores   <- review$scores
+evidence <- review$evidence
+```
+
+# 12. Common errors
+
+## Error: object `papers` not found
+
+You probably have not run the GitHub source code yet.
+
+Run this first:
+
+```{r error-papers-not-found, eval=FALSE}
+source(
+  "https://raw.githubusercontent.com/sharashankr/Causal_ML_Literature_Review_Data_Analyses/main/build_20_papers.R",
+  encoding = "UTF-8"
+)
+```
+
+## Error: cannot open the GitHub connection
+
+Check that:
+
+1. You are connected to the internet.
+2. The GitHub repository is public.
+3. The file still exists at `main/build_20_papers.R`.
+4. The URL has `raw.githubusercontent.com`, not `github.com/.../blob/...`.
+
+## Error: column `study_design` does not exist after joining
+
+This happens when both tables had a `study_design` column and R renamed them as `.x` and `.y`.
+
+Use this safer join:
+
+```{r fix-study-design-join, eval=FALSE}
+paper_scores <- papers %>%
+  rename(study_design_metadata = study_design) %>%
+  left_join(
+    scores %>% rename(study_design_score = study_design),
+    by = "paper_id"
+  )
+```
+
+# 13. Minimal workflow
+
+Most users only need this:
+
+```{r minimal-workflow, eval=FALSE}
+library(dplyr)
+library(tidyr)
+library(readr)
+
+source(
+  "https://raw.githubusercontent.com/sharashankr/Causal_ML_Literature_Review_Data_Analyses/main/build_20_papers.R",
+  encoding = "UTF-8"
+)
+
+paper_scores <- papers %>%
+  rename(study_design_metadata = study_design) %>%
+  left_join(
+    scores %>% rename(study_design_score = study_design),
+    by = "paper_id"
+  )
+
+scores_long <- scores %>%
+  pivot_longer(
+    cols = -paper_id,
+    names_to = "dimension",
+    values_to = "score"
+  )
+
+score_evidence <- scores_long %>%
+  left_join(evidence, by = c("paper_id", "dimension"))
+
+View(papers)
+View(scores)
+View(evidence)
+View(paper_scores)
+View(score_evidence)
+```
