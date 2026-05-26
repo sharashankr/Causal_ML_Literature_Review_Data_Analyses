@@ -26,8 +26,8 @@ papers <- tribble(
   # ── BATCH 1 (original 10) ───────────────────────────────
 
   "Saad_2025",      "Saad",         2025,  2L,
-  "NSCLC",          "Multi-country", 141L,
-  "Journal for Immunotherapy Cancer",
+  "NSCLC",          "USA", 141L,
+  "J Immunother Cancer",
   "Causal AI-based clinical and radiomic analysis for optimizing patient selection in combined immunotherapy and SABR in early-stage NSCLC: a secondary analysis of the phase II I-SABR trial",
   "10.1136/jitc-2025-013074",
   "Maliazurina B Saad, et al.",
@@ -521,8 +521,8 @@ make_evidence <- function(paper_id,
 ## ── BATCH 1 & 2 evidence (verbatim from build_17_papers.R) ──────────────
 
 ev_Saad_2025 <- make_evidence("Saad_2025",
-  2L,"randomized controlled trial (I-SABR)","RCT",
-  4L,"participants were enrolled at multiple international sites with strict eligibility criteria based on NSCLC stage, pulmonary function, and performance status","Full IC/EC + RCT",
+  2L,"randomized controlled trial (I-SABR)","p.1–2", "RCT",
+  4L,"patients with early-stage/inoperable NSCLC from I-SABR, with clinical variables including ECOG, stage, tumor size, etc.", ""
   4L,"stereotactic ablative radiotherapy (SABR) plus systemic therapy vs systemic therapy alone... protocol-defined SABR doses","Protocol-level",
   NA_integer_,NA_character_,"RCT",NA_integer_,NA_character_,"RCT",
   NA_integer_,NA_character_,"RCT",NA_integer_,NA_character_,"RCT",
