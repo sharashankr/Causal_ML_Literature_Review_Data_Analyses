@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Causal ML Framework — Data Structure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue:    #185FA5;
+  --blue-lt: #E6F1FB;
+  --teal:    #0F6E56;
+  --teal-lt: #E1F5EE;
+  --purple:  #3C3489;
+  --purp-lt: #EEEDFE;
+  --coral:   #993C1D;
+  --coral-lt:#FAECE7;
+  --gray:    #444441;
+  --gray-lt: #F1EFE8;
+  --ink:     #1a1a1a;
+  --muted:   #5a5a58;
+  --border:  #d4d2ca;
+  --bg:      #fafaf8;
+  --white:   #ffffff;
+  --code-fg: #c0392b;
+  --alt-row: #f5f7fa;
+  --radius:  6px;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+/* ── LAYOUT ── */
+.layout { display: flex; min-height: 100vh; }
+
+nav {
+  width: 220px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  padding: 28px 0 40px;
+}
+
+nav .nav-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 20px 14px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 10px;
+}
+
+nav a {
+  display: block;
+  padding: 6px 20px;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
+  line-height: 1.4;
+}
+nav a:hover { color: var(--ink); background: var(--gray-lt); }
+nav a.active { color: var(--blue); border-left-color: var(--blue); background: var(--blue-lt); font-weight: 500; }
+nav .nav-section { margin-top: 18px; }
+nav .nav-section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #aaa;
+  padding: 0 20px 4px;
+}
+
+main {
+  flex: 1;
+  max-width: 940px;
+  padding: 48px 56px 80px;
+  min-width: 0;
+}
+
+/* ── TYPOGRAPHY ── */
+.doc-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+.doc-subtitle { font-size: 15px; color: var(--muted); font-weight: 300; margin-bottom: 4px; }
+.doc-meta { font-size: 12px; color: #aaa; font-style: italic; margin-bottom: 40px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+
+section { margin-bottom: 52px; scroll-margin-top: 24px; }
+
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+h2 .badge {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+}
+h3 { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin: 24px 0 10px; }
+
+p { margin-bottom: 12px; color: var(--muted); font-size: 14px; font-weight: 300; }
+p strong { font-weight: 500; color: var(--ink); }
+
+code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--code-fg);
+  background: #fef5f3;
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid #f5cfc9;
+}
+
+/* ── NOTE BOX ── */
+.note {
+  border-left: 3px solid var(--blue);
+  background: var(--blue-lt);
+  padding: 12px 16px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin: 16px 0;
+  font-size: 13px;
+  color: #185fa5cc;
+  font-style: italic;
+}
+.note.warn { border-left-color: #BA7517; background: #FAEEDA; color: #633806cc; }
+
+/* ── SUMMARY CARDS ── */
+.table-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+.table-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  border-top: 3px solid var(--blue);
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+.table-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.table-card.teal  { border-top-color: var(--teal); }
+.table-card.purple{ border-top-color: var(--purple); }
+.table-card.coral { border-top-color: var(--coral); }
+.table-card.gray  { border-top-color: var(--gray); }
+.card-name { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+.card-file { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+.card-rows { font-size: 11px; color: #aaa; margin-bottom: 6px; }
+.card-desc { font-size: 12px; color: var(--muted); font-weight: 300; line-height: 1.5; }
+
+/* ── TABLES ── */
+.tbl-wrap { overflow-x: auto; margin: 12px 0 24px; border: 1px solid var(--border); border-radius: var(--radius); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead tr { background: var(--blue); }
+thead.teal tr { background: var(--teal); }
+thead.purple tr { background: var(--purple); }
+thead.coral tr { background: var(--coral); }
+thead.gray tr { background: var(--gray); }
+th {
+  text-align: left;
+  padding: 9px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: white;
+  white-space: nowrap;
+}
+td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: var(--alt-row); }
+td code { font-size: 11.5px; }
+.key-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  margin-left: 4px;
+}
+.pk { background: #FFF3E0; color: #E65100; border: 1px solid #FFCC80; }
+.fk { background: var(--blue-lt); color: var(--blue); border: 1px solid #B5D4F4; }
+.na-cell { color: #aaa; font-style: italic; font-size: 12px; }
+.type-cell { font-style: italic; color: var(--muted); font-size: 12px; }
+.min-max { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--ink); }
+.flag { font-size: 11px; color: #BA7517; background: #FAEEDA; padding: 1px 5px; border-radius: 3px; font-family: var(--font-mono); }
+
+/* ── ERD ── */
+#erd-container { margin: 16px 0 24px; background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; min-height: 200px; }
+#erd svg { width: 100%; height: auto; }
+#erd-loading { color: var(--muted); font-size: 13px; font-style: italic; padding: 40px; text-align: center; }
+
+/* ── RELATIONSHIP LIST ── */
+.rel-list { list-style: none; margin: 12px 0; }
+.rel-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--muted);
+}
+.rel-list li:last-child { border-bottom: none; }
+.rel-arrow { color: #aaa; font-family: var(--font-mono); font-size: 11px; flex-shrink: 0; }
+
+/* ── CODE BLOCK ── */
+pre {
+  background: #f4f4f2;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  overflow-x: auto;
+  margin: 12px 0 24px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: #1a1a1a;
+}
+.r-comment { color: #888; }
+.r-fn { color: #185FA5; font-weight: 500; }
+.r-str { color: #2e7d32; }
+
+/* ── DOMAIN PILL ── */
+.domain-pill {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+<nav>
+  <div class="nav-title">Data Structure</div>
+  <a href="#overview">Overview</a>
+  <a href="#relationships">Table relationships</a>
+  <div class="nav-section">
+    <div class="nav-section-label">Tables</div>
+    <a href="#t-framework">1 — framework</a>
+    <a href="#t-scores">2 — scores</a>
+    <a href="#t-descriptive">3 — descriptive</a>
+    <a href="#t-evidence">4 — evidence</a>
+    <a href="#t-papers">5 — papers</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">R Reference</div>
+    <a href="#r-loading">Loading &amp; validation</a>
+    <a href="#r-joins">Join patterns</a>
+    <a href="#r-domains">Domain scores</a>
+    <a href="#r-irr">Inter-rater reliability</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Design</div>
+    <a href="#design">Key decisions</a>
+  </div>
+</nav>
+
+<main>
+
+  <div class="doc-title">Causal ML Framework</div>
+  <div class="doc-subtitle">Data Structure Technical Document</div>
+  <div class="doc-meta">Systematic Review of Causal ML Methodologies in Oncology</div>
+
+  <!-- OVERVIEW -->
+  <section id="overview">
+    <h2>Overview</h2>
+    <p>The framework produces <strong>four tables</strong> with distinct roles, plus a master reference table. Three tables operate at paper level (one row per paper) and one is long-format. The design separates scored integers, free-text annotations, audit evidence, and framework metadata — keeping each table analytically clean.</p>
+
+    <div class="table-cards">
+      <div class="table-card teal" onclick="document.getElementById('t-framework').scrollIntoView({behavior:'smooth'})">
+        <div class="card-name">framework</div>
+        <div class="card-file">framework.tsv</div>
+        <div class="card-rows">~90 rows · Long format · Composite PK: dimension + level</div>
+        <div class="card-desc">The rubric itself. One row per dimension–level pair. Lookup for all level descriptions and labels.</div>
+      </div>
+      <div class="table-card" onclick="document.getElementById('t-scores').scrollIntoView({behavior:'smooth'})">
+        <div class="card-name">scores</div>
+        <div class="card-file">scores.tsv</div>
+        <div class="card-rows">25 rows · Wide format · PK: paper_id</div>
+        <div class="card-desc">Ordinal scores — one row per paper, one column per scored dimension. Primary analytic table.</div>
+      </div>
+      <div class="table-card purple" onclick="document.getElementById('t-descriptive').scrollIntoView({behavior:'smooth'})">
+        <div class="card-name">descriptive</div>
+        <div class="card-file">descriptive.tsv</div>
+        <div class="card-rows">25 rows · Wide format · PK: paper_id</div>
+        <div class="card-desc">Free-text annotations. Never scored or averaged. Supports narrative synthesis only.</div>
+      </div>
+      <div class="table-card coral" onclick="document.getElementById('t-evidence').scrollIntoView({behavior:'smooth'})">
+        <div class="card-name">evidence</div>
+        <div class="card-file">evidence.tsv</div>
+        <div class="card-rows">~550 rows · Long format · Composite PK: paper_id + dimension</div>
+        <div class="card-desc">Bridge table — excerpts, page refs, rater notes. Connects all other tables. Central audit trail.</div>
+      </div>
+    </div>
+
+    <div class="note">All tables use tab-separated <code>.tsv</code> format to avoid conflicts with commas in free-text fields. All paper-level tables link via <code>paper_id</code>. Framework and evidence link via <code>dimension</code>.</div>
+  </section>
+
+  <!-- RELATIONSHIPS -->
+  <section id="relationships">
+    <h2>Table relationships</h2>
+    <p>The entity diagram shows all five key relationships. The <code>evidence</code> table is the central bridge — it connects paper-level data to framework metadata and holds supporting excerpts for every assigned score.</p>
+
+    <div id="erd-container">
+      <div id="erd-loading">Loading entity diagram…</div>
+      <div id="erd"></div>
+    </div>
+
+    <h3>Relationship summary</h3>
+    <ul class="rel-list">
+      <li><code>papers</code> <span class="rel-arrow">1 ──── 1</span> <code>scores</code> &nbsp;—&nbsp; one-to-one on <code>paper_id</code></li>
+      <li><code>papers</code> <span class="rel-arrow">1 ──── 1</span> <code>descriptive</code> &nbsp;—&nbsp; one-to-one on <code>paper_id</code></li>
+      <li><code>papers</code> <span class="rel-arrow">1 ──── ∞</span> <code>evidence</code> &nbsp;—&nbsp; one paper has ~22 evidence rows (one per dimension)</li>
+      <li><code>framework</code> <span class="rel-arrow">1 ──── ∞</span> <code>evidence</code> &nbsp;—&nbsp; one dimension maps to 25 evidence rows (one per paper)</li>
+      <li><code>framework</code> <span class="rel-arrow">structural</span> <code>scores</code> &nbsp;—&nbsp; indirect link: <code>dimension</code> values in framework match column names in scores. Requires <code>pivot_longer</code> before joining — see R reference.</li>
+    </ul>
+
+    <div class="note warn">The framework → scores link is structural, not a standard FK join. Scores is wide (dimensions as columns); framework is long (dimensions as row values). To join: pivot scores to long format first.</div>
+  </section>
+
+  <!-- TABLE 1: framework -->
+  <section id="t-framework">
+    <h2><span>Table 1 — framework</span> <span class="badge" style="background:var(--teal-lt);color:var(--teal)">framework.tsv</span></h2>
+    <p>The rubric itself. One row per dimension–level combination (~90 rows total). Contains every category, dimension, level number, type, and description from the scoring framework. This is the lookup source for all human-readable labels — connecting an integer score back to its meaning.</p>
+    <p><strong>Composite PK:</strong> <code>dimension</code> + <code>level</code> &nbsp;·&nbsp; <strong>Format:</strong> Long &nbsp;·&nbsp; <strong>Rows:</strong> ~90</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead class="teal"><tr>
+          <th>Column</th><th>Type</th><th>Key</th><th>Example values</th><th>Notes</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><code>category</code></td><td class="type-cell">character</td><td></td><td class="na-cell">ML Method &amp; Modeling Approach</td><td>Top-level domain grouping</td></tr>
+          <tr><td><code>dimension</code></td><td class="type-cell">character</td><td><span class="key-badge pk">PK</span></td><td class="na-cell">causal_estimand</td><td>Snake-case name. Matches column names in <code>scores</code> and <code>descriptive</code>, and the <code>dimension</code> column in <code>evidence</code></td></tr>
+          <tr><td><code>level</code></td><td class="type-cell">integer</td><td><span class="key-badge pk">PK</span></td><td class="na-cell">0, 1, 2, 3, 4</td><td>Composite PK with <code>dimension</code>. NA for Descriptive and Flag rows</td></tr>
+          <tr><td><code>level_type</code></td><td class="type-cell">character</td><td></td><td class="na-cell">Scored / Descriptive / Flag</td><td>Scored = ordinal; Descriptive = free-text annotation; Flag = nominal or binary</td></tr>
+          <tr><td><code>description</code></td><td class="type-cell">character</td><td></td><td class="na-cell">Formal definition using counterfactual / potential outcomes</td><td>The label text for this level as written in the framework</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">Descriptive and Flag dimensions have a single row with <code>level = NA</code>. This keeps all dimensions in one table without needing a separate lookup structure for free-text fields.</div>
+  </section>
+
+  <!-- TABLE 2: scores -->
+  <section id="t-scores">
+    <h2><span>Table 2 — scores</span> <span class="badge" style="background:var(--blue-lt);color:var(--blue)">scores.tsv</span></h2>
+    <p>Primary analytic table. One row per paper, one integer column per scored dimension. Used for descriptive statistics, domain subscores, total scores, inter-rater reliability, and all comparative analyses.</p>
+    <p><strong>PK:</strong> <code>paper_id</code> &nbsp;·&nbsp; <strong>Format:</strong> Wide &nbsp;·&nbsp; <strong>Rows:</strong> 25 &nbsp;·&nbsp; <strong>Columns:</strong> 23</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Column</th><th>Domain</th><th style="text-align:center">Min</th><th style="text-align:center">Max</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><code>paper_id</code></td><td><span class="key-badge fk">FK</span> papers</td><td></td><td></td><td>Character, e.g. <code>Smith_2021</code></td></tr>
+          <tr><td><code>study_design</code></td><td><span class="domain-pill" style="background:#f1efe8;color:#444">Study design</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">2</td><td>1 = Obs, 2 = RCT &nbsp;<span class="flag">nominal</span></td></tr>
+          <tr><td><code>patient_population</code></td><td><span class="domain-pill" style="background:#f1efe8;color:#444">Study design</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">4</td><td></td></tr>
+          <tr><td><code>comparators</code></td><td><span class="domain-pill" style="background:#f1efe8;color:#444">Study design</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">4</td><td></td></tr>
+          <tr><td><code>confounders_identified</code></td><td><span class="domain-pill" style="background:var(--teal-lt);color:var(--teal)">Confounding</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">3</td><td><strong>NA for RCT papers</strong></td></tr>
+          <tr><td><code>confounding_adjustment</code></td><td><span class="domain-pill" style="background:var(--teal-lt);color:var(--teal)">Confounding</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">3</td><td><strong>NA for RCT papers</strong></td></tr>
+          <tr><td><code>balance_diagnostics</code></td><td><span class="domain-pill" style="background:var(--teal-lt);color:var(--teal)">Confounding</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">4</td><td><strong>NA for RCT papers</strong></td></tr>
+          <tr><td><code>unmeasured_confounding</code></td><td><span class="domain-pill" style="background:var(--teal-lt);color:var(--teal)">Confounding</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">4</td><td><strong>NA for RCT papers</strong></td></tr>
+          <tr><td><code>predefined_effect_mod</code></td><td><span class="domain-pill" style="background:var(--purp-lt);color:var(--purple)">Effect mod.</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">4</td><td></td></tr>
+          <tr><td><code>posthoc_effect_mod</code></td><td><span class="domain-pill" style="background:var(--purp-lt);color:var(--purple)">Effect mod.</span></td><td class="min-max" style="text-align:center">0</td><td class="min-max" style="text-align:center">3</td><td>0 = no analysis attempted</td></tr>
+          <tr><td><code>method_type</code></td><td><span class="domain-pill" style="background:var(--blue-lt);color:var(--blue)">ML Method</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">3</td><td>1=Prediction, 2=Outcome Modelling, 3=Custom CATE &nbsp;<span class="flag">nominal — exclude from means</span></td></tr>
+          <tr><td><code>method_clarity</code></td><td><span class="domain-pill" style="background:var(--blue-lt);color:var(--blue)">ML Method</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">4</td><td></td></tr>
+          <tr><td><code>outcome_method_alignment</code></td><td><span class="domain-pill" style="background:var(--blue-lt);color:var(--blue)">ML Method</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">3</td><td></td></tr>
+          <tr><td><code>hyperparameter_tuning</code></td><td><span class="domain-pill" style="background:var(--blue-lt);color:var(--blue)">ML Method</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">4</td><td></td></tr>
+          <tr><td><code>sample_splitting</code></td><td><span class="domain-pill" style="background:var(--blue-lt);color:var(--blue)">ML Method</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">2</td><td>1=No, 2=Yes &nbsp;<span class="flag">binary flag — exclude from means</span></td></tr>
+          <tr><td><code>multi_model_comparison</code></td><td><span class="domain-pill" style="background:var(--blue-lt);color:var(--blue)">ML Method</span></td><td class="min-max" style="text-align:center">0</td><td class="min-max" style="text-align:center">2</td><td>0 = single model only</td></tr>
+          <tr><td><code>causal_estimand</code></td><td><span class="domain-pill" style="background:#fff3e0;color:#e65100">Causal obj.</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">3</td><td></td></tr>
+          <tr><td><code>survival_estimand</code></td><td><span class="domain-pill" style="background:#fff3e0;color:#e65100">Causal obj.</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">4</td><td></td></tr>
+          <tr><td><code>clinical_decision_readiness</code></td><td><span class="domain-pill" style="background:var(--coral-lt);color:var(--coral)">Tx Effect</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">3</td><td></td></tr>
+          <tr><td><code>uncertainty_quantification</code></td><td><span class="domain-pill" style="background:var(--coral-lt);color:var(--coral)">Tx Effect</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">4</td><td></td></tr>
+          <tr><td><code>effect_mod_plausibility</code></td><td><span class="domain-pill" style="background:var(--coral-lt);color:var(--coral)">Tx Effect</span></td><td class="min-max" style="text-align:center">0</td><td class="min-max" style="text-align:center">1</td><td>0 = not discussed, 1 = discussed</td></tr>
+          <tr><td><code>code_availability</code></td><td><span class="domain-pill" style="background:#eaf3de;color:#3b6d11">Reproducibility</span></td><td class="min-max" style="text-align:center">1</td><td class="min-max" style="text-align:center">3</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note warn">Set the four confounding columns to <code>NA</code> (not 0) for RCT papers. Using 0 would penalise RCT papers in aggregate scoring. <code>rowMeans(..., na.rm = TRUE)</code> handles NA correctly.</div>
+  </section>
+
+  <!-- TABLE 3: descriptive -->
+  <section id="t-descriptive">
+    <h2><span>Table 3 — descriptive</span> <span class="badge" style="background:var(--purp-lt);color:var(--purple)">descriptive.tsv</span></h2>
+    <p>Qualitative annotation table. One row per paper, one character column per free-text field. These fields are <strong>never scored, averaged, or used in numeric analyses</strong>. They support narrative synthesis and provide context for interpreting scores.</p>
+    <p><strong>PK:</strong> <code>paper_id</code> &nbsp;·&nbsp; <strong>Format:</strong> Wide &nbsp;·&nbsp; <strong>Rows:</strong> 25 &nbsp;·&nbsp; <strong>Columns:</strong> 5</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead class="purple"><tr><th>Column</th><th>Source question</th><th>What to record</th></tr></thead>
+        <tbody>
+          <tr><td><code>paper_id</code></td><td><span class="key-badge fk">FK</span> papers</td><td>Must match exactly</td></tr>
+          <tr><td><code>study_objective</code></td><td>Primary study objective</td><td>1–2 sentence summary of what the study set out to do</td></tr>
+          <tr><td><code>treatment_effect_type</code></td><td>What type and level of treatment effect is estimated?</td><td>e.g. ITE via causal forest; ATE as primary summary; subgroup HRs for predefined subgroups</td></tr>
+          <tr><td><code>treatment_effect_rigour</code></td><td>How rigorously is the treatment effect evaluated?</td><td>Validation approach, benchmarking, calibration checks performed</td></tr>
+          <tr><td><code>overfitting_control</code></td><td>How was overfitting controlled?</td><td>e.g. 5-fold CV; 20% held-out test set; honesty enforced in causal forest</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- TABLE 4: evidence -->
+  <section id="t-evidence">
+    <h2><span>Table 4 — evidence</span> <span class="badge" style="background:var(--coral-lt);color:var(--coral)">evidence.tsv</span></h2>
+    <p>The audit and bridge table. One row per paper × dimension (~22 rows per paper, ~550 rows total). Stores the text excerpts and page references justifying each assigned score. This is the <strong>central link in the schema</strong> — it connects paper-level data to framework metadata and makes every score traceable to its source.</p>
+    <p><strong>Composite PK:</strong> <code>paper_id</code> + <code>dimension</code> &nbsp;·&nbsp; <strong>Format:</strong> Long &nbsp;·&nbsp; <strong>Rows:</strong> ~550</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead class="coral"><tr><th>Column</th><th>Type</th><th>Key</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><code>paper_id</code></td><td class="type-cell">character</td><td><span class="key-badge pk">PK</span> <span class="key-badge fk">FK</span></td><td>Links to <code>papers</code>. Together with <code>dimension</code> forms the composite PK</td></tr>
+          <tr><td><code>dimension</code></td><td class="type-cell">character</td><td><span class="key-badge pk">PK</span> <span class="key-badge fk">FK</span></td><td>Links to <code>framework</code>. Snake-case name matching a column in <code>scores</code> or <code>descriptive</code></td></tr>
+          <tr><td><code>score_assigned</code></td><td class="type-cell">integer</td><td></td><td>Denormalised copy of the score from <code>scores</code>. Makes evidence self-contained for auditing. NA for descriptive dimensions</td></tr>
+          <tr><td><code>excerpt</code></td><td class="type-cell">character</td><td></td><td>Direct text excerpt from the paper supporting the assigned score. Keep verbatim where possible</td></tr>
+          <tr><td><code>page_ref</code></td><td class="type-cell">character</td><td></td><td>Page number, section, or figure reference — e.g. <code>p.4</code>, <code>Table 2</code>, <code>Supp. Fig. 1</code></td></tr>
+          <tr><td><code>rater_note</code></td><td class="type-cell">character</td><td></td><td>Rater's interpretive note explaining why this level was assigned. Optional but encouraged for borderline scores</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">For descriptive dimensions, <code>score_assigned = NA</code>. The <code>excerpt</code> and <code>rater_note</code> columns still apply and can capture supporting quotes for narrative synthesis.</div>
+  </section>
+
+  <!-- TABLE 5: papers -->
+  <section id="t-papers">
+    <h2><span>Reference table — papers</span> <span class="badge" style="background:var(--gray-lt);color:var(--gray)">papers.tsv</span></h2>
+    <p>Master reference and primary key source. All other tables foreign-key to <code>papers</code> via <code>paper_id</code>.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead class="gray"><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><code>paper_id</code></td><td class="type-cell">character <span class="key-badge pk">PK</span></td><td>Primary key across all tables. e.g. <code>Smith_2021</code></td></tr>
+          <tr><td><code>first_author</code></td><td class="type-cell">character</td><td>Surname only</td></tr>
+          <tr><td><code>year</code></td><td class="type-cell">integer</td><td>Publication year</td></tr>
+          <tr><td><code>journal</code></td><td class="type-cell">character</td><td>Full journal name</td></tr>
+          <tr><td><code>title</code></td><td class="type-cell">character</td><td>Full paper title</td></tr>
+          <tr><td><code>cancer_type</code></td><td class="type-cell">character</td><td>e.g. Non-small cell lung cancer or Multiple</td></tr>
+          <tr><td><code>country</code></td><td class="type-cell">character</td><td>Country of primary data source</td></tr>
+          <tr><td><code>sample_size</code></td><td class="type-cell">integer</td><td>Total N in the study</td></tr>
+          <tr><td><code>rater_id</code></td><td class="type-cell">character</td><td>ID of person who scored this paper — required for inter-rater reliability</td></tr>
+          <tr><td><code>date_scored</code></td><td class="type-cell">date</td><td>ISO format: YYYY-MM-DD</td></tr>
+          <tr><td><code>notes</code></td><td class="type-cell">character</td><td>Free-text rater notes not captured elsewhere</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- R: LOADING -->
+  <section id="r-loading">
+    <h2>R — Loading &amp; validation</h2>
+    <p>Load all five tables with explicit column type declarations. The <code>anti_join</code> checks should all return 0 rows before any analysis proceeds.</p>
+<pre><span class="r-fn">library</span>(tidyverse)
+
+framework   &lt;- <span class="r-fn">read_tsv</span>(<span class="r-str">"framework.tsv"</span>,   col_types = <span class="r-fn">cols</span>(.default = <span class="r-str">"c"</span>, level = <span class="r-str">"i"</span>))
+papers      &lt;- <span class="r-fn">read_tsv</span>(<span class="r-str">"papers.tsv"</span>,      col_types = <span class="r-fn">cols</span>(year = <span class="r-str">"i"</span>, sample_size = <span class="r-str">"i"</span>, date_scored = <span class="r-str">"D"</span>))
+scores      &lt;- <span class="r-fn">read_tsv</span>(<span class="r-str">"scores.tsv"</span>,      col_types = <span class="r-fn">cols</span>(.default = <span class="r-str">"i"</span>, paper_id = <span class="r-str">"c"</span>))
+descriptive &lt;- <span class="r-fn">read_tsv</span>(<span class="r-str">"descriptive.tsv"</span>, col_types = <span class="r-fn">cols</span>(.default = <span class="r-str">"c"</span>))
+evidence    &lt;- <span class="r-fn">read_tsv</span>(<span class="r-str">"evidence.tsv"</span>,    col_types = <span class="r-fn">cols</span>(.default = <span class="r-str">"c"</span>, score_assigned = <span class="r-str">"i"</span>))
+
+<span class="r-comment"># Validate joins — all should return 0 rows</span>
+<span class="r-fn">anti_join</span>(scores,      papers,    by = <span class="r-str">"paper_id"</span>)
+<span class="r-fn">anti_join</span>(descriptive, papers,    by = <span class="r-str">"paper_id"</span>)
+<span class="r-fn">anti_join</span>(evidence,    papers,    by = <span class="r-str">"paper_id"</span>)
+<span class="r-fn">anti_join</span>(evidence,    framework, by = <span class="r-str">"dimension"</span>)
+
+<span class="r-comment"># Full analytic dataset (scores + metadata)</span>
+dat &lt;- papers |&gt; <span class="r-fn">left_join</span>(scores, by = <span class="r-str">"paper_id"</span>)</pre>
+  </section>
+
+  <!-- R: JOINS -->
+  <section id="r-joins">
+    <h2>R — Key join patterns</h2>
+    <p>The framework–scores join requires a pivot because <code>scores</code> is wide and <code>framework</code> is long.</p>
+<pre><span class="r-comment"># Get score + framework description for every paper × dimension</span>
+scores_long &lt;- scores |&gt;
+  <span class="r-fn">pivot_longer</span>(-paper_id, names_to = <span class="r-str">"dimension"</span>, values_to = <span class="r-str">"score"</span>)
+
+annotated &lt;- scores_long |&gt;
+  <span class="r-fn">left_join</span>(framework, by = <span class="r-fn">c</span>(<span class="r-str">"dimension"</span>, <span class="r-str">"score"</span> = <span class="r-str">"level"</span>)) |&gt;
+  <span class="r-fn">left_join</span>(<span class="r-fn">select</span>(papers, paper_id, first_author, year), by = <span class="r-str">"paper_id"</span>)
+
+<span class="r-comment"># Score + excerpt + rationale for a specific paper</span>
+evidence |&gt;
+  <span class="r-fn">filter</span>(paper_id == <span class="r-str">"Smith_2021"</span>) |&gt;
+  <span class="r-fn">left_join</span>(framework, by = <span class="r-fn">c</span>(<span class="r-str">"dimension"</span>, <span class="r-str">"score_assigned"</span> = <span class="r-str">"level"</span>)) |&gt;
+  <span class="r-fn">select</span>(dimension, score_assigned, description, excerpt, page_ref)</pre>
+  </section>
+
+  <!-- R: DOMAINS -->
+  <section id="r-domains">
+    <h2>R — Domain score computation</h2>
+    <p>Compute domain subscores as row means within each domain's columns. <code>method_type</code> and <code>sample_splitting</code> are excluded — they are flags, not quality measures.</p>
+<pre>scores &lt;- scores |&gt;
+  <span class="r-fn">mutate</span>(
+    domain_study_design     = <span class="r-fn">rowMeans</span>(<span class="r-fn">pick</span>(patient_population, comparators), na.rm = TRUE),
+
+    domain_confounding      = <span class="r-fn">rowMeans</span>(<span class="r-fn">pick</span>(confounders_identified, confounding_adjustment,
+                                              balance_diagnostics, unmeasured_confounding), na.rm = TRUE),
+    <span class="r-comment"># NA for RCT papers handled automatically by na.rm = TRUE</span>
+
+    domain_effect_mod       = <span class="r-fn">rowMeans</span>(<span class="r-fn">pick</span>(predefined_effect_mod, posthoc_effect_mod), na.rm = TRUE),
+
+    domain_ml_method        = <span class="r-fn">rowMeans</span>(<span class="r-fn">pick</span>(method_clarity, outcome_method_alignment,
+                                              hyperparameter_tuning, multi_model_comparison), na.rm = TRUE),
+    <span class="r-comment"># method_type (nominal) and sample_splitting (binary) excluded</span>
+
+    domain_causal           = <span class="r-fn">rowMeans</span>(<span class="r-fn">pick</span>(causal_estimand, survival_estimand), na.rm = TRUE),
+
+    domain_treatment_effect = <span class="r-fn">rowMeans</span>(<span class="r-fn">pick</span>(clinical_decision_readiness, uncertainty_quantification,
+                                              effect_mod_plausibility), na.rm = TRUE),
+
+    domain_reproducibility  = code_availability
+  )</pre>
+  </section>
+
+  <!-- R: IRR -->
+  <section id="r-irr">
+    <h2>R — Inter-rater reliability</h2>
+    <p>If papers are double-scored, <code>rater_id</code> in <code>papers</code> and a long-format reshape of <code>scores</code> enables ICC or weighted kappa per dimension.</p>
+<pre><span class="r-fn">library</span>(irr)
+
+scores_long &lt;- scores |&gt;
+  <span class="r-fn">pivot_longer</span>(-paper_id, names_to = <span class="r-str">"dimension"</span>, values_to = <span class="r-str">"score"</span>) |&gt;
+  <span class="r-fn">left_join</span>(<span class="r-fn">select</span>(papers, paper_id, rater_id), by = <span class="r-str">"paper_id"</span>)
+
+<span class="r-comment"># Two-column rater matrix for one dimension</span>
+icc_input &lt;- scores_long |&gt;
+  <span class="r-fn">filter</span>(dimension == <span class="r-str">"causal_estimand"</span>) |&gt;
+  <span class="r-fn">pivot_wider</span>(names_from = rater_id, values_from = score) |&gt;
+  <span class="r-fn">select</span>(-paper_id, -dimension)
+
+<span class="r-fn">icc</span>(icc_input, model = <span class="r-str">"twoway"</span>, type = <span class="r-str">"agreement"</span>)</pre>
+  </section>
+
+  <!-- DESIGN DECISIONS -->
+  <section id="design">
+    <h2>Key design decisions</h2>
+
+    <h3>Why four tables and not one?</h3>
+    <p>A single flat table would mix integers, free text, long and wide formats, and metadata. Each table has exactly one unit of observation and one content type, making column type declarations unambiguous and every analysis focused.</p>
+
+    <h3>Why is evidence a separate table and not columns in scores?</h3>
+    <p>Adding <code>excerpt</code> and <code>page_ref</code> directly to scores would require 22 excerpt columns + 22 page_ref columns = 44 extra wide columns, most of which would be redundant. The long-format evidence table puts each excerpt in its own row and joins cleanly to both scores and framework.</p>
+
+    <h3>Why TSV and not CSV?</h3>
+    <p>Evidence and descriptive contain free-text fields that routinely include commas (method names, variable lists, quoted excerpts). TSV avoids all quoting complications.</p>
+
+    <h3>Why NA for confounding columns in RCT papers?</h3>
+    <p>Using 0 would imply worst-possible score and incorrectly penalise RCT papers in aggregate analyses. NA propagates correctly through <code>rowMeans(..., na.rm = TRUE)</code>.</p>
+
+    <h3>Why is score_assigned denormalised in evidence?</h3>
+    <p>To make the evidence table self-contained for auditing — a rater reviewing excerpts sees score + excerpt + rationale in one place without running a join. Maintain consistency by updating evidence when scores changes.</p>
+
+    <h3>Why is method_type in scores but treated as nominal?</h3>
+    <p>Structural consistency — one row per paper, same wide format. But it must never be summed or averaged. Use it as a stratification variable: compare <code>causal_estimand</code> scores across <code>method_type</code> groups.</p>
+  </section>
+
+</main>
+</div>
+
+<script type="module">
+import mermaid from 'https://esm.sh/mermaid@11/dist/mermaid.esm.min.mjs';
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'base',
+  fontFamily: 'IBM Plex Sans, Arial, sans-serif',
+  themeVariables: {
+    darkMode: false,
+    fontSize: '13px',
+    fontFamily: 'IBM Plex Sans, Arial, sans-serif',
+    lineColor: '#73726c',
+    textColor: '#1a1a1a',
+    primaryColor: '#e6f1fb',
+    primaryBorderColor: '#185fa5',
+    primaryTextColor: '#0c447c',
+    secondaryColor: '#e1f5ee',
+    secondaryBorderColor: '#0f6e56',
+    secondaryTextColor: '#085041',
+    tertiaryColor: '#eeedfe',
+    tertiaryBorderColor: '#3c3489',
+    tertiaryTextColor: '#26215c',
+  },
+});
+const diagram = `erDiagram
+  framework {
+    string category
+    string dimension PK
+    int level PK
+    string level_type
+    string description
+  }
+  papers {
+    string paper_id PK
+    string first_author
+    int year
+    string journal
+    string cancer_type
+    int sample_size
+    string rater_id
+    date date_scored
+  }
+  scores {
+    string paper_id FK
+    int study_design
+    int patient_population
+    int comparators
+    int confounders_identified
+    int method_clarity
+    int causal_estimand
+    int survival_estimand
+    int code_availability
+  }
+  descriptive {
+    string paper_id FK
+    string study_objective
+    string treatment_effect_type
+    string treatment_effect_rigour
+    string overfitting_control
+  }
+  evidence {
+    string paper_id FK
+    string dimension FK
+    int score_assigned
+    string excerpt
+    string page_ref
+    string rater_note
+  }
+  papers ||--|| scores : "paper_id"
+  papers ||--|| descriptive : "paper_id"
+  papers ||--o{ evidence : "paper_id"
+  framework ||--o{ evidence : "dimension"
+`;
+try {
+  const { svg } = await mermaid.render('erd-main', diagram);
+  document.getElementById('erd-loading').style.display = 'none';
+  document.getElementById('erd').innerHTML = svg;
+  document.querySelectorAll('#erd svg .node').forEach(node => {
+    const fp = node.querySelector('path[d]');
+    if (!fp) return;
+    const nums = fp.getAttribute('d').match(/-?[\d.]+/g)?.map(Number);
+    if (!nums || nums.length < 8) return;
+    const xs = [nums[0],nums[2],nums[4],nums[6]], ys = [nums[1],nums[3],nums[5],nums[7]];
+    const x = Math.min(...xs), y = Math.min(...ys), w = Math.max(...xs)-x, h = Math.max(...ys)-y;
+    const r = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r.setAttribute('x',x); r.setAttribute('y',y); r.setAttribute('width',w); r.setAttribute('height',h); r.setAttribute('rx','6');
+    for (const a of ['fill','stroke','stroke-width','class','style']) if (fp.hasAttribute(a)) r.setAttribute(a,fp.getAttribute(a));
+    fp.replaceWith(r);
+  });
+  document.querySelectorAll('#erd svg .row-rect-odd path, #erd svg .row-rect-even path').forEach(p => p.setAttribute('stroke','none'));
+} catch(e) {
+  document.getElementById('erd-loading').textContent = 'Could not render diagram — open in a browser with internet access.';
+}
+
+// Nav active state on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav a');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`nav a[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
