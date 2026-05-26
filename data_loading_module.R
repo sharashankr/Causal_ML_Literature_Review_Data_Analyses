@@ -522,7 +522,7 @@ make_evidence <- function(paper_id,
 
 ev_Saad_2025 <- make_evidence("Saad_2025",
   2L,"randomized controlled trial (I-SABR)","RCT",
-  4L,"patients with early-stage/inoperable NSCLC from I-SABR, with clinical variables including ECOG, stage, tumor size, etc.",
+  4L,"patients with early-stage/inoperable NSCLC from I-SABR, with clinical variables including ECOG, stage, tumor size, etc.", "Clear trial population; full IC/EC mainly inherited from parent trial/supplement",
   4L,"SABR alone vs SABR + immunotherapy / I-SABR","Protocol-level",
   NA_integer_,NA_character_,"RCT",NA_integer_,NA_character_,"RCT",
   NA_integer_,NA_character_,"RCT",NA_integer_,NA_character_,"RCT",
