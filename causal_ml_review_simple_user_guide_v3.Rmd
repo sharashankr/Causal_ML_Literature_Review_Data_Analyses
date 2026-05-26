@@ -265,7 +265,7 @@ Run this first:
 
 ```{r error-papers-not-found, eval=FALSE}
 source(
-  "https://raw.githubusercontent.com/sharashankr/Causal_ML_Literature_Review_Data_Analyses/main/build_20_papers.R",
+  "https://raw.githubusercontent.com/sharashankr/Causal_ML_Literature_Review_Data_Analyses/main/data_loading_module.R",
   encoding = "UTF-8"
 )
 ```
@@ -276,7 +276,7 @@ Check that:
 
 1. You are connected to the internet.
 2. The GitHub repository is public.
-3. The file still exists at `main/build_20_papers.R`.
+3. The file still exists at `main/data_loading_module.R`.
 4. The URL has `raw.githubusercontent.com`, not `github.com/.../blob/...`.
 
 ## Error: column `study_design` does not exist after joining
