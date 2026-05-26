@@ -521,25 +521,45 @@ make_evidence <- function(paper_id,
 ## ── BATCH 1 & 2 evidence (verbatim from build_17_papers.R) ──────────────
 
 ev_Saad_2025 <- make_evidence("Saad_2025",
-  2L,"randomized controlled trial (I-SABR)","p.1–2", "RCT",
+  2L,"randomized controlled trial (I-SABR)","RCT",
   4L,"patients with early-stage/inoperable NSCLC from I-SABR, with clinical variables including ECOG, stage, tumor size, etc.",
-  4L,"stereotactic ablative radiotherapy (SABR) plus systemic therapy vs systemic therapy alone... protocol-defined SABR doses","Protocol-level",
+  4L,"SABR alone vs SABR + immunotherapy / I-SABR","Protocol-level",
   NA_integer_,NA_character_,"RCT",NA_integer_,NA_character_,"RCT",
   NA_integer_,NA_character_,"RCT",NA_integer_,NA_character_,"RCT",
-  3L,"CPH meta-learner applied to pre-specified clinical predictors from trial protocol","Pre-specified with clinical rationale",
-  1L,"feature importance from CPH meta-learner used to describe heterogeneity","Feature importance only",
-  3L,"CPH meta-learner... estimates ITE as difference in predicted survival under each treatment arm","Custom CATE",
-  4L,"Cox proportional hazards meta-learner: first-stage outcome models fit separately per arm, second-stage ITE as difference of predictions; cross-fitting described","Fully described",
+  3L,"Pre-specified clinical predictors from trial protocol + radiomic features","Pre-specified with clinical rationale",
+  2L,"SHAP - feature importance,  used to describe heterogeneity","Feature importance only",
+  3L,"Counterfactual reasoning with Meta Learner (two Cox proportional hazards) model was used to estimate individualized treatment effect by contrasting predicted risk under I-SABR versus SABR.","Custom CATE",
+  4L,"Two separately trained CPH models (meta learner) were used to estimate counterfactual outcomes under I-SABR and SABR; ITE was computed by contrasting model-predicted risks, and treatment with lower predicted risk was recommended.","Fully described",
   3L,"survival outcomes modelled with Cox regression; censoring accounted for","Survival-aware",
-  3L,"cross-validation used to select regularisation parameters in CPH meta-learner","CV + search",
-  2L,"cross-fitting procedure with sample splitting for nuisance models","Cross-fitting used",
-  2L,"CPH meta-learner compared to Kaplan-Meier stratified analysis","Limited comparison",
-  3L,"ITE defined under potential outcomes framework: ITE_i = E[T_i(1)] - E[T_i(0)]","Explicit ITE defined",
-  3L,"overall survival and progression-free survival... restricted mean survival time reported for subgroups","Defined outcomes with horizon",
-  3L,"patients predicted to benefit from SABR vs those not... clinical decision aid proposed","Recommended vs non-recommended groups",
-  3L,"individual-level credible intervals for ITE from bootstrap","Individual-level CI",
-  1L,"younger patients and those with lower disease burden showed greater benefit","Briefly discussed",
-  2L,"code available on GitHub (partial)","Partial public repository"
+  3L,"They used repeated CV, bootstrapping, ensemble learning, and gray wolf optimizer-based feature selection","CV + bootstrapping + feature selection",
+  2L,"via repeated cross-validation and an external validation cohort, not “honesty” or formal cross-fitting","Cross-fitting used",
+  1L,"CPH meta-learner compared to Kaplan-Meier stratified analysis","Limited comparison",
+  3L,"ITE defined as: ITE = (predicted risk under SABR alone - predicted risk under I-SABR) / predicted risk under SABR alone (observed & counterfactual)","Explicit ITE defined",
+  3L,"Restricted mean survival time difference (RMSTD) was calculated at the median follow-­ up time, which is 33 months. EFS","Defined outcomes with horizon",
+  3L,"Patients were classified into IO-benefit and IO-spare groups to guide whether immunotherapy should be added to SABR; the paper also reported ARR, NNT, and net benefit for model-guided selection.","Recommended vs non-recommended groups",
+  3L,"Bootstrapping and repeated cross-validation were used to improve robustness and mitigate small-sample bias, but individual-level uncertainty intervals for ITE were not clearly reported in the main text.","No ITE",
+  1L,"Radiomic features, ECOG performance status, smoking status, tumor size, and radiation dose were interpreted as treatment moderators associated with benefit from adding immunotherapy.","Briefly discussed",
+  3L,"code available on GitHub","Public repository"
+)
+ev_Saad_2025$page_ref <- c(
+  "p.1–2",  # study_design
+  "p.2–3",  # patient_population
+  "p.1, p.4",  # comparators
+  NA, NA, NA, NA,
+  "p.2–4. Start at I-SABR-SELECT: treatment decisions for individual patients",  # predefined_effect_mod
+  "p.6 and p.8. Interpretation and reasoning behind I-SABR-SELECT",  # posthoc_effect_mod
+  "p.4",    # method_type
+  "p.4",    # method_clarity
+  "p.4–5",  # outcome_method_alignment
+  "p.4–5",  # hyperparameter_tuning
+  "p.4",    # sample_splitting
+  "p.5",    # multi_model_comparison
+  "p.4–5",  # causal_estimand
+  "p.4–5",  # survival_estimand
+  "p.5–7",  # clinical_decision_readiness
+  "p.5, p.10", # uncertainty_quantification
+  "p.6, p.10", # effect_mod_plausibility
+  "p.1"     # code_availability
 )
 
 ev_Pryce_2025 <- make_evidence("Pryce_2025",
