@@ -27,10 +27,10 @@ papers <- tribble(
 
   "Saad_2025",      "Saad",         2025,  2L,
   "NSCLC",          "Multi-country", 141L,
-  "Journal of Clinical Oncology",
-  "Individualized prediction of benefit from stereotactic ablative radiotherapy for early-stage lung cancer (I-SABR-SELECT): a causal machine-learning analysis of the I-SABR randomised trial",
-  "10.1016/j.jco.2025.01.001",
-  "Saad F, Nguyen PL, et al.",
+  "Journal for Immunotherapy Cancer",
+  "Causal AI-based clinical and radiomic analysis for optimizing patient selection in combined immunotherapy and SABR in early-stage NSCLC: a secondary analysis of the phase II I-SABR trial",
+  "10.1136/jitc-2025-013074",
+  "Maliazurina B Saad, et al.",
   "RCT reanalysis; CPH meta-learner; primary trial I-SABR",
 
   "Pryce_2025",     "Pryce",        2025,  2L,
