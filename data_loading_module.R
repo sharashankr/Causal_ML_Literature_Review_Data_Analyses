@@ -522,7 +522,7 @@ make_evidence <- function(paper_id,
 
 ev_Saad_2025 <- make_evidence("Saad_2025",
   2L,"randomized controlled trial (I-SABR)","p.1–2", "RCT",
-  4L,"patients with early-stage/inoperable NSCLC from I-SABR, with clinical variables including ECOG, stage, tumor size, etc.", ""
+  4L,"patients with early-stage/inoperable NSCLC from I-SABR, with clinical variables including ECOG, stage, tumor size, etc.",
   4L,"stereotactic ablative radiotherapy (SABR) plus systemic therapy vs systemic therapy alone... protocol-defined SABR doses","Protocol-level",
   NA_integer_,NA_character_,"RCT",NA_integer_,NA_character_,"RCT",
   NA_integer_,NA_character_,"RCT",NA_integer_,NA_character_,"RCT",
