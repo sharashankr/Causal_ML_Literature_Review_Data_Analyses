@@ -610,26 +610,50 @@ ev_Pryce_2025$page_ref <- c(
 
 ev_Ge_2020 <- make_evidence("Ge_2020",
   1L,"256 newly diagnosed AML patients... at MD Anderson Cancer Center","Observational",
-  2L,"212 valid samples... 85 useable features","Some IC/EC",
+  2L,"212 valid samples, 85 useable features","Only some IC/EC - being conservative",
   2L,"HDAC, Idarubicin, HDAC+IDA vs other drugs","Named only",
-  1L,"we ignore unobserved confounders","Not justified",
+  1L,"The method assumes ignorability/no unmeasured confounding conditional on features X; the AML application used 85 usable features including protein/phosphoprotein and clinical/geographical variables.","Not justified",
   1L,"ignorability assumption only; no actual adjustment","None",
-  1L,"no balance diagnostics","None",
-  1L,"Overlooking the presence of unobserved confounders may lead to biased results","Acknowledged",
-  1L,"sparse techniques for selection of biomarkers","Data-driven",
-  0L,"no posthoc effect mod beyond LASSO biomarker list","None",
+  1L,"no balance diagnostics (they assume that there is confounding/imbalance)","None",
+  2L,"Overlooking the presence of unobserved confounders may lead to biased results","Acknowledged",
+  1L,"sparse techniques for selection of biomarkers","weak",
+  3L,"LASSO and Garson’s algorithm were used after MGANITE estimation to identify biomarkers associated with treatment-effect variation and optimal treatment selection; the top 30 biomarkers explained 36.82% of HDAC/HDAC+IDA treatment-effect variation","Linked to HTE partially",
   3L,"MGANITE estimates ITE of any treatment type including binary, categorical, continuous","Custom CATE",
-  3L,"generator: 7-layer FNN; discriminator: similar; batch=16; learning rates 0.0001/0.001; Adam optimizer; 1M batches","Partial description",
-  1L,"response or no response (binary); not survival-time outcome","Inappropriate for TTE",
-  2L,"1M batches; Adam; exponential LR decay; 20% dropout","Done but unclear",
-  1L,"no sample splitting","No",
-  2L,"MGANITE vs LR, LogR, SVM, KNN, BLR, RF(C), RF(R)","Systematic benchmarking",
-  2L,"pairwise ITE xi_jk = Y(T_j) - Y(T_k)","Explicit ITE",
+  3L,"MGANITE is described with potential-outcome notation, generator/discriminator architecture, imputation and ITE blocks, loss functions, training parameters, Adam optimizer, dropout, and LASSO-based biomarker selection.","Very Comprehensive",
+  1L,"The AML application used binary response status as the outcome; no survival-time, censoring, or time-to-event outcome was modeled.","Inappropriate for TTE",
+  2L,"Training settings were reported, including batch size 16, discriminator/generator learning rates, exponential learning-rate decay, 1,000,000 batches, Adam optimizer, and 20% dropout.","Done but unclear",
+  2L,"The AML dataset was split into an in-sample dataset of 190 samples for initial parameter estimation/model selection and an out-of-sample dataset of 22 samples for evaluating ITE estimation.","No",
+  2L,"MGANITE was compared with LR, LogR, SVM, KNN, BLR, RF(C), and RF(R) in simulations and AML real-data analyses.","Systematic benchmarking",
+  3L,"pairwise ITE xi_jk = Y(T_j) - Y(T_k)","Explicit ITE",
   1L,"binary response; no survival estimand","Not defined",
-  1L,"MGANITE applied to AML; optimal treatment identified","Implicit only",
+  2L,"MGANITE applied to AML; optimal treatment identified","Decent decision readiness",
   1L,"KL divergence between in-sample and out-of-sample ITE distributions","Minimal model variability",
   0L,"biomarkers explain 36.82% of treatment effect variation; not discussed clinically","Not discussed",
-  2L,"program downloadable from https://sph.uth.edu/research/centers/hgc/software/xiong/","Partial"
+  2L,"program downloadable from https://sph.uth.edu/research/centers/hgc/software/xiong/","Program available; reproducibility details limited"
+)
+
+ev_Ge_2020$page_ref <- c(
+  "p.7",        # study_design
+  "p.7",        # patient_population
+  "p.7, p.11–12", # comparators
+  "p.4, p.7",   # confounders_identified
+  "p.4, p.7",   # confounding_adjustment
+  "p.4",        # balance_diagnostics
+  "p.4",        # unmeasured_confounding
+  "p.2, p.6",   # predefined_effect_mod
+  "p.6, p.11",  # posthoc_effect_mod
+  "p.3–6",      # method_type
+  "p.3–6",      # method_clarity
+  "p.11",       # outcome_method_alignment
+  "p.6",        # hyperparameter_tuning
+  "p.11",       # sample_splitting
+  "p.8, p.11",  # multi_model_comparison
+  "p.3–4",      # causal_estimand
+  "p.11",       # survival_estimand
+  "p.11–12",    # clinical_decision_readiness
+  "p.11",       # uncertainty_quantification
+  "p.11",       # effect_mod_plausibility
+  "p.3"         # code_availability
 )
 
 ev_Roblin_2025 <- make_evidence("Roblin_2025",
