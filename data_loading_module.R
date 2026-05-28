@@ -183,7 +183,7 @@ papers <- tribble(
   "Obs (TCGA; propensity-matched); BPFT (Bayesian predictive failure time); targeted vs non-targeted therapy; genomic signatures; n=116 matched pairs",
 
   "Roblin_2025b",   "Roblin",       2025,  2L,
-  "Breast",         "France",       2188L,
+  "Breast",         "Meta Analysis",       2188L,
   "arXiv preprint (arXiv:2506.12277)",
   "Evaluation of machine-learning models to measure individualized treatment effects from randomized clinical trial data with time-to-event outcomes",
   "arXiv:2506.12277",
@@ -1171,7 +1171,7 @@ ev_Ma_2018 <- make_evidence("Ma_2018",
 ev_Roblin_2025b <- make_evidence("Roblin_2025b",
   # study_design
   2L,
-  "We apply 2 strategies for the feedforward neural networks (FNNs) based on a specific loss function in a continuous time framework (CoxCC and CoxTime), and Interaction Forests (IF)... We apply the methods to gene expression data from a meta-analysis of neoadjuvant trials that included 614 breast cancer patients... and data from an RCT including 1,574 patients",
+  "2 strategies for the feedforward neural networks (FNNs) based on a specific loss function in a continuous time framework (CoxCC and CoxTime), and Interaction Forests (IF)... We apply the methods to gene expression data from a meta-analysis of neoadjuvant trials that included 614 breast cancer patients... and data from an RCT including 1,574 patients",
   "RCT application (taxane meta-analysis n=614; trastuzumab RCT n=1574); plus simulation study; methods evaluation paper",
   # patient_population
   3L,
@@ -1188,16 +1188,16 @@ ev_Roblin_2025b <- make_evidence("Roblin_2025b",
   NA_integer_,NA_character_,"RCT — confounding dims NA",
   # predefined_effect_mod
   2L,
-  "We apply the methods to gene expression and clinical data from 2 breast cancer studies... p=1,689 genes for taxane dataset; p=462 genes plus clinicopathological variables for trastuzumab",
+  "Application of the methods to gene expression and clinical data from 2 breast cancer studies... p=1,689 genes for taxane dataset; p=462 genes plus clinicopathological variables for trastuzumab",
   "Input covariates pre-specified by gene expression + clinical variables from source datasets; no explicit HTE hypothesis pre-registered",
   # posthoc_effect_mod
-  1L,
-  "Further work could focus on the relative contribution of the input variables... For the IF, we could evaluate the Effect Importance Measure",
+  0L,
+  "Feature importance or relative variable contribution was not reported; the paper states that future work could evaluate input-variable contributions and Effect Importance Measures.",
   "No SHAP or feature importance reported in current paper; mentioned as future work only",
   # method_type
   3L,
   "CoxCC that uses a loss function based on a case-control approximation... CoxTime, that is not constrained by the proportionality assumption... Interaction Forests (IF), a type of random survival forest specifically designed to model quantitative and qualitative interaction effects in bivariate splits",
-  "Custom CATE via three survival ML methods (CoxCC, CoxTime, IF); each produces individual survival probability and benefit prediction",
+  "Custom survival ITE/treatment-benefit modeling",
   # method_clarity
   4L,
   "LCoxCC = 1/n sum_{i:Di=1} log(sum_{j in R~i} exp[phi(Xj) - phi(Xi)])... LCoxTime = 1/n sum_{i:Di=1} log(sum_{j in R~i} exp[phi(ti, Xj) - phi(ti, Xi)])... Tree-Parzen algorithm... 200 hyperparameter sets sampled... Table 7 lists search space",
@@ -1207,9 +1207,9 @@ ev_Roblin_2025b <- make_evidence("Roblin_2025b",
   "survival models based on neural networks (CoxCC and CoxTime) and random survival forests (Interaction Forests)... time-to-event outcomes... right-censored... G(t) = P(C>t) censoring survival function defined",
   "Survival-aware; all three methods handle censoring; TTE framework throughout",
   # hyperparameter_tuning
-  3L,
-  "Tree-Parzen algorithm... 200 times... 5-fold CV applied to the training set... for the application to two patient data sets, we perform a double 5-fold CV on the entire dataset",
-  "Systematic hyperparameter search with TPE; double 5-fold CV for real data; well-documented",
+  4L,
+  "Tree-Parzen hyperparameter search was performed with 200 sampled configurations using 5-fold CV on the training set; real patient datasets used double 5-fold CV to select hyperparameters and mimic external testing.",
+  "Systematic TPE hyperparameter search with nested/double CV",
   # sample_splitting
   2L,
   "First, the real patient cohort is split into five folds: this is the outer loop. Then, we select one of the five folds as a test set and perform a 5-fold CV on the remaining data for each hyperparameter set: this is the inner loop",
@@ -1220,8 +1220,8 @@ ev_Roblin_2025b <- make_evidence("Roblin_2025b",
   "Systematic head-to-head: CoxCC, CoxTime, IF, ALASSO; simulation + two real datasets; comprehensive evaluation",
   # causal_estimand
   2L,
-  "In an RCT, assuming that Y(1) and Y(0) are independent from tau|X, the treatment effect is defined as: E(Y(1)-Y(0)|X) = E(Y|tau=1,X) - E(Y|tau=0,X)... theta_hat_{u,v}(t) = [Su(t|tau=1,Xu) - Su(t|tau=0,Xu)]/2 + ...",
-  "ITE defined as survival probability difference at fixed time point; counterfactual framework referenced; matched-pair approach for observed benefit",
+  "Treatment benefit was explicitly defined in a counterfactual framework as the difference in survival probability at a fixed time point under treatment versus control for the same patient.",
+  "Explicit individualized counterfactual survival-benefit estimand",
   # survival_estimand
   3L,
   "predicted benefit theta_hat is defined as the difference between the individual survival probability at a given timepoint with the treatment option being tested minus the probability with the control... computed at t=2 and t=5 years",
@@ -1236,12 +1236,36 @@ ev_Roblin_2025b <- make_evidence("Roblin_2025b",
   "Individual-level bootstrap CIs for survival predictions described and illustrated for two example patients; not reported at population level",
   # effect_mod_plausibility
   1L,
-  "In this data set, the machine learning methods seem better able to capture the biomarker-by-treatment interactions in the data, which could highlight the existence of high-order interactions and nonlinear effects",
+  "The paper discusses biomarker-by-treatment interactions and suggests that machine-learning methods may capture nonlinear/high-order interactions, but specific biological plausibility of identified modifiers is not substantively interpreted",
   "Interaction effects mentioned but not interpreted clinically; no biological plausibility discussion of specific biomarkers",
   # code_availability
   1L,
   "No code repository mentioned in preprint",
   "arXiv preprint; biospear R package referenced for taxane data; no analysis code shared"
+)
+
+ev_Roblin_2025b$page_ref <- c(
+  "p.1, p.6–7",      # study_design
+  "p.6–7",           # patient_population
+  "p.6–7",           # comparators
+  NA,                # confounders_identified
+  NA,                # confounding_adjustment
+  NA,                # balance_diagnostics
+  NA,                # unmeasured_confounding
+  "p.4, p.6–7",      # predefined_effect_mod
+  "p.13",            # posthoc_effect_mod
+  "p.1, p.3–4, p.7–9", # method_type
+  "p.3–4",           # method_clarity
+  "p.2–4, p.7–9",    # outcome_method_alignment
+  "p.4",             # hyperparameter_tuning
+  "p.4",             # sample_splitting
+  "p.1, p.3–4, p.9–12", # multi_model_comparison
+  "p.1, p.7–9",      # causal_estimand
+  "p.7–9, p.11–12",  # survival_estimand
+  "p.1, p.12–13",    # clinical_decision_readiness
+  "p.9, p.11–12",    # uncertainty_quantification
+  "p.4, p.11–13",    # effect_mod_plausibility
+  "p.6, p.13"        # code_availability
 )
 
 # ============================================================
