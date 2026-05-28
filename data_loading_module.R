@@ -1215,8 +1215,8 @@ ev_Roblin_2025b <- make_evidence("Roblin_2025b",
   "First, the real patient cohort is split into five folds: this is the outer loop. Then, we select one of the five folds as a test set and perform a 5-fold CV on the remaining data for each hyperparameter set: this is the inner loop",
   "Double 5-fold CV (nested CV) for real data; Bayesian posterior for simulations; no formal cross-fitting of nuisance models",
   # multi_model_comparison
-  2L,
-  "We compare survival models based on neural networks (CoxCC and CoxTime) and random survival forests (Interaction Forests). A Cox model, including an adaptive LASSO penalty, is used as a benchmark",
+  3L,
+  "They compare survival models based on neural networks (CoxCC and CoxTime) and random survival forests (Interaction Forests). A Cox model, including an adaptive LASSO penalty, is used as a benchmark",
   "Systematic head-to-head: CoxCC, CoxTime, IF, ALASSO; simulation + two real datasets; comprehensive evaluation",
   # causal_estimand
   2L,
