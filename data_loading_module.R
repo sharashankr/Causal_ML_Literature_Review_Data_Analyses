@@ -58,30 +58,30 @@ papers <- tribble(
   "Roblin E, et al.",
   "RCT; CoxCC/CoxTime/IFZ learners; PACS01/PACS04 trials",
 
-  "Zhang_2025",     "Zhang",        2025,  1L,
-  "HNSCC",          "China",        7376L,
-  "Cancer Medicine",
-  "Individualized treatment effect estimation for head and neck squamous cell carcinoma using balanced individual treatment effect for survival data",
-  "10.1002/cam4.70001",
-  "Zhang Y, et al.",
-  "Obs; BITES; SEER-based; surgery vs radiotherapy",
+  "Zhang_2025", "Zhang", 2025, 1L,
+  "HNSCC", "USA", 7376L,
+  "Frontiers in Medicine",
+  "Individualized treatment recommendations for patients with locally advanced head and neck squamous cell carcinoma utilizing deep learning",
+  "10.3389/fmed.2024.1478842",
+  "Linmei Zhang, Enzhao Zhu, Jiaying Shi, Xiao Wu, Shaokang Cao, Sining Huang, Zisheng Ai, Jiansheng Su",
+  "Population-based retrospective SEER cohort; locally advanced HNSCC; BITES/CMHE/DeepSurv/CPH/RSF treatment recommendation; phase 1 CRT vs surgery plus RT/CRT and phase 2 surgery plus RT vs surgery plus CRT; OS/RST-based ITE.",
+ 
+  "Zhu_2023", "Zhu", 2023, 1L,
+"LGG", "USA", 2840L,
+"Cancer Medicine",
+"Reasoning and causal inference regarding surgical options for patients with low-grade gliomas using machine learning: a SEER-based study",
+"10.1002/cam4.6666",
+"Enzhao Zhu, Weizhong Shi, Zhihao Chen, Jiayi Wang, Pu Ai, Xiao Wang, Min Zhu, Ziqin Xu, Lingxiao Xu, Xueyi Sun, Jingyu Liu, Xuetong Xu, Dan Shan",
+"Observational SEER cohort; WHO grade 2 low-grade glioma; BSL/BITES-LassoNet for ITE and treatment recommendation; compares gross-total resection vs subtotal resection; BCSS survival outcome.",
 
-  "Zhu_2023",       "Zhu",          2023,  1L,
-  "LGG",            "China/USA",    2840L,
-  "Cancer Medicine",
-  "Reasoning and causal inference regarding surgical options for patients with low-grade gliomas using machine learning: a SEER-based study",
-  "10.1002/cam4.6666",
-  "Zhu E, Shi W, Chen Z, Wang J, Ai P, Wang X, Zhu M, Xu Z, Xu L, Sun X, et al.",
-  "Obs; BSL (BITES+LassoNet); SEER; LGG surgery vs observation",
-
-  "Zhu_2024",       "Zhu",          2024,  1L,
-  "Breast (elderly)", "China/USA",  5352L,
-  "Journal of Geriatric Oncology",
-  "Individualized treatment effect estimation for elderly breast cancer patients using balanced individual treatment effect for survival data",
-  "10.1016/j.jgo.2024.101800",
-  "Zhu E, et al.",
-  "Obs; BITES; SEER elderly breast; surgery vs non-surgery",
-
+  "Zhu_2024", "Zhu", 2024, 1L,
+"Breast (elderly)", "China/USA", 5352L,
+"Breast Cancer Research and Treatment",
+"Deep learning-guided adjuvant chemotherapy selection for elderly patients with breast cancer",
+"10.1007/s10549-023-07237-y",
+"Enzhao Zhu, Linmei Zhang, Jiayi Wang, Chunyu Hu, Huiqing Pan, Weizhong Shi, Ziqin Xu, Pu Ai, Dan Shan, Zisheng Ai",
+"Observational SEER cohort; elderly female breast cancer patients age >70 after mastectomy; BITES/CMHE/DeepSurv/CPH/RSF/causal forest treatment recommendation; chemotherapy vs no chemotherapy; OS/RST-based ITE.",
+  
   "Schrod_2022",    "Schrod",       2022,  1L,
   "Breast",         "Germany",      2231L,
   "Bioinformatics",
@@ -266,25 +266,25 @@ scores <- tribble(
   1L, 1L,
 
   "Zhu_2023",
-  1L, 3L, 2L,
-  2L, 2L, 2L, 2L,
+  1L, 3L, 3L,
+  2L, 2L, 1L, 2L,
   1L, 2L,
-  3L, 3L, 3L,
-  2L, 1L,
-  2L,
-  2L, 3L,
+  3L, 4L, 3L,
   2L, 2L,
+  2L,
+  3L, 3L,
+  3L, 2L,
   1L, 1L,
 
   "Zhu_2024",
-  1L, 3L, 2L,
-  2L, 2L, 2L, 2L,
+  1L, 3L, 3L,
+  2L, 2L, 1L, 2L,
   1L, 2L,
-  3L, 3L, 3L,
-  2L, 1L,
-  1L,
-  2L, 3L,
+  3L, 4L, 3L,
   2L, 2L,
+  2L,
+  3L, 3L,
+  3L, 2L,
   1L, 1L,
 
   "Schrod_2022",
@@ -680,74 +680,292 @@ ev_Roblin_2025 <- make_evidence("Roblin_2025",
 
 ev_Zhang_2025 <- make_evidence("Zhang_2025",
   1L,"7376 HNSCC patients from SEER database","Observational SEER",
-  3L,"HNSCC patients 2010-2016 from SEER; defined exclusion criteria; surgery vs radiotherapy","Clear IC/EC + dataset + timeframe",
-  2L,"surgery vs radiotherapy; defined modalities","Named; missing dose/timing",
-  2L,"age, sex, race, tumour site, T/N stage, grade, marital status, insurance listed","Listed and justified",
-  2L,"IPTW used for confounding adjustment","Standard IPTW",
-  2L,"SMD reported before/after weighting in supplementary","Reported SMD",
-  2L,"unmeasured confounding acknowledged in limitations","Acknowledged",
-  1L,"BITES applied to SEER data; covariates selected from clinical database","Data-driven",
+  3L,
+"Patients with HNSCC from oral cavity, sinonasal cavity, pharynx, and larynx, diagnosed as stage III to IVa from 1 January 2004 to 31 December 2015, and treated with definitive CRT or radical resection plus postoperative RT/CRT were included.",
+"Clear dataset, timeframe, cancer sites, stage, treatments, and exclusion criteria",
+
+3L,
+"Treatment recommendations were evaluated in two phases: phase one compared definitive CRT versus surgery plus postoperative RT/CRT; phase two compared surgery plus postoperative RT versus surgery plus postoperative CRT.",
+"Comparators clearly defined; dose-level protocol details unavailable"
+                               2L,"age, sex, race, tumour site, T/N stage, grade, marital status, insurance listed","Listed and justified",
+  2L,
+"Ethnicity, sex, marital status, age, histological grade, laterality, tumor site, TNM stage, tumor size, lymph-node variables, and lymph-node surgery were included as efficacy-related variables.",
+"Confounders/prognostic variables listed with clinical rationale",
+
+2L,
+"IPTW was used to reduce selection bias and adjust potential baseline imbalance between recommendation-consistent and recommendation-inconsistent groups.",
+"Standard IPTW adjustment",
+
+1L,
+"No covariate balance diagnostics such as standardized mean differences before/after IPTW were reported in the main text.",
+"No main-text balance diagnostics",
+  
+                               1L,"BITES applied to SEER data; covariates selected from clinical database","Data-driven",
   2L,"SHAP values used to explain ITE variation","SHAP used; partially linked to HTE",
   3L,"BITES: balanced ITE for survival data; shared network + two risk networks","Custom CATE",
-  3L,"BITES architecture: shared network, IPM balancing, two risk networks; training described","Partial description",
-  3L,"BITES is survival-aware semiparametric model; censoring handled","Survival-aware",
-  2L,"cross-validation for hyperparameter tuning; not fully detailed","CV done but unclear",
-  1L,"no cross-fitting described","No",
-  1L,"BITES only; no systematic comparison","None",
-  2L,"ITE estimated per patient under counterfactual surgery vs radiotherapy","Explicit ITE",
-  3L,"overall survival; RMST difference as ITE measure","Defined RMST",
-  2L,"patients stratified by predicted ITE benefit; Kaplan-Meier comparison","Recommended vs non-recommended",
-  2L,"confidence intervals for subgroup-level survival differences","Summary-level CI",
+  4L,
+"BITES architecture was described as a shared network with IPM balancing and two risk networks; the paper also defined RST-based ITE calculation, train/test split, five-fold CV, grid-search hyperparameter tuning, and recommendation evaluation.",
+"Fully described survival ITE/recommendation pipeline",
+
+3L,
+"The model estimated survival distributions and 5-year restricted survival time differences; OS, HR, DRMST, ARR, IBS, and censoring-aware survival evaluation were used.",
+"Survival-aware and aligned with OS/RST treatment benefit",
+
+3L,
+"Five-fold cross-validation and grid search were used to tune predefined hyperparameter ranges including learning rate, mini-batch size, dropout, number of layers, nodes, regularization strength, number of trees, and tree depth.",
+"Grid search with five-fold CV; reasonably detailed",
+  2L,
+"Patients were randomly allocated to a 70% training set and 30% testing set; five-fold cross-validation was used within the training set for hyperparameter tuning.",
+"Train/test split plus internal CV used",
+
+2L,
+"Five models were trained and compared: BITES, CMHE, DeepSurv, CPH, and RSF; NCCN guideline recommendations were also compared in the phase one analysis.",
+"Systematic model and guideline comparison",
+
+3L,
+"ITE was defined using 5-year restricted survival time: the difference between the area under predicted survival curves under two treatment options.",
+"Explicit counterfactual survival ITE estimand",
+  3L,
+"Overall survival was used as the outcome; ITE was defined as the 5-year restricted survival time difference between predicted survival curves under two treatment options.",
+"Defined survival estimand using OS and 5-year RST difference",
+
+3L,
+"Patients were divided into recommendation-consistent and recommendation-inconsistent groups, and model recommendations were evaluated using IPTW-adjusted HR, 5-year ARR, DRMST, KM curves, and comparison with NCCN guidelines.",
+"Treatment recommendation groups with decision-relevant validation metrics",
+
+2L,
+"Confidence intervals were reported for model-level and subgroup-level HR, ARR, and DRMST comparisons, but individual-level ITE uncertainty intervals were not reported.",
+"Summary-level uncertainty; no individual ITE intervals",
   1L,"tumour site and stage associated with differential benefit","Briefly discussed",
   1L,"no code repository mentioned","None"
 )
 
+ev_Zhang_2025$page_ref <- c(
+  "p.2, p.5",      # study_design
+  "p.2",           # patient_population
+  "p.2–3",         # comparators
+  "p.2",           # confounders_identified
+  "p.3, p.5–7",    # confounding_adjustment
+  "p.3, p.5–7",    # balance_diagnostics
+  "p.3, p.5–7",    # unmeasured_confounding
+  "p.2–3",         # predefined_effect_mod
+  "p.3, p.7–10",   # posthoc_effect_mod
+  "p.3",           # method_type
+  "p.3",           # method_clarity
+  "p.2–6",         # outcome_method_alignment
+  "p.3",           # hyperparameter_tuning
+  "p.3",           # sample_splitting
+  "p.3, p.5–6",    # multi_model_comparison
+  "p.2–3",         # causal_estimand
+  "p.2–3, p.5–6",  # survival_estimand
+  "p.3, p.5–7",    # clinical_decision_readiness
+  "p.5–8",         # uncertainty_quantification
+  "p.7–11",        # effect_mod_plausibility
+  "p.11"           # code_availability
+)
+
+
 ev_Zhu_2023 <- make_evidence("Zhu_2023",
-  1L,"2840 LGG patients from SEER database","Observational SEER",
-  3L,"LGG patients from SEER 2000-2019; defined IC/EC; surgery vs observation","Clear IC/EC + dataset + timeframe",
-  2L,"surgery vs observation/other treatment","Named; missing protocol detail",
-  2L,"age, sex, histology, grade, tumour site, extent of resection listed","Listed and justified",
-  2L,"IPTW for confounding adjustment","Standard IPTW",
-  2L,"SMD balance table reported","Reported SMD",
-  2L,"unmeasured confounding acknowledged","Acknowledged",
-  1L,"BITES + LassoNet applied; covariates from SEER","Data-driven",
-  2L,"SHAP values used; partially linked to treatment effect heterogeneity","SHAP partial HTE link",
-  3L,"BSL (BITES + LassoNet): custom CATE for survival","Custom CATE",
-  3L,"BSL: BITES with LassoNet feature selection; shared network, IPM, risk networks described","Partial description",
-  3L,"survival-aware semiparametric model","Survival-aware",
-  2L,"cross-validation for hyperparameter selection","CV done but unclear",
-  1L,"no cross-fitting","No",
-  2L,"BSL vs BITES vs CMHE comparison","Limited comparison",
-  2L,"ITE estimated per patient","Explicit ITE",
-  3L,"overall survival; RMST-based ITE","Defined RMST",
-  2L,"benefit subgroup identification; KM comparison","Recommended vs non-recommended",
+  1L,
+"Retrospective cohort study using SEER data; 2,840 patients with WHO grade 2 low-grade glioma were included.",
+"Observational SEER cohort",
+
+3L,
+"Patients diagnosed with WHO Grade 2 gliomas from 2010–2015 were included if treated with subtotal resection or gross-total resection, with defined histologies and exclusion criteria.",
+"Clear dataset, timeframe, IC/EC, and treatment eligibility",
+
+3L,
+"Comparators were subtotal resection (SEER code 21) versus gross-total resection (SEER code 30).",
+"Comparators clearly defined using SEER surgery codes",
+
+2L,
+"Predictor variables included sex, age, marital status, living area, economic status, reporting state, tumor location, laterality, extension, and histology.",
+"Covariates listed; limited causal justification",
+  2L,
+"IPTW was used to reduce treatment selection bias and estimate adjusted hazard ratios; DRL was also used to obtain adjusted odds ratios for GTR versus STR.",
+"Standard IPTW plus DRL adjustment",
+
+1L,
+"IPTW-adjusted analyses were reported, but no main-text standardized mean difference or balance table was clearly shown.",
+"No main-text balance diagnostics; use 2 only if supplement confirms SMD",
+
+2L,
+"The authors acknowledged important unmeasured variables, including IDH mutation, 1p/19q codeletion, cranial imaging, quality of life, surgeon preference, and family support.",
+"Unmeasured confounding/data limitations acknowledged",
+
+1L,
+"BSL/BITES-LassoNet was applied using SEER-derived covariates, but the paper did not present a pre-specified clinical effect-modifier plan.",
+"Data-driven covariates; no pre-specified modifier plan",
+ 2L,
+"SurvSHAP(t) and linear SHAP were used to interpret BSL outputs and recommendation behavior, identifying variables related to treatment heterogeneity.",
+"SHAP interpretation partially linked to treatment-effect heterogeneity",
+
+3L,
+"BSL was developed by adapting BITES with LassoNet risk networks to estimate individualized treatment effects for survival data.",
+"Custom survival CATE/ITE method",
+
+4L,
+"The paper describes T-learners, BITES, BSL architecture with shared network/IPM and LassoNet risk networks, ITE definition, training/testing split, cross-validation, survival evaluation metrics, SHAP interpretation, and recommendation interface.",
+"Fully described survival ITE recommendation pipeline",
+  3L,
+"Models were evaluated using brain cancer-specific survival, C-index, integrated Brier score, DRMST, HR, KM curves, and predicted survival curves.",
+"Survival-aware",
+
+2L,
+"Threefold cross-validation was used during training, but detailed hyperparameter search ranges were not fully reported.",
+"CV used; tuning details limited",
+
+2L,
+"Patients were split into 75% training and 25% testing sets; threefold cross-validation was used within the training set.",
+"Train/test split plus internal CV",
+
+2L,
+"BSL was compared with BSLa, BSLb, BITES, DeepSurv, CPH, RSF, Rcoxnet, and DART on the testing set.",
+"Systematic model comparison",
+  3L,
+"ITE was explicitly defined as Yi(Xi | T = 1) - Yi(Xi | T = 0), where T = 1 indicates GTR and T = 0 indicates STR; the model recommendation was determined from the ITE value.",
+"Explicit counterfactual individual treatment-effect estimand",
+
+3L,
+"Brain cancer-specific survival was the outcome; treatment benefit was evaluated using time to 50% mortality, 5-year RMST/DRMST, HR, C-index, IBS, and KM curves.",
+"Defined survival estimand using BCSS and RMST/DRMST",
+
+3L,
+"The model generated STR/GTR recommendations, evaluated Consis. versus In-consis. groups using HR, DRMST, KM curves, and included a user-friendly interface showing counterfactual survival curves and ITE information.",
+"Decision-ready treatment recommendation system",
   2L,"bootstrap CIs for subgroup estimates","Summary-level CI",
   1L,"extent of resection and grade associated with differential benefit","Briefly discussed",
   1L,"no code repository mentioned","None"
 )
 
+ev_Zhu_2023$page_ref <- c(
+  "p.2, p.5",      # study_design
+  "p.2–3",         # patient_population
+  "p.2",           # comparators
+  "p.2–3",         # confounders_identified
+  "p.3, p.6, p.8", # confounding_adjustment
+  "p.6, p.8",      # balance_diagnostics
+  "p.9, p.12",     # unmeasured_confounding
+  "p.2–3",         # predefined_effect_mod
+  "p.5, p.7–11",   # posthoc_effect_mod
+  "p.3–4",         # method_type
+  "p.3–5",         # method_clarity
+  "p.3–6",         # outcome_method_alignment
+  "p.3",           # hyperparameter_tuning
+  "p.3",           # sample_splitting
+  "p.3, p.5–6",    # multi_model_comparison
+  "p.3–4",         # causal_estimand
+  "p.2–6",         # survival_estimand
+  "p.5–6, p.11",   # clinical_decision_readiness
+  "p.5–7",         # uncertainty_quantification
+  "p.7–12",        # effect_mod_plausibility
+  "p.12"           # code_availability
+)
+
 ev_Zhu_2024 <- make_evidence("Zhu_2024",
-  1L,"5352 elderly breast cancer patients from SEER","Observational SEER",
-  3L,"elderly (>=65) breast cancer patients from SEER; defined IC/EC; surgery vs non-surgery","Clear IC/EC + dataset",
-  2L,"surgery vs non-surgery","Named; missing protocol detail",
-  2L,"age, comorbidity, tumour characteristics, stage listed","Listed and justified",
-  2L,"IPTW applied","Standard IPTW",
-  2L,"SMD reported","Reported SMD",
-  2L,"unmeasured confounding acknowledged","Acknowledged",
-  1L,"BITES applied; covariates from SEER","Data-driven",
-  2L,"SHAP values used; partially linked to HTE","SHAP partial",
-  3L,"BITES; custom CATE for survival","Custom CATE",
-  3L,"BITES architecture described; shared network, IPM, risk networks","Partial description",
-  3L,"survival-aware semiparametric","Survival-aware",
-  2L,"cross-validation described","CV done but unclear",
-  1L,"no cross-fitting","No",
-  1L,"BITES only","None",
-  2L,"ITE per patient estimated","Explicit ITE",
-  3L,"overall survival; RMST difference as ITE","Defined RMST",
-  2L,"benefit subgroup; KM comparison","Recommended vs non-recommended",
-  2L,"CIs for subgroup comparisons","Summary-level CI",
-  1L,"age and tumour stage associated with differential benefit","Briefly discussed",
-  1L,"no code","None"
+  1L,
+"Population-based retrospective cohort study using SEER 18 data; 5,352 elderly breast cancer patients were included.",
+"Observational SEER cohort",
+
+3L,
+"Elderly female patients older than 70 years with ductal, lobular, or ductal-lobular breast carcinoma diagnosed from 2010 to 2017 after mastectomy were included, with detailed exclusion criteria.",
+"Clear dataset, timeframe, age threshold, treatment scope, and IC/EC",
+
+3L,
+"Comparators were adjuvant chemotherapy versus no chemotherapy/control.",
+"Comparators clearly defined; regimen-level chemotherapy details unavailable",
+
+2L,
+"Baseline variables included age, tumor size, lymph-node status, race, income, grade, tumor location, T/N/M/TNM stage, metastasis sites, surgery type, reconstruction, ER/PR/HER2 status, radiotherapy, and follow-up.",
+"Covariates listed; limited causal justification",
+  2L,
+"IPTW was used to reduce selection bias when comparing patients whose actual treatment was consistent versus inconsistent with model recommendations.",
+"Standard IPTW adjustment",
+
+1L,
+"IPTW-adjusted analyses were reported, but no main-text standardized mean difference or covariate balance table was clearly shown.",
+"No main-text balance diagnostics",
+
+2L,
+"The authors acknowledged missing prognostic factors such as BRCA mutation and complications, which may affect recommendation performance.",
+"Unmeasured confounding/data limitations acknowledged",
+
+1L,
+"BITES was applied using SEER-derived clinical covariates, but the paper did not present a pre-specified clinical effect-modifier plan.",
+"Data-driven covariates; no pre-specified modifier plan",
+ 2L,
+"Linear regression, IPTW-adjusted risk differences, and SurvSHAP(t) were used to interpret treatment recommendation behavior and features associated with chemotherapy benefit.",
+"Post-hoc interpretation partially linked to treatment-effect heterogeneity",
+
+3L,
+"BITES estimated individualized treatment effects for survival data by comparing predicted 10-year restricted survival time under chemotherapy versus no chemotherapy.",
+"Custom survival ITE/CATE method",
+
+4L,
+"The paper defines RST-based ITE, describes six trained models, train/test split, fivefold CV, BITES recommendation evaluation, IPTW adjustment, and interpretation using linear regression, IPTW-adjusted RD, and SurvSHAP(t).",
+"Fully described survival ITE recommendation pipeline",
+
+3L,
+"Overall survival was modeled using survival distributions, 10-year restricted survival time, HR, RD, dRMST, IBS, KM curves, and IPTW-adjusted survival comparisons.",
+"Survival-aware and aligned with OS/RST treatment benefit",
+  2L,
+"Fivefold cross-validation was used during training to tune model hyperparameters, but detailed hyperparameter search ranges were not fully reported.",
+"CV used; tuning details limited",
+
+2L,
+"Patients were randomly allocated to a 65% training set and a 35% testing set; fivefold cross-validation was used within the training set.",
+"Train/test split plus internal CV",
+
+2L,
+"Six models were trained and compared: BITES, CMHE, DeepSurv, CPH, RSF, and causal forest; NCCN guideline recommendations were also compared.",
+"Systematic model and guideline comparison",
+
+3L,
+"ITE was defined using 10-year restricted survival time: the difference between predicted survival distributions under chemotherapy versus no chemotherapy.",
+"Explicit counterfactual survival ITE estimand",
+  3L,
+"Overall survival was the outcome; ITE was defined using 10-year restricted survival time difference between predicted survival curves under chemotherapy versus no chemotherapy.",
+"Defined survival estimand using OS and 10-year RST difference",
+
+3L,
+"Patients were divided into recommendation-consistent and recommendation-inconsistent groups, and BITES recommendations were evaluated using HR, IPTW-adjusted HR, RD, IPTW-adjusted RD, dRMST, KM curves, and comparison with NCCN guidelines.",
+"Decision-ready treatment recommendation evaluation",
+
+2L,
+"Confidence intervals were reported for HR, RD, dRMST, integrated Brier scores, and subgroup/treatment-heterogeneity comparisons, but individual-level ITE uncertainty intervals were not reported.",
+"Summary-level uncertainty; no individual ITE intervals",
+
+1L,
+"Treatment-benefit patterns were discussed for clinically plausible factors including breast cancer subtype, tumor size, positive lymph nodes, TNM stage, histological grade, immediate breast reconstruction, and contralateral prophylactic mastectomy.",
+"Clinical plausibility briefly discussed for selected recommendation drivers",
+
+1L,
+"No code repository was reported; the study used publicly available SEER data.",
+"No study-specific code repository reported"
+)
+
+ev_Zhu_2024$page_ref <- c(
+  "p.2–3",          # study_design
+  "p.2–3",          # patient_population
+  "p.2–3",          # comparators
+  "p.2, p.4–5",     # confounders_identified
+  "p.3, p.5–6",     # confounding_adjustment
+  "p.3, p.5–6",     # balance_diagnostics
+  "p.9–10",         # unmeasured_confounding
+  "p.2–4",          # predefined_effect_mod
+  "p.6–8",          # posthoc_effect_mod
+  "p.2–3",          # method_type
+  "p.2–3, p.6–8",   # method_clarity
+  "p.2–7",          # outcome_method_alignment
+  "p.2–3",          # hyperparameter_tuning
+  "p.2–3",          # sample_splitting
+  "p.2–5",          # multi_model_comparison
+  "p.2",            # causal_estimand
+  "p.2–6",          # survival_estimand
+  "p.3, p.5–6, p.8–9", # clinical_decision_readiness
+  "p.5–7",          # uncertainty_quantification
+  "p.6–9",          # effect_mod_plausibility
+  "p.10"            # code_availability
 )
 
 ev_Schrod_2022 <- make_evidence("Schrod_2022",
