@@ -82,13 +82,13 @@ papers <- tribble(
 "Enzhao Zhu, Linmei Zhang, Jiayi Wang, Chunyu Hu, Huiqing Pan, Weizhong Shi, Ziqin Xu, Pu Ai, Dan Shan, Zisheng Ai",
 "Observational SEER cohort; elderly female breast cancer patients age >70 after mastectomy; BITES/CMHE/DeepSurv/CPH/RSF/causal forest treatment recommendation; chemotherapy vs no chemotherapy; OS/RST-based ITE.",
   
-  "Schrod_2022",    "Schrod",       2022,  1L,
-  "Breast",         "Germany",      2231L,
-  "Bioinformatics",
-  "BITES: Balanced Individual Treatment Effect for Survival data",
-  "10.1093/bioinformatics/btac247",
-  "Schrod S, Schäfer A, Solbrig S, Lohmayer R, Gronwald W, Oefner PJ, Beißbarth T, Spang R, Zacharias HU, Altenbuchinger M",
-  "Obs; BITES original paper; METABRIC; chemo vs no-chemo",
+  "Schrod_2022", "Schrod", 2022, 1L,
+"Breast", "Germany / Netherlands", 2231L,
+"Bioinformatics",
+"BITES: balanced individual treatment effect for survival data",
+"10.1093/bioinformatics/btac221",
+"S. Schrod, A. Schäfer, S. Solbrig, R. Lohmayer, W. Gronwald, P. J. Oefner, T. Beißbarth, R. Spang, H. U. Zacharias, M. Altenbuchinger",
+"Methods paper introducing BITES; simulations plus breast cancer application; trained on Rotterdam Tumour Bank n=1545 and validated on randomized GBSG Trial 2 n=686; estimates benefit of adding hormone therapy to chemotherapy using RFS time-to-event outcomes.",
 
   "Tabib_2020",     "Tabib",        2020,  1L,
   "Colon/Breast",   "USA",          1285L,
@@ -288,15 +288,15 @@ scores <- tribble(
   1L, 1L,
 
   "Schrod_2022",
-  1L, 3L, 2L,
-  1L, 1L, 1L, 1L,
+  1L, 3L, 3L,
+  2L, 2L, 1L, 1L,
   1L, 2L,
   3L, 4L, 3L,
-  3L, 1L,
+  3L, 2L,
   2L,
-  2L, 3L,
-  2L, 2L,
-  1L, 2L,
+  3L, 3L,
+  2L, 1L,
+  1L, 3L,
 
   "Tabib_2020",
   1L, 2L, 2L,
@@ -969,27 +969,110 @@ ev_Zhu_2024$page_ref <- c(
 )
 
 ev_Schrod_2022 <- make_evidence("Schrod_2022",
-  1L,"2231 breast cancer patients from METABRIC dataset","Observational",
-  3L,"METABRIC cohort; breast cancer; chemo vs no-chemo; defined study period","Clear IC/EC + dataset + timeframe",
-  2L,"chemotherapy vs no chemotherapy","Named; missing protocol detail",
-  1L,"confounders listed but not justified in detail","Listed, not justified",
-  1L,"no formal confounding adjustment described","None",
-  1L,"no balance diagnostics","None",
-  1L,"unmeasured confounding acknowledged briefly","Acknowledged",
-  1L,"BITES applied; covariates selected from METABRIC","Data-driven",
-  2L,"SHAP-style feature importance used to describe ITE variation","SHAP partial",
-  3L,"BITES original: shared network + two risk networks for survival ITE","Custom CATE",
-  4L,"BITES: shared network uses IPM (p-Wasserstein distance); two risk networks; training loss, architecture, hyperparameters fully specified in paper","Fully described",
-  3L,"semiparametric survival regression; censoring-aware","Survival-aware",
-  3L,"systematic hyperparameter search; CV described","Proper CV + search",
-  1L,"no sample splitting","No",
-  2L,"BITES vs DeepHit, Cox, RSF, CFR compared","Limited comparison",
-  2L,"ITE estimated per patient under potential outcomes framework","Explicit ITE",
-  3L,"overall survival; RMST-based ITE metric","Defined RMST",
-  2L,"benefit/no-benefit subgroups; KM comparison","Recommended vs non-recommended",
-  2L,"bootstrap CIs for subgroup survival estimates","Summary-level CI",
-  1L,"ER status and grade associated with differential benefit","Briefly discussed",
-  2L,"code available at GitHub (partial)","Partial"
+  1L,
+"Methods paper introducing BITES; simulations plus breast cancer application trained on Rotterdam Tumour Bank data and validated on GBSG Trial 2.",
+"Methods paper with observational training cohort and randomized validation cohort",
+
+3L,
+"The breast cancer application used 1,545 node-positive breast cancer patients from the Rotterdam Tumour Bank for training and 686 patients from GBSG Trial 2 for independent validation; available variables included age, menopausal status, number of positive lymph nodes, tumor grade, progesterone receptor status, and estrogen receptor status.",
+"Named cohorts with clear variables; limited full IC/EC detail",
+
+3L,
+"Treatment comparison was chemotherapy plus hormone therapy versus chemotherapy only.",
+"Comparators clearly defined; regimen-level protocol details limited",
+
+2L,
+"The paper defines covariates and states strong ignorability, including unconfoundedness and overlap assumptions, as required for ITE identification.",
+"Confounding assumptions stated; covariates defined",
+
+2L,
+"BITES regularizes latent representations using Integral Probability Metrics/Sinkhorn divergence to balance treated and non-treated patient distributions and reduce treatment-selection imbalance.",
+"Representation balancing; not IPTW or matching",
+  1L,
+"No formal balance diagnostics such as standardized mean differences, overlap plots, or post-balancing covariate tables were reported.",
+"No balance diagnostics",
+
+1L,
+"The paper relies on strong ignorability and notes that caution is needed when analyzing heavily confounded observational data; no sensitivity analysis for unmeasured confounding was performed.",
+"Assumption acknowledged; no sensitivity analysis",
+
+1L,
+"BITES was applied using routine breast cancer variables from the Rotterdam and GBSG datasets, but no pre-specified clinical effect-modifier plan was presented.",
+"Data-driven routine covariates; no pre-specified modifier plan",
+
+2L,
+"SHAP values were used to interpret the selected BITES model under no hormone treatment and hormone treatment, highlighting variables such as positive lymph nodes, menopausal status, and tumor grade.",
+"SHAP-based post-hoc model interpretation partially linked to treatment heterogeneity",
+
+3L,
+"BITES combines Cox survival modeling, counterfactual reasoning, treatment-specific outcome heads, and IPM/Sinkhorn representation balancing to estimate individualized treatment effects from survival data.",
+"Original custom survival ITE/CATE method",
+  4L,
+"BITES is fully specified with Cox proportional hazards loss, counterfactual potential-outcome framing, IPM/Sinkhorn representation balancing, treatment-specific outcome heads, implementation details, and treatment recommendation rules.",
+"Fully described original BITES method",
+
+3L,
+"BITES was designed for right-censored time-to-event data using Cox survival loss, treatment-specific baseline hazards, RFS outcome, C-index, and Kaplan-Meier recommendation evaluation.",
+"Survival-aware",
+
+3L,
+"Hyperparameter tuning was performed, and the implementation includes scheduled hyperparameter optimization using ray[tune].",
+"Systematic hyperparameter optimization described",
+
+2L,
+"BITES was trained on Rotterdam Tumour Bank data and evaluated on the independent GBSG Trial 2 validation cohort.",
+"Independent external validation cohort used",
+
+2L,
+"BITES was compared against Cox regression, DeepSurv, treatment-specific DeepSurv, random survival forests, SurvITE, and ITES in simulations and/or breast cancer validation.",
+"Systematic model comparison",
+ 3L,
+"ITE was explicitly defined under the potential-outcome framework as the difference between predicted outcomes under treatment versus control: Y(T=1)(x) - Y(T=0)(x).",
+"Explicit potential-outcome ITE estimand",
+
+3L,
+"The breast cancer application used recurrence-free survival; BITES estimated time-dependent ITEs and assigned treatment based on survival probability/time-to-event predictions.",
+"Defined survival/time-to-event treatment-benefit estimand",
+
+2L,
+"BITES produced treatment recommendations, and patients whose actual treatment matched the recommendation were compared with anti-recommended patients using Kaplan-Meier curves and log-rank p-values.",
+"Recommendation groups evaluated, but not prospectively clinical-ready",
+
+1L,
+"The paper reports simulation variability, C-index, PEHE/correct assignment in simulations, KM curves, and p-values, but no individual-level ITE confidence intervals or bootstrap uncertainty intervals were reported.",
+"Limited uncertainty reporting; no individual ITE intervals",
+
+1L,
+"SHAP interpretation suggested hormone treatment may mitigate menopause-related risk and that high tumor grade may reduce hormone-treatment benefit, with brief comparison to prior literature.",
+"Clinical plausibility briefly discussed",
+
+3L,
+"BITES was provided as an easy-to-use Python implementation on GitHub with scheduled hyperparameter optimization.",
+"Public code repository"
+)
+
+ev_Schrod_2022$page_ref <- c(
+  "p.1, p.5–6",      # study_design
+  "p.5",             # patient_population
+  "p.5",             # comparators
+  "p.2–3",           # confounders_identified
+  "p.3–4",           # confounding_adjustment
+  "p.3–4",           # balance_diagnostics
+  "p.3, p.7",        # unmeasured_confounding
+  "p.5–6",           # predefined_effect_mod
+  "p.6",             # posthoc_effect_mod
+  "p.2–4",           # method_type
+  "p.2–4",           # method_clarity
+  "p.2–6",           # outcome_method_alignment
+  "p.1, p.4–5",      # hyperparameter_tuning
+  "p.5–6",           # sample_splitting
+  "p.4–6",           # multi_model_comparison
+  "p.2–3",           # causal_estimand
+  "p.2–6",           # survival_estimand
+  "p.5–6",           # clinical_decision_readiness
+  "p.4–6",           # uncertainty_quantification
+  "p.6",             # effect_mod_plausibility
+  "p.1, p.4"         # code_availability
 )
 
 ev_Tabib_2020 <- make_evidence("Tabib_2020",
