@@ -90,13 +90,13 @@ papers <- tribble(
 "S. Schrod, A. Schäfer, S. Solbrig, R. Lohmayer, W. Gronwald, P. J. Oefner, T. Beißbarth, R. Spang, H. U. Zacharias, M. Altenbuchinger",
 "Methods paper introducing BITES; simulations plus breast cancer application; trained on Rotterdam Tumour Bank n=1545 and validated on randomized GBSG Trial 2 n=686; estimates benefit of adding hormone therapy to chemotherapy using RFS time-to-event outcomes.",
 
-  "Tabib_2020",     "Tabib",        2020,  1L,
-  "Colon/Breast",   "USA",          1285L,
-  "Statistical Methods in Medical Research",
-  "Estimating heterogeneous survival treatment effect in observational data using machine learning",
-  "10.1177/0962280220986986",
-  "Tabib SMC, Bouchard-Côté A, Gustafson P",
-  "Obs; Survival ITE RF; SEER colon+breast; surgery subgroups",
+  "Hu_2021b", "Hu", 2021, 1L,
+"Prostate", "USA", 7730L,
+"Statistics in Medicine",
+"Estimating heterogeneous survival treatment effect in observational data using machine learning",
+"10.1002/sim.9090",
+"Liangyuan Hu, Jiayi Ji, Fan Li",
+"Methods paper with simulation study plus NCDB observational prostate cancer case study; compares machine-learning survival HTE estimators including AFT-BART-NP, AFT-BART-NP-PS, AFT-BART-SP, RSF, DeepSurv, DR-DL, BJ-DL, TSHEE, GAPH, AFT, and Cox; case study estimates heterogeneous survival effects of EBRT + AD versus EBRT + brachytherapy ± AD in high-risk localized prostate cancer.",
 
   "Sauerbrei_2022", "Sauerbrei",    2022,  2L,
   "Breast",         "Multi-country", 5727L,
@@ -298,16 +298,16 @@ scores <- tribble(
   2L, 1L,
   1L, 3L,
 
-  "Tabib_2020",
-  1L, 2L, 2L,
-  2L, 2L, 2L, 2L,
+ "Hu_2021b",
+  1L, 3L, 3L,
+  2L, 2L, 1L, 2L,
+  1L, 3L,
+  3L, 4L, 3L,
   2L, 1L,
-  3L, 3L, 3L,
-  2L, 2L,
-  1L,
-  2L, 2L,
-  2L, 2L,
-  1L, 1L,
+  2L,
+  3L, 3L,
+  2L, 3L,
+  1L, 3L,
 
   "Sauerbrei_2022",
   2L, 4L, 4L,
@@ -1076,27 +1076,110 @@ ev_Schrod_2022$page_ref <- c(
 )
 
 ev_Tabib_2020 <- make_evidence("Tabib_2020",
-  1L,"1285 colon and breast cancer patients from SEER","Observational",
-  2L,"colon and breast cancer from SEER; some IC/EC described","Some IC/EC",
-  2L,"surgery subgroups vs no surgery; treatments named","Named only",
-  2L,"age, sex, stage, histology listed and partially justified","Listed and justified",
-  2L,"IPW-based causal model","Standard IPTW",
-  2L,"SMD reported","Reported SMD",
-  2L,"unmeasured confounding discussed","Discussed with reasoning",
-  2L,"effect modifiers pre-specified from clinical literature with rationale","Pre-specified with clinical rationale",
-  1L,"feature importance from RF used to describe drivers","Feature importance only",
-  3L,"survival ITE RF: counterfactual random survival forest for ITE","Custom CATE",
-  3L,"RSF-based counterfactual model; architecture partially described","Partial description",
-  3L,"survival outcome; RSF handles censoring","Survival-aware",
-  2L,"CV for tuning; not fully detailed","CV done but unclear",
-  2L,"cross-fitting used in nuisance estimation","Cross-fitting",
-  1L,"one method only","None",
-  2L,"ITE defined under potential outcomes; individual treatment effect estimated","Explicit ITE",
-  2L,"overall survival; hazard-based ITE","Informal survival estimand",
-  2L,"benefit subgroups identified; clinical interpretation provided","Recommended vs non-recommended",
-  2L,"CIs for subgroup-level estimates","Summary-level CI",
-  1L,"stage and histology associated with differential benefit","Briefly discussed",
-  1L,"no code repository","None"
+  1L,
+"Methods paper with simulation study plus an observational NCDB case study of high-risk localized prostate cancer patients.",
+"Methods paper with observational case study",
+
+3L,
+"The case study used 7,730 high-risk localized prostate cancer patients from NCDB diagnosed between 2004 and 2013 who received either EBRT + AD or EBRT + brachytherapy ± AD with at least 7920 cGy EBRT dose.",
+"Clear dataset, disease setting, timeframe, treatment eligibility, and cohort definition",
+
+3L,
+"Comparators were EBRT plus androgen deprivation versus EBRT plus brachytherapy with or without androgen deprivation.",
+"Comparators clearly defined",
+
+2L,
+"Pretreatment confounders included age, PSA, clinical T stage, Charlson-Deyo score, biopsy Gleason score, year of diagnosis, insurance, income, education, race, and ethnicity.",
+"Confounders listed with clinical relevance",
+
+2L,
+"The methods use counterfactual survival modeling under weak unconfoundedness and positivity; AFT-BART-NP-PS additionally includes a Super Learner-estimated propensity score as a covariate to improve robustness and efficiency.",
+"Propensity-score-informed causal outcome modeling",
+
+1L,
+"The main text notes baseline imbalance and discusses propensity score overlap, but no main-text standardized mean difference balance table is clearly reported.",
+"No main-text SMD balance diagnostics",
+  2L,
+"The paper states weak unconfoundedness/no unmeasured confounders as a required causal assumption and conducts an exploratory sensitivity analysis by removing confounders in simulations.",
+"Unmeasured confounding explicitly assessed in sensitivity analysis",
+
+1L,
+"The case study used clinically relevant pretreatment covariates, but no specific clinical effect-modifier plan or pre-specified modifier hypotheses were presented.",
+"Data-driven covariates; no pre-specified modifier plan",
+
+3L,
+"The paper estimates individual survival treatment effects and examines treatment-effect heterogeneity by subgroups/quantiles of estimated benefit in the prostate cancer case study.",
+"Post-hoc HTE subgroup analysis linked to ISTE",
+
+3L,
+"The paper evaluates multiple machine-learning estimators for individual survival treatment effects, including AFT-BART-NP, AFT-BART-NP-PS, AFT-BART-SP, RSF, DeepSurv, DR-DL, BJ-DL, TSHEE, and GAPH.",
+"Custom survival ITE/HTE methods",
+
+4L,
+"The paper clearly defines causal assumptions, counterfactual survival estimand, ISTE based on median survival time, model-specific survival curve estimation, simulation settings, performance metrics, uncertainty coverage, and the NCDB prostate cancer case study.",
+"Fully described methods comparison paper",
+
+3L,
+"The estimand and methods are explicitly designed for right-censored time-to-event outcomes using counterfactual survival curves and individual median survival-time contrasts.",
+"Survival-aware",
+  2L,
+"Implementation details were reported for the compared methods, including BART, RSF, DeepSurv, TSHEE, DR-DL/BJ-DL, GAPH, AFT, and Cox models, but systematic hyperparameter tuning was not uniformly detailed for the case study.",
+"Implementation details reported; tuning not uniformly detailed",
+
+1L,
+"No formal sample splitting, honesty, or cross-fitting was clearly described for the prostate cancer case study; repeated simulations were used for method evaluation.",
+"No case-study sample splitting/cross-fitting",
+
+2L,
+"The paper compared multiple survival HTE estimators, including AFT-BART-NP, AFT-BART-NP-PS, AFT-BART-SP, RSF, DeepSurv, DR-DL, BJ-DL, TSHEE, GAPH, parametric AFT, and Cox models.",
+"Comprehensive multi-method comparison",
+
+3L,
+"Individual survival treatment effect was explicitly defined in the counterfactual framework as the difference between median survival time under treatment and control conditional on covariates.",
+"Explicit counterfactual ISTE estimand",
+
+3L,
+"The survival estimand was the individual/conditional survival treatment effect based on the difference in counterfactual median survival times, with right-censoring handled through survival outcome models.",
+"Defined median-survival treatment-effect estimand",
+
+2L,
+"The paper links estimated ISTE to individualized treatment rules and expected regret, and applies the methods to prostate cancer treatment comparisons, but does not implement a prospective or deployable clinical decision rule.",
+"ITE-informed treatment-rule evaluation; not clinically deployed",
+  3L,
+"AFT-BART-NP naturally produced posterior credible intervals for individual survival treatment effects, and the paper evaluated empirical/frequentist coverage of these intervals in simulations.",
+"Individual-level uncertainty via Bayesian credible intervals",
+
+1L,
+"The case study examined survival treatment-effect heterogeneity across clinically relevant prostate cancer covariates, but detailed clinical plausibility of specific modifiers was limited.",
+"Clinically relevant covariates discussed; limited modifier interpretation",
+
+3L,
+"Example code to replicate the simulation studies was provided on the first author's GitHub page.",
+"Public GitHub code available"
+)
+
+ev_Hu_2021b$page_ref <- c(
+  "p.1, p.3–4, p.18",   # study_design
+  "p.18",               # patient_population
+  "p.18",               # comparators
+  "p.18",               # confounders_identified
+  "p.4–7, p.18",        # confounding_adjustment
+  "p.4, p.18",          # balance_diagnostics
+  "p.4, p.18",          # unmeasured_confounding
+  "p.18",               # predefined_effect_mod
+  "p.18–22",            # posthoc_effect_mod
+  "p.3–11",             # method_type
+  "p.4–15, p.18–22",    # method_clarity
+  "p.4–15",             # outcome_method_alignment
+  "p.12–13",            # hyperparameter_tuning
+  "p.12–15, p.18–22",   # sample_splitting
+  "p.3, p.12–16",       # multi_model_comparison
+  "p.4–5",              # causal_estimand
+  "p.5",                # survival_estimand
+  "p.14, p.18–22",      # clinical_decision_readiness
+  "p.15–17",            # uncertainty_quantification
+  "p.18–22",            # effect_mod_plausibility
+  "p.13"                # code_availability
 )
 
 ev_Sauerbrei_2022 <- make_evidence("Sauerbrei_2022",
