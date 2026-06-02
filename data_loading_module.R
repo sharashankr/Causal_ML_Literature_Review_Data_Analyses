@@ -132,13 +132,13 @@ papers <- tribble(
 "Jincheng Shen, Lu Wang, Stephanie Daignault, Daniel E. Spratt, Todd M. Morgan, Jeremy M. G. Taylor",
 "Observational prostate cancer cohort; RSFWB method for optimal personalized treatment strategy; surgery versus radiation therapy; right-censored time-to-clinical-failure outcome; optimal regime estimated by maximizing restricted mean survival time.",
 
-  "Jo_2024",        "Jo",           2024,  1L,
-  "ALL (Leukemia)", "Japan",        2440L,
-  "Communications Medicine",
-  "Machine learning evaluation of intensified conditioning on haematopoietic stem cell transplantation in adult acute lymphoblastic leukemia patients",
-  "10.1038/s43856-024-00680-y",
-  "Jo T, Inoue K, Ueda T, Iwasaki M, Akahoshi Y, Nishiwaki S, et al.",
-  "Obs (post-PSM registry); BCF; intensified vs standard MAC; binary 1-yr mortality",
+  "Jo_2024", "Jo", 2024, 1L,
+"ALL (Leukemia)", "Japan", 2440L,
+"Communications Medicine",
+"Machine learning evaluation of intensified conditioning on haematopoietic stem cell transplantation in adult acute lymphoblastic leukemia patients",
+"10.1038/s43856-024-00680-y",
+"Tomoyasu Jo, Kosuke Inoue, Tomoaki Ueda, Makoto Iwasaki, Yu Akahoshi, Satoshi Nishiwaki, et al.",
+"Observational Japanese nationwide HSCT registry study; propensity-score-matched adult ALL cohort; Bayesian causal forest estimates ITE of intensified versus standard myeloablative conditioning on reduction in 1-year overall mortality after HSCT.",
 
   "Pan_2024",       "Pan",          2024,  1L,
   "Prostate",       "USA/China",    35236L,
@@ -358,14 +358,14 @@ scores <- tribble(
   "Jo_2024",
   1L, 3L, 3L,
   2L, 3L, 3L, 2L,
-  2L, 1L,
+  2L, 3L,
   3L, 4L, 2L,
-  3L, 2L,
-  2L,
   2L, 1L,
+  2L,
+  3L, 1L,
   3L, 3L,
   1L, 3L,
-
+  
   "Pan_2024",
   1L, 3L, 2L,
   2L, 2L, 1L, 2L,
@@ -1506,19 +1506,72 @@ ev_Jo_2024 <- make_evidence("Jo_2024",
   3L,"absolute standardized mean difference <0.1 indicated successful balance... Table 1 and Supplemental Fig.1","SMD threshold reported with balance table",
   2L,"we cannot rule out the possibility that unevaluated patient characteristics may have modified the treatment effect","Acknowledged; no formal quantification",
   2L,"BCF model... including all covariates mentioned above for the prognostic function and treatment effects","Pre-specified covariate set; clinical rationale present; no formal pre-registered HTE hypothesis",
-  1L,"to explore sources of heterogeneity, we compared characteristics of the high-benefit group and low-benefit group","Feature importance-style; no SHAP; subgroup comparison post-hoc",
-  3L,"machine-learning Bayesian causal forest algorithm... prediction model of individualized treatment effect (ITE)","Custom CATE via BCF",
+  3L,
+"The paper explored heterogeneity by defining high- and low-benefit groups from predicted ITEs, comparing their baseline characteristics, evaluating outcomes within benefit groups, and comparing the high-benefit approach against high-risk and population approaches.",
+"Post-hoc ITE subgroup analysis directly linked to HTE and targeting strategy",
+3L,"machine-learning Bayesian causal forest algorithm... prediction model of individualized treatment effect (ITE)","Custom CATE via BCF",
   4L,"Yi = mu(Zi) + tau(Zi, Xi) + epsilon_i... 200 and 50 regression trees... 2500 burn-in and 2500 MCMC iterations... PSRF assessed","Full BCF framework, tree counts, MCMC convergence check described",
-  2L,"1-year overall mortality (binary outcome)... BCF on binary outcome","BCF on binary mortality; not survival-time modelling; partially appropriate",
-  3L,"200 and 50 regression trees... propensity score added to the model to reduce inductive bias","Tree counts specified; propensity inclusion justified; no full CV grid",
-  2L,"model was trained through 2500 burn-in and 2500 MCMC iterations","MCMC with burn-in; Bayesian regularisation; no cross-fitting",
-  2L,"high-benefit approach vs population approach, modified population approach, high-risk approach","Systematic comparison of targeting strategies",
-  2L,"prediction model of individualized treatment effect (ITE) of intensified MAC on reduction in overall mortality","ITE explicitly named; no formal potential outcomes notation",
-  1L,"1-year overall mortality (binary outcome)","Binary mortality at fixed horizon; no survival curve or RMST",
-  3L,"high-benefit approach (applying intensified MAC to individuals in the high-benefit group) shows the largest reduction in 1-year mortality... risk difference +5.94 pp (0.88 to 10.51)","Formal policy evaluation comparing targeting strategies with CIs",
-  3L,"differences in estimates and their 95% confidence intervals obtained by repeating the analysis on 1000 bootstrapped samples","Bootstrap CI for group-level treatment effects; individual posterior available from BCF but not reported",
-  1L,"younger, male, negative CMV, T-cell phenotype, higher rDRI, related donor","Clinical plausibility of HTE drivers briefly discussed",
-  3L,"R codes for our Bayesian causal forest model are shared in the GitHub page (https://github.com/Koinoue/bcf_hsct)","Full public repository"
+  2L,
+"The outcome was binary 1-year overall mortality after HSCT, and BCF was used to estimate individualized reduction in mortality from intensified MAC; this is outcome-aligned for binary ITE, but not survival-time modeling.",
+"Binary 1-year mortality ITE; not survival-time modeling",
+
+2L,
+"The BCF model specified 200 trees for the prognostic function, 50 trees for the treatment-effect function, 2500 burn-in and 2500 MCMC iterations, and included propensity score to reduce inductive bias, but no full tuning grid or CV procedure was described.",
+"Model settings specified; no systematic tuning search",
+
+1L,
+"No train/test split, cross-fitting, or external validation was described; MCMC burn-in and posterior sampling are estimation procedures, not sample splitting.",
+"No sample splitting/cross-fitting",
+
+2L,
+"The paper compared four targeting strategies: treating all eligible patients, younger patients, high/very-high rDRI patients, and high-benefit patients defined by predicted ITE above the median.",
+"Systematic comparison of targeting strategies",
+
+3L,
+"The causal estimand was individualized treatment effect of intensified versus standard MAC on reduction in 1-year overall mortality, estimated for each patient using Bayesian causal forest after propensity score matching.",
+"Explicit individual-level treatment-effect estimand",
+                               1L,
+"The outcome was binary 1-year overall mortality after HSCT; no survival-time, hazard, RMST, or survival-curve estimand was used for the primary ITE model.",
+"Binary fixed-horizon mortality; not survival-time estimand",
+
+3L,
+"The high-benefit approach, applying intensified MAC to patients with predicted ITE above the median, was formally compared against population, younger-patient, and high-risk rDRI approaches and showed the largest reduction in 1-year mortality.",
+"Formal targeting-policy comparison with clinical decision relevance",
+
+3L,
+"Differences in estimated mortality reduction and 95% confidence intervals were obtained using 1000 bootstrap samples.",
+"Bootstrap uncertainty for targeting-strategy effects",
+
+1L,
+"The high-benefit group was characterized by younger age, male sex, negative CMV antibody, T-cell phenotype, higher rDRI, and related donor grafts, with brief clinical discussion of these factors.",
+"Clinical plausibility briefly discussed",
+
+3L,
+"R code for the Bayesian causal forest model was shared publicly on GitHub.",
+"Public GitHub code available"
+)
+ev_Jo_2024$page_ref <- c(
+  "p.1–3",      # study_design
+  "p.2",        # patient_population
+  "p.2",        # comparators
+  "p.2–3",      # confounders_identified
+  "p.2–3",      # confounding_adjustment
+  "p.2–3",      # balance_diagnostics
+  "p.5",        # unmeasured_confounding
+  "p.2–3",      # predefined_effect_mod
+  "p.2–6",      # posthoc_effect_mod
+  "p.1–3",      # method_type
+  "p.2–3",      # method_clarity
+  "p.2–3",      # outcome_method_alignment
+  "p.2–3",      # hyperparameter_tuning
+  "p.2–3",      # sample_splitting
+  "p.2–6",      # multi_model_comparison
+  "p.1–3",      # causal_estimand
+  "p.2–3",      # survival_estimand
+  "p.3–6",      # clinical_decision_readiness
+  "p.3, p.6",   # uncertainty_quantification
+  "p.4–5",      # effect_mod_plausibility
+  "p.7"         # code_availability
 )
 
 ev_Pan_2024 <- make_evidence("Pan_2024",
