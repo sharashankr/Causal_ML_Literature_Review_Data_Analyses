@@ -1357,8 +1357,9 @@ ev_Sauerbrei_2022 <- make_evidence("Sauerbrei_2022",
 "The clinical plausibility of ER as a chemotherapy effect modifier is discussed using prior breast cancer literature, but detailed biological interpretation is limited.",
 "ER plausibility briefly discussed",
 
-3L,
+  3L,
 "The Stata program metatef is available on the SSC archive, and an annotated Stata do-file creating Figure 3 is provided in the appendix.",
+"Public Stata code/tool available"
 )
 
 ev_Sauerbrei_2022$page_ref <- c(
