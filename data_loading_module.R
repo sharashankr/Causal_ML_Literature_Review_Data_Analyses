@@ -148,13 +148,6 @@ papers <- tribble(
 "Huiqing Pan, Jiayi Wang, Weizhong Shi, Ziqin Xu, Enzhao Zhu",
 "Observational SEER study; Self-Normalizing Balanced individual treatment effect for survival data (SNB); radical prostatectomy versus non-surgery; temporal validation; IPTW-adjusted treatment recommendation evaluation; OS-based survival ITE using time to 90% mortality.",
 
-  "Ge_2020b",       "Ge",           2020,  1L,
-  "AML",            "USA",          212L,
-  "Frontiers in Genetics",
-  "Conditional Generative Adversarial Networks for Individualized Treatment Effect Estimation and Treatment Selection",
-  "10.3389/fgene.2020.585804",
-  "Ge Q, Huang X, Fang S, Guo S, Liu Y, Lin W, Xiong M",
-  "SAME paper as Ge_2020 — duplicate upload detected; retained for audit; scores identical to Ge_2020",
 
  "Dusseldorp_2016", "Dusseldorp", 2016, 2L,
 "Breast (psycho-oncology)", "Belgium/Netherlands", 168L,
@@ -431,16 +424,6 @@ scores <- tribble(
   2L, 2L,
   1L, 1L,
 
-  "Ge_2020b",
-  1L, 2L, 2L,
-  1L, 1L, 1L, 1L,
-  1L, 0L,
-  3L, 3L, 1L,
-  2L, 1L,
-  2L,
-  2L, 1L,
-  1L, 1L,
-  0L, 2L,
 
 "Dusseldorp_2016",
   2L, 2L, 2L,
@@ -1733,29 +1716,7 @@ ev_Pan_2024$page_ref <- c(
   "p.9"         # code_availability
 )
 
-ev_Ge_2020b <- make_evidence("Ge_2020b",
-  1L,"256 newly diagnosed acute myeloid leukemia (AML) patients, treated with HDAC, IDA and HDAC+IDA at MD Anderson Cancer Center","DUPLICATE of Ge_2020 — same paper re-uploaded",
-  2L,"212 valid samples... 37 HDAC, 9 IDA, 54 HDAC+IDA, 112 other drugs","DUPLICATE",
-  2L,"HDAC, Idarubicin (IDA), and HDAC+IDA vs other drugs","DUPLICATE",
-  1L,"we ignore unobserved confounders, unmeasured variables that affect both patients medical prescription and their outcome","DUPLICATE",
-  1L,"ignorability assumption: conditional on X, potential outcomes and treatment T are independent","DUPLICATE — no actual adjustment method; assumption only",
-  1L,"no balance diagnostics reported","DUPLICATE",
-  1L,"Overlooking the presence of unobserved confounders may lead to biased results","DUPLICATE",
-  1L,"sparse techniques will be employed to select biomarkers for prediction of treatment effects","DUPLICATE — data-driven",
-  0L,"no posthoc effect mod","DUPLICATE",
-  3L,"MGANITE (modified GANITE)... estimate individualized effects of any types of treatments","DUPLICATE",
-  3L,"generator consists of seven layers of feedforward neural network... batch size 16... learning rates 0.0001 and 0.001","DUPLICATE",
-  1L,"response status (response or no response) is used as the outcome","DUPLICATE — binary non-survival outcome",
-  2L,"total number of batches was 1,000,000... Adam Optimizer... 20% dropout","DUPLICATE",
-  1L,"no cross-fitting or sample splitting described","DUPLICATE",
-  2L,"compare MGANITE with LR, LogR, SVM, KNN, BLR, RF(C), RF(R)","DUPLICATE",
-  2L,"pairwise treatment effect xi_jk = Y(T_j) - Y(T_k)... average pairwise treatment effect","DUPLICATE",
-  1L,"response or no response is used as outcome... no survival estimand","DUPLICATE — non-survival",
-  1L,"MGANITE is applied to 256 newly diagnosed AML patients","DUPLICATE",
-  1L,"K-L divergence between distributions of ITE for in-sample and out-of-samples","DUPLICATE",
-  0L,"biomarkers identified by LASSO explain 36.82% of treatment effect variation","DUPLICATE — not discussed in oncology plausibility terms",
-  2L,"program for implementing the proposed MGANITE can be downloaded from our website https://sph.uth.edu/research/centers/hgc/software/xiong/","DUPLICATE — partial public code"
-)
+
 
 ev_Dusseldorp_2016 <- make_evidence("Dusseldorp_2016",
   2L,"randomized controlled trial... clients randomly assigned to one out of (at least) two treatments","RCT; BCRP trial; 3-arm (nutrition, education, control); 2-arm comparison used",
