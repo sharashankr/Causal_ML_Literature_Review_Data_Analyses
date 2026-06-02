@@ -336,13 +336,13 @@ scores <- tribble(
   "Zhang_2012",
   2L, 2L, 2L,
   NA, NA, NA, NA,
-  1L, 0L,
-  2L, 3L, 1L,
-  1L, 1L,
-  2L,
+  1L, 3L,
+  3L, 4L, 1L,
   2L, 1L,
+  2L,
+  3L, 1L,
+  3L, 2L,
   1L, 1L,
-  0L, 1L,
 
   "Shen_2018",
   1L, 3L, 3L,
@@ -1347,20 +1347,83 @@ ev_Zhang_2012 <- make_evidence("Zhang_2012",
   NA_integer_,NA_character_,"RCT — confounding dims NA",
   NA_integer_,NA_character_,"RCT — confounding dims NA",
   NA_integer_,NA_character_,"RCT — confounding dims NA",
-  1L,"The study investigators found that heterogeneity in response to PFT exists and the response depends on age and progesterone receptor level","Data-driven; no pre-specified HTE hypothesis in this paper",
-  0L,"no posthoc effect mod analysis beyond CART output","No SHAP or feature importance; CART used as classification not HTE exploration",
-  2L,"transforms the problem of estimating an optimal treatment regime into a classification problem... AIPWE estimator of the contrast function","Outcome modelling approach; contrast function estimated then classified",
-  3L,"AIPWE(eta) = n^{-1} sum ... logistic regression model for E(Y|A,X)... propensity score estimated directly by sample proportion","Partial description; key equations shown but implementation details limited",
-  1L,"outcome of interest is binary with Y=1 if a subject survived disease-free to three years","Binary outcome, not survival time; not survival-aware TTE method",
-  1L,"We used the R function rpart with default settings","Default settings only; no tuning described",
-  1L,"no sample splitting or cross-fitting described in application","No cross-fitting; methods paper",
-  2L,"we show that commonly employed parametric and semi-parametric regression estimators... can be represented as special cases within our framework","Systematic comparison of AIPWE, IPWE, regression, G-estimation in simulations",
-  2L,"optimal treatment regime, defined as the one that maximizes the expected outcome if used to assign treatments to all patients... potential outcome framework","Explicit ITE/CATE defined via contrast function",
-  1L,"Y=1 if a subject survived disease-free to three years from baseline","Informal binary survival proxy; no RMST or survival probability formally defined",
-  1L,"estimated optimal treatment regime given by CART is 1 - I(age<59.5 and PR<16.5)","Treatment rule derived but no formal policy evaluation",
-  1L,"The estimated mean outcomes using (1) under the estimated regime is 0.681 (95%CI: 0.646, 0.717)","Summary-level CI for mean outcome under regime; no individual-level UQ",
-  0L,"not discussed","No clinical plausibility discussion of effect modifiers",
-  1L,"no code repository mentioned","NIH author manuscript; no code link"
+  1L,
+"Age and progesterone receptor level were used based on prior NSABP findings of heterogeneity in response to PFT, but the paper does not present a new pre-specified HTE hypothesis or modifier plan.",
+"Prior clinical/statistical motivation; not pre-specified in this paper",
+
+3L,
+"The NSABP application estimated optimal treatment-regime boundaries using age and progesterone receptor level, comparing regression, IPWE, AIPWE, and prior Gail-Simon/Fisher rules.",
+"Treatment-rule/effect-modification analysis directly linked to optimal regime",
+
+3L,
+"The paper proposes a robust AIPWE/IPWE method for estimating the optimal treatment regime within a specified class of regimes under the potential-outcomes framework.",
+"Custom causal optimal treatment-regime method",
+
+4L,
+"The paper formally defines treatment regimes, potential outcomes, the optimal regime estimand, IPWE and AIPWE estimators, double robustness, optimization strategy, simulations, and the NSABP application.",
+"Fully described causal methods paper",
+
+1L,
+"The application used a binary endpoint: Y = 1 if the patient survived disease-free to 3 years and Y = 0 otherwise; it does not model survival time or censoring.",
+"Binary fixed-time DFS outcome; not survival/TTE-aware",
+                               2L,
+"The paper describes optimization of IPWE/AIPWE over regime parameters using grid search and a genetic algorithm via the R package rgenoud, but no predictive hyperparameter tuning or cross-validation was used in the NSABP application.",
+"Optimization described; no ML-style tuning/CV",
+
+1L,
+"No sample splitting, external validation, or cross-fitting was described for the NSABP application.",
+"No sample splitting/cross-fitting",
+
+2L,
+"The paper compared regression-based regimes, IPWE, AIPWE, correct and misspecified outcome/propensity models in simulations, and compared estimated NSABP regimes with prior Fisher/Gail-Simon rules.",
+"Systematic estimator/regime comparison",
+
+3L,
+"The causal estimand was the optimal treatment regime/value: the regime g that maximizes E[Y*(g)] under the potential-outcomes framework.",
+"Explicit optimal treatment-regime causal estimand",
+
+1L,
+"The NSABP application used a binary fixed-time endpoint: Y = 1 if the patient survived disease-free to 3 years and Y = 0 otherwise; no survival time or censoring model was used.",
+"Binary 3-year DFS endpoint; not survival/TTE-aware",
+                              3L,
+"The NSABP application derived explicit optimal treatment rules using age and progesterone receptor level, compared regression/IPWE/AIPWE rules with prior Fisher/Gail-Simon rules, and estimated the expected 3-year disease-free survival under each regime.",
+"Explicit treatment rule with estimated policy value",
+
+2L,
+"The paper reported 95% confidence intervals for the estimated mean outcome under treatment regimes, including IPWE/AIPWE-based rules, but did not report individual-level treatment-effect uncertainty.",
+"Regime-level uncertainty; no individual-level UQ",
+
+1L,
+"Age and progesterone receptor level were motivated by prior NSABP/Gail-Simon findings on heterogeneity in response to PFT, but detailed clinical or biological plausibility discussion was limited.",
+"Prior clinical motivation; limited plausibility discussion",
+
+1L,
+"No public code repository or software implementation was mentioned.",
+"No code repository""
+)
+
+ev_Zhang_2012$page_ref <- c(
+  "p.1–2, p.9",       # study_design
+  "p.2, p.9",         # patient_population
+  "p.1–2, p.9",       # comparators
+  NA,                 # confounders_identified
+  NA,                 # confounding_adjustment
+  NA,                 # balance_diagnostics
+  NA,                 # unmeasured_confounding
+  "p.1–2, p.9–10",    # predefined_effect_mod
+  "p.9–10, p.15",     # posthoc_effect_mod
+  "p.2–5",            # method_type
+  "p.2–10",           # method_clarity
+  "p.9–10",           # outcome_method_alignment
+  "p.6–7, p.9–10",    # hyperparameter_tuning / optimization
+  "p.9–10",           # sample_splitting
+  "p.6–10, p.13–17",  # multi_model_comparison
+  "p.2–5",            # causal_estimand
+  "p.9–10",           # survival_estimand
+  "p.9–10, p.15",     # clinical_decision_readiness
+  "p.5, p.7–10, p.16–17", # uncertainty_quantification
+  "p.1–2, p.9–10",    # effect_mod_plausibility
+  "p.11–12"           # code_availability
 )
 
 ev_Shen_2018 <- make_evidence("Shen_2018",
