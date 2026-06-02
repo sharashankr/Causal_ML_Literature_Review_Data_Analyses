@@ -156,13 +156,13 @@ papers <- tribble(
   "Ge Q, Huang X, Fang S, Guo S, Liu Y, Lin W, Xiong M",
   "SAME paper as Ge_2020 — duplicate upload detected; retained for audit; scores identical to Ge_2020",
 
-  "Dusseldorp_2016","Dusseldorp",   2016,  2L,
-  "Breast (psycho-oncology)", "Belgium/Netherlands", 168L,
-  "Behavior Research Methods",
-  "Quint: An R package for the identification of subgroups of clients who differ in which treatment alternative is best for them",
-  "10.3758/s13428-015-0594-z",
-  "Dusseldorp E, Doove L, van Mechelen I",
-  "RCT (BCRP); QUINT tree; nutrition vs education intervention; non-survival outcome; software/methods paper",
+ "Dusseldorp_2016", "Dusseldorp", 2016, 2L,
+"Breast (psycho-oncology)", "Belgium/Netherlands", 168L,
+"Behavior Research Methods",
+"Quint: An R package for the identification of subgroups of clients who differ in which treatment alternative is best for them",
+"10.3758/s13428-015-0594-z",
+"Elise Dusseldorp, Lisa Doove, Iven van Mechelen",
+"RCT methods/software paper; QUINT qualitative interaction tree for identifying treatment-subgroup interactions; illustrated using Breast Cancer Recovery Project nutrition vs education interventions; non-survival continuous outcomes such as depression and physical functioning.",
 
   # ── BATCH 3 (3 new papers) ──────────────────────────────
 
@@ -388,16 +388,16 @@ scores <- tribble(
   1L, 1L,
   0L, 2L,
 
-  "Dusseldorp_2016",
+"Dusseldorp_2016",
   2L, 2L, 2L,
   NA, NA, NA, NA,
-  2L, 0L,
-  2L, 3L, 1L,
+  2L, 3L,
+  2L, 4L, 1L,
   2L, 1L,
   1L,
   1L, 1L,
-  1L, 1L,
-  0L, 2L,
+  2L, 2L,
+  1L, 3L,
 
   # ── BATCH 3 (3 new papers) ──────────────────────────────
 
@@ -1654,20 +1654,72 @@ ev_Dusseldorp_2016 <- make_evidence("Dusseldorp_2016",
   NA_integer_,NA_character_,"RCT — confounding dims NA",
   NA_integer_,NA_character_,"RCT — confounding dims NA",
   NA_integer_,NA_character_,"RCT — confounding dims NA",
-  2L,"nine patient characteristics... dispositional optimism, unmitigated communion, negative social interaction, demographic, treatment severity","Pre-specified covariate list; clinical rationale present; no formal HTE hypothesis",
-  0L,"QUINT tree identifies qualitative interactions; no SHAP or feature importance","Tree-based subgroup identification; not SHAP or HTE in causal ML sense",
-  2L,"QUINT... identify subgroups of clients who differ in which treatment alternative is best for them","Outcome modelling / subgroup identification; not custom CATE estimator",
-  3L,"sequential partitioning algorithm... maximizing criterion C... bootstrap-based bias correction (B=25)... one standard error rule for pruning","Algorithm described with flowchart; partial description of splitting criterion formula",
-  1L,"outcome variable... change scores from baseline to follow-up [depression, physical functioning]","Non-survival outcome; change score in QoL/depression; not TTE",
-  2L,"dmin=0.30 (default)... B=25 bootstrap samples... quint.control function allows user to change parameters","Parameters described but no CV-based selection; user-specified defaults",
+  2L,
+"Nine baseline characteristics were considered as candidate treatment-subgroup moderators, including demographic variables, treatment severity indicators, dispositional optimism, unmitigated communion, and negative social interaction.",
+"Pre-specified candidate moderator list; no formal HTE hypothesis",
+
+3L,
+"QUINT is a post-hoc tree-based method designed to identify qualitative treatment-subgroup interactions, where one subgroup benefits more from treatment A and another benefits more from treatment B.",
+"Post-hoc subgroup/effect-modification discovery directly linked to treatment choice",
+
+2L,
+"QUINT identifies subgroups of clients for whom different treatment alternatives are best, producing a treatment-assignment tree rather than estimating individual-level CATE/ITE.",
+"Subgroup treatment-rule method; not individual CATE estimator",
+
+4L,
+"The paper gives a detailed description of the QUINT algorithm, partitioning criterion, boundary conditions, bootstrap-based bias correction, one-standard-error pruning rule, tuning parameters, R package workflow, and example interpretation.",
+"Fully described algorithm and software workflow",
+
+1L,
+"The BCRP example uses non-survival continuous outcomes, including change in depression and physical functioning from baseline to follow-up.",
+"Non-survival continuous outcome",
+                               2L,"dmin=0.30 (default)... B=25 bootstrap samples... quint.control function allows user to change parameters","Parameters described but no CV-based selection; user-specified defaults",
   1L,"bootstrap-based bias correction procedure... B bootstrap samples drawn from original data","Bootstrap pruning used but no train/test split for ITE estimation",
   1L,"overview... of related methods: STIMA, Interaction Trees, Model-based recursive partitioning, Virtual Twins, SIDES","Literature review only; no head-to-head in this dataset",
   1L,"identify subgroups for whom Treatment A is better than B, and vice versa","Implicit ITE concept; no formal potential outcomes notation",
-  1L,"change in depression score, change in physical functioning","No survival estimand; non-oncology-survival outcome",
-  1L,"for which subgroup of women is nutrition more effective... for which does the reverse hold","Subgroups described; no formal policy evaluation or recommendation rule",
-  1L,"95% confidence interval of the effect size displayed in leaves of tree","Leaf-level CIs for subgroup ATE; no individual-level UQ",
-  0L,"dispositional optimism... negative social interaction... comorbidity","Not discussed in oncological/biological plausibility terms",
-  2L,"R package quint... can be installed from the CRAN repository","Partial public code via CRAN package (method only, not analysis scripts)"
+  1L,
+"The BCRP example used non-survival continuous outcomes, including change in depression score and change in physical functioning from baseline to follow-up.",
+"No survival estimand; non-survival behavioral/QOL outcomes",
+
+2L,
+"QUINT produces a treatment-assignment tree identifying subgroups for whom nutrition is better, education is better, or neither clearly differs; however, there is no prospective validation or formal policy-value evaluation.",
+"Explicit subgroup treatment-assignment rule; no policy validation",
+
+2L,
+"The tree output displays effect sizes with 95% confidence intervals at the leaves, and the method uses bootstrap-based bias correction and pruning to reduce overfitting.",
+"Leaf-level CIs plus bootstrap bias correction",
+
+1L,
+"Subgroups are defined using psychosocial and clinical characteristics such as dispositional optimism, negative social interaction, treatment extensiveness, and comorbidity, but plausibility is only briefly interpreted.",
+"Brief psychosocial/clinical plausibility discussion",
+
+3L,
+"The R package quint is publicly available from CRAN and the paper gives a step-by-step software workflow.",
+"Public CRAN package available"
+)
+
+ev_Dusseldorp_2016$page_ref <- c(
+  "p.1, p.5–6",        # study_design
+  "p.5",               # patient_population
+  "p.5–6",             # comparators
+  NA,                  # confounders_identified
+  NA,                  # confounding_adjustment
+  NA,                  # balance_diagnostics
+  NA,                  # unmeasured_confounding
+  "p.5–6",             # predefined_effect_mod
+  "p.1–4, p.11",       # posthoc_effect_mod
+  "p.1–4",             # method_type
+  "p.3–5, p.8–12",     # method_clarity
+  "p.5–6",             # outcome_method_alignment
+  "p.4–5, p.8–10",     # hyperparameter_tuning
+  "p.4–5, p.10–11",    # sample_splitting
+  "p.2, p.11",         # multi_model_comparison
+  "p.1–4",             # causal_estimand
+  "p.5–6",             # survival_estimand
+  "p.1–3, p.7–9",      # clinical_decision_readiness
+  "p.3–5, p.7–10",     # uncertainty_quantification
+  "p.5, p.7–9",        # effect_mod_plausibility
+  "p.2, p.5–6, p.11"   # code_availability
 )
 
 ## ── BATCH 3 evidence blocks (3 new papers) ──────────────────────────────
