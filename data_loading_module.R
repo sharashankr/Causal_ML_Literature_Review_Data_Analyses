@@ -234,10 +234,15 @@ papers <- tribble(
 NA,
 "Michael Grabner, Eberechukwu Onukwugha, Rahul Jain, C. Daniel Mullins",
 "Retrospective SEER-Medicare cost-effectiveness analysis of chemotherapy versus no chemotherapy in elderly patients with metastatic prostate cancer; evaluates racial/ethnic variation in ICERs, costs, and life-years gained; not an ITE/CATE or ML treatment-effect estimation paper.",
-  
 
-  
-  
+  "Fukuokaya_2026", "Fukuokaya", 2026, 2L,
+"Prostate", "International / RCT data", 1200L,
+"Cancer Medicine",
+"Heterogeneity in Treatment Effects of Reduced Versus Standard Dose of Cabazitaxel in Metastatic Castration-Resistant Prostate Cancer",
+"10.1002/cam4.71507",
+"Wataru Fukuokaya, Keiichiro Mori, Takafumi Yanagisawa, Kagenori Ito, Fumihiko Urabe, Pawel Rajwa, Shahrokh F. Shariat, Takahiro Kimura, Akihiro Hirakawa",
+"Post hoc predictive HTE analysis of PROSELICA RCT patient-level data; metastatic castration-resistant prostate cancer; cabazitaxel 20 mg/m2 versus 25 mg/m2; OS and PFS outcomes; risk-modeling with Cox prognostic models and effect-modeling with causal survival forest; treatment effects measured as RMST differences; TROPIC trial cabazitaxel arm used for external validation of risk models."
+
 )
 
 # ============================================================
@@ -551,6 +556,17 @@ scores <- tribble(
   1L,
   1L, 4L,
   3L, 2L,
+  1L, 1L,
+
+  "Fukuokaya_2026",
+  2L, 4L, 4L,
+  NA, NA, NA, NA,
+  2L, 3L,
+  3L, 4L, 3L,
+  2L, 2L,
+  2L,
+  2L, 4L,
+  2L, 2L,
   1L, 1L,
 )
 
@@ -2689,6 +2705,115 @@ ev_Grabner_2011 <- tibble::tribble(
   "No public code repository, reproducible scripts, or code availability statement was reported.",
   "p.6–9",
   "No public code"
+)
+
+ev_Fukuokaya_2026 <- tibble::tribble(
+  ~paper_id, ~dimension, ~score, ~evidence, ~page_ref, ~notes,
+
+  "Fukuokaya_2026", "study_design", 2L,
+  "This was an exploratory post hoc analysis of patient-level data from the PROSELICA phase III randomized controlled trial comparing cabazitaxel 20 mg/m2 versus 25 mg/m2 in post-docetaxel metastatic castration-resistant prostate cancer.",
+  "p.1–2",
+  "RCT patient-level post hoc HTE analysis",
+
+  "Fukuokaya_2026", "patient_population", 4L,
+  "The PROSELICA trial randomized 1200 patients with mCRPC who developed disease progression during or after docetaxel, with 598 assigned to C20 and 602 assigned to C25 between April 2011 and December 2013; TROPIC cabazitaxel-arm data were also used for external validation of risk models.",
+  "p.2–4",
+  "Clear RCT population, eligibility context, timeframe, arm sizes, and validation dataset",
+
+  "Fukuokaya_2026", "comparators", 4L,
+  "The treatment comparison was cabazitaxel 20 mg/m2 versus cabazitaxel 25 mg/m2, both administered with prednisone 10 mg and androgen deprivation therapy.",
+  "p.1–2",
+  "Protocol-level comparator definition",
+
+  "Fukuokaya_2026", "confounders_identified", NA,
+  "Not applicable because the primary analysis used randomized PROSELICA trial data.",
+  "p.2",
+  "RCT; observational confounding domain not scored",
+
+  "Fukuokaya_2026", "confounding_adjustment", NA,
+  "Not applicable because treatment assignment in PROSELICA was randomized 1:1.",
+  "p.2",
+  "RCT; observational confounding domain not scored",
+
+  "Fukuokaya_2026", "balance_diagnostics", NA,
+  "Not applicable under the observational-confounding section because the study analyzed randomized trial treatment arms.",
+  "p.2–3",
+  "RCT; balance diagnostics not scored in this framework section",
+
+  "Fukuokaya_2026", "unmeasured_confounding", NA,
+  "Not applicable because this was an RCT-based post hoc analysis rather than an observational treatment-effect study.",
+  "p.2",
+  "RCT; observational confounding domain not scored",
+
+  "Fukuokaya_2026", "predefined_effect_mod", 2L,
+  "The HTE analysis was motivated by prior PROSELICA subgroup findings and used clinically meaningful baseline characteristics, but the authors describe the current analysis as exploratory and post hoc rather than a formally pre-specified HTE hypothesis framework.",
+  "p.1–2, p.7–8",
+  "Listed/clinically motivated variables; exploratory post hoc HTE",
+
+  "Fukuokaya_2026", "posthoc_effect_mod", 3L,
+  "The study evaluated treatment-effect heterogeneity using risk quartiles and causal survival forest-derived individualized treatment effect quartiles, with variable importance used to identify baseline characteristics associated with greater C25 benefit.",
+  "p.4–7",
+  "Post-hoc HTE directly linked to risk/effect strata and CSF variable importance",
+
+  "Fukuokaya_2026", "method_type", 3L,
+  "The study used a risk-modeling approach and an effect-modeling approach based on a causal survival forest algorithm to estimate heterogeneous treatment effects and predicted individualized treatment effects.",
+  "p.2–4",
+  "Custom HTE/ITE survival modeling",
+
+  "Fukuokaya_2026", "method_clarity", 4L,
+  "The methods describe candidate baseline variables, Cox risk models, AIC model selection, calculation of risk scores, causal survival forest effect modeling, Monte Carlo cross-validation with 100 repetitions, RMST-based treatment effects, c-statistics, calibration plots, and TROPIC external risk-model validation.",
+  "p.2–4, p.8–9",
+  "Fully described predictive HTE pipeline",
+
+  "Fukuokaya_2026", "outcome_method_alignment", 3L,
+  "The outcomes were OS and PFS, and treatment effects were evaluated using RMST differences; the effect-modeling approach used causal survival forest, which is designed for right-censored survival outcomes.",
+  "p.2–4",
+  "Survival-aware method for OS/PFS",
+
+  "Fukuokaya_2026", "hyperparameter_tuning", 2L,
+  "The risk models used AIC-based variable/model selection and the effect-modeling framework used Monte Carlo cross-validation, but detailed causal survival forest hyperparameter tuning/search was not clearly reported.",
+  "p.2–4",
+  "Model selection and resampling described, but limited hyperparameter detail",
+
+  "Fukuokaya_2026", "sample_splitting", 2L,
+  "The effect-modeling approach used Monte Carlo cross-validation with 100 repetitions to estimate CATEs within ITE quartiles, and TROPIC data were used for external validation of the prognostic risk models.",
+  "p.4, p.8",
+  "Cross-validation for effect modeling; external validation for risk models only",
+
+  "Fukuokaya_2026", "multi_model_comparison", 2L,
+  "The paper compared two predictive HTE approaches: risk modeling based on Cox prognostic risk scores and effect modeling based on causal survival forest predicted ITEs, across both OS and PFS.",
+  "p.2–7",
+  "Systematic comparison of risk-based and effect-based HTE approaches",
+
+  "Fukuokaya_2026", "causal_estimand", 2L,
+  "The study explicitly evaluated predicted individualized treatment effects and conditional average treatment effects within ITE quartiles, but did not present a formal potential-outcomes notation.",
+  "p.2–4",
+  "Explicit ITE/CATE-style estimand; no formal potential-outcomes notation",
+
+  "Fukuokaya_2026", "survival_estimand", 4L,
+  "The treatment effect was quantified as the difference in restricted mean survival time: 24-month RMST difference for OS and 6-month RMST difference for PFS; RMST difference greater than zero was defined as better survival with C25 than C20.",
+  "p.2, p.5, p.7",
+  "Fully specified survival estimand with scale, horizon, treatment contrast, and interpretation",
+
+  "Fukuokaya_2026", "clinical_decision_readiness", 2L,
+  "The study identified patient groups with potentially greater OS benefit from C25 and discussed benefit-harm tradeoffs with adverse events, but did not perform formal policy-value, uplift, or decision-curve evaluation.",
+  "p.5–8",
+  "Clinical subgroup insight and benefit-harm discussion; no formal policy evaluation",
+
+  "Fukuokaya_2026", "uncertainty_quantification", 2L,
+  "The paper reported 95% confidence intervals for average RMST differences and RMST differences within risk and ITE quartiles, but did not provide individual-level uncertainty intervals for predicted ITEs.",
+  "p.1, p.4–7",
+  "Summary-level uncertainty for subgroup effects",
+
+  "Fukuokaya_2026", "effect_mod_plausibility", 1L,
+  "The discussion links greater C25 benefit to extensive pre-treatment history, greater tumor burden, adverse blood-based biomarkers, baseline performance status, and toxicity considerations.",
+  "p.6–8",
+  "Clinical plausibility of HTE drivers discussed",
+
+  "Fukuokaya_2026", "code_availability", 1L,
+  "The data availability statement reports that data are available through Vivli, but no public code repository or analysis scripts are clearly reported.",
+  "p.8",
+  "Data available through Vivli; no public code clearly reported"
 )
 # ============================================================
 # 4. COMBINE ALL EVIDENCE
