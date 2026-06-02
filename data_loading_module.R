@@ -124,13 +124,13 @@ papers <- tribble(
   "Zhang B, Tsiatis AA, Laber EB, Davidian M",
   "RCT (NSABP); AIPWE+CART; binary 3-yr DFS outcome; methods paper",
 
-  "Shen_2018",      "Shen",         2018,  1L,
-  "Prostate",       "USA",          3540L,
-  "Journal of Biopharmaceutical Statistics",
-  "Estimating the Optimal Personalized Treatment Strategy Based on Selected Variables to Prolong Survival via Random Survival Forest with Weighted Bootstrap",
-  "10.1080/10543406.2017.1380036",
-  "Shen J, Wang L, Daignault S, Spratt DE, Morgan TM, Taylor JMG",
-  "Obs; RSFWB; surgery vs radiation; prostate; RMST-based optimal regime",
+  "Shen_2018", "Shen", 2018, 1L,
+"Prostate", "USA", 3540L,
+"Journal of Biopharmaceutical Statistics",
+"Estimating the Optimal Personalized Treatment Strategy Based on Selected Variables to Prolong Survival via Random Survival Forest with Weighted Bootstrap",
+"10.1080/10543406.2017.1380036",
+"Jincheng Shen, Lu Wang, Stephanie Daignault, Daniel E. Spratt, Todd M. Morgan, Jeremy M. G. Taylor",
+"Observational prostate cancer cohort; RSFWB method for optimal personalized treatment strategy; surgery versus radiation therapy; right-censored time-to-clinical-failure outcome; optimal regime estimated by maximizing restricted mean survival time.",
 
   "Jo_2024",        "Jo",           2024,  1L,
   "ALL (Leukemia)", "Japan",        2440L,
@@ -346,13 +346,13 @@ scores <- tribble(
 
   "Shen_2018",
   1L, 3L, 3L,
-  2L, 3L, 2L, 2L,
-  2L, 1L,
+  2L, 3L, 1L, 2L,
+  2L, 3L,
   3L, 4L, 3L,
   3L, 2L,
   2L,
-  3L, 4L,
-  2L, 2L,
+  3L, 3L,
+  3L, 2L,
   1L, 1L,
 
   "Jo_2024",
@@ -1432,22 +1432,69 @@ ev_Shen_2018 <- make_evidence("Shen_2018",
   3L,"surgery or radiation therapy at time zero... neither has been established to be superior to the other","Defined treatments; clinical context given; no protocol-level dosing detail",
   2L,"treatment initiation time is a confounder for both treatment assignment and outcome... PSA, stage, Charlson, Gleason, PNI","Confounders listed; treatment date explicitly justified as confounder/auxiliary variable",
   3L,"Inverse probability weighting... logit P(A=1|W) = theta_0 + W^T theta... weights truncated at 15","IPW with auxiliary variable marginalisation; advanced/robust",
-  2L,"Table 3 shows summary statistics... all 7 variables are statistically different between radiation and surgery groups (p<0.01)","Reported but no formal SMD/pre-post balance plot",
-  2L,"whether this approach is the best for reducing the chance of the prostate cancer recurring after treatment is unknown","Acknowledged; no formal sensitivity analysis",
-  2L,"optimal regime based on a selected set of covariates... age, PSA, stage, Gleason, PNI","Pre-specified covariate set with clinical rationale; no formal HTE test",
-  1L,"Figure 3c shows the distribution of recommended treatment by age and PNI","Feature importance-style subgroup display; not linked to formal HTE",
-  3L,"RSFWB to model the counterfactual outcomes... g_opt(X) = I{mu^1(X) > mu^0(X)}","Custom CATE via counterfactual RSF",
-  4L,"weighted bootstrap procedure... cforest() function... IBS-based 5-fold CV for tuning... B=200 bootstrap samples","Architecture, loss, training, tuning fully described",
+  1L,
+"Table 3 reports baseline differences between surgery and radiation groups, but no formal post-weighting balance diagnostics such as standardized mean differences or overlap plots are reported.",
+"Baseline imbalance described; no formal balance diagnostics",
+
+2L,
+"The method assumes no unmeasured confounders, and the authors acknowledge uncertainty in whether observed treatment-selection patterns are optimal; no formal unmeasured-confounding sensitivity analysis is performed.",
+"NUCA assumption; no formal sensitivity analysis",
+
+2L,
+"The optimal regime was based on a selected set of clinically relevant variables, including age, PSA, stage, Charlson comorbidity score, Gleason grade, and PNI, while treatment date was handled as an auxiliary variable.",
+"Selected clinical covariate set with rationale",
+
+3L,
+"Post-hoc displays of the estimated optimal regime showed treatment recommendation heterogeneity across age, PSA, PNI, and estimated restricted-mean-survival-time benefit.",
+"Subgroup/regime visualization directly linked to HTE",
+
+3L,
+"RSFWB models treatment-specific counterfactual survival curves using inverse-probability weighted random survival forests and assigns treatment using g_opt(X) = I{mu1(X) > mu0(X)}.",
+"Custom counterfactual survival optimal-regime method",
+                               4L,"weighted bootstrap procedure... cforest() function... IBS-based 5-fold CV for tuning... B=200 bootstrap samples","Architecture, loss, training, tuning fully described",
   3L,"maximizing the restricted mean survival time... S^1(t) and S^0(t) from Kaplan-Meier on weighted bootstrap","Survival-aware; censoring handled via weighted RSF",
   3L,"5-fold cross-validation... grid search for mtry in {2,4,8,16} and ntree in {50,100}... smallest IBS applied","CV + grid search described; systematic",
   2L,"5-fold cross-validation used to avoid potential issue of overfitting","CV used for tuning; no formal cross-fitting of ITE estimates",
   2L,"compare results with Cox model, weighted Cox, regular RSF, and RSFWB","Systematic benchmarking against 3 competing methods",
   3L,"g_opt(X) = arg max_g mu^g... mu^g = E[min(T^g, tau)|X]... counterfactual framework... NUCA assumption stated","Formal potential outcomes; RMST-based ITE",
-  4L,"restricted mean survival time mu^g = E{min(T^g, tau)}... tau=12 years... mu^1(X) - mu^0(X)... time to clinical failure","RMST fully specified with horizon, scale, interpretation",
-  2L,"recommend a treatment switch if the estimated gain... is more than 0.1 years... 182 patients (25.9%) who received radiation should switch to surgery","Formal recommendation threshold; not full decision curve",
-  2L,"95% confidence interval for mu_g - mu_0 which is (0.032, 0.207)","ATE-level CI via bootstrap; no individual-level CI",
+  3L,
+"The optimal regime was formally defined in a counterfactual framework as the treatment rule maximizing restricted mean survival time: g_opt(X) = arg max_g mu_g, with mu_g based on E[min(T^g, tau)].",
+"Formal potential-outcomes RMST optimal-regime estimand",
+
+3L,
+"The survival estimand was restricted mean survival time to clinical failure, using tau = 12 years in the prostate application and comparing mu1(X) versus mu0(X).",
+"Fully specified RMST survival estimand",
+
+3L,
+"The prostate application produced an explicit treatment recommendation rule, including a 0.1-year minimum RMST-gain threshold for switching treatment, and estimated how many observed radiation and surgery patients would switch.",
+"Explicit treatment-switch recommendation rule",
+2L,"95% confidence interval for mu_g - mu_0 which is (0.032, 0.207)","ATE-level CI via bootstrap; no individual-level CI",
   1L,"for PNI positive group, radiation therapy is preferred for a large portion of the patient population","Clinical plausibility briefly discussed for age and PNI",
   1L,"we implement the proposed method in R, where we use cforest() function","No public repository mentioned; code described but not shared"
+)
+
+ev_Shen_2018$page_ref <- c(
+  "p.1, p.10–11",       # study_design
+  "p.10–11",            # patient_population
+  "p.10–11",            # comparators
+  "p.3–5, p.10–11",     # confounders_identified
+  "p.4–6, p.11",        # confounding_adjustment
+  "p.10–11",            # balance_diagnostics
+  "p.3, p.11–13",       # unmeasured_confounding
+  "p.3, p.10–11",       # predefined_effect_mod
+  "p.11–12",            # posthoc_effect_mod
+  "p.3–7",              # method_type
+  "p.5–7, p.18",        # method_clarity
+  "p.3–7, p.10–12",     # outcome_method_alignment
+  "p.6, p.18",          # hyperparameter_tuning
+  "p.6, p.18",          # sample_splitting
+  "p.7–10, p.18–19",    # multi_model_comparison
+  "p.3, p.7",           # causal_estimand
+  "p.7, p.10–12",       # survival_estimand
+  "p.11–12",            # clinical_decision_readiness
+  "p.12",               # uncertainty_quantification
+  "p.11–12",            # effect_mod_plausibility
+  "p.6, p.13"           # code_availability
 )
 
 ev_Jo_2024 <- make_evidence("Jo_2024",
