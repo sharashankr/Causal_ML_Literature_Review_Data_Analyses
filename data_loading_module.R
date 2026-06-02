@@ -11,7 +11,7 @@ library(writexl)
 library(dplyr)
 
 cat("\n============================================\n")
-cat("  BUILD_20_PAPERS.R IS RUNNING CORRECTLY\n")
+cat("  BUILD_25_PAPERS.R IS RUNNING CORRECTLY\n")
 cat("============================================\n\n")
 
 # ============================================================
