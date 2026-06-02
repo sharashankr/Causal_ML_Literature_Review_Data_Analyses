@@ -140,13 +140,13 @@ papers <- tribble(
 "Tomoyasu Jo, Kosuke Inoue, Tomoaki Ueda, Makoto Iwasaki, Yu Akahoshi, Satoshi Nishiwaki, et al.",
 "Observational Japanese nationwide HSCT registry study; propensity-score-matched adult ALL cohort; Bayesian causal forest estimates ITE of intensified versus standard myeloablative conditioning on reduction in 1-year overall mortality after HSCT.",
 
-  "Pan_2024",       "Pan",          2024,  1L,
-  "Prostate",       "USA/China",    35236L,
-  "Journal of Cancer Research and Clinical Oncology",
-  "Quantified treatment effect at the individual level is more indicative for personalized radical prostatectomy recommendation",
-  "10.1007/s00432-023-05602-4",
-  "Pan H, Wang J, Shi W, Xu Z, Zhu E",
-  "Obs; SNB (Self-Normalizing BITES); SEER; RP vs non-surgery",
+  "Pan_2024", "Pan", 2024, 1L,
+"Prostate", "USA", 35236L,
+"Journal of Cancer Research and Clinical Oncology",
+"Quantified treatment effect at the individual level is more indicative for personalized radical prostatectomy recommendation",
+"10.1007/s00432-023-05602-4",
+"Huiqing Pan, Jiayi Wang, Weizhong Shi, Ziqin Xu, Enzhao Zhu",
+"Observational SEER study; Self-Normalizing Balanced individual treatment effect for survival data (SNB); radical prostatectomy versus non-surgery; temporal validation; IPTW-adjusted treatment recommendation evaluation; OS-based survival ITE using time to 90% mortality.",
 
   "Ge_2020b",       "Ge",           2020,  1L,
   "AML",            "USA",          212L,
@@ -1596,6 +1596,30 @@ ev_Pan_2024 <- make_evidence("Pan_2024",
   2L,"95% CI for HR, RD, dRMST across all models in Table 2","Summary-level CIs; no individual-level CI",
   1L,"RP was more effective in patients with higher PSA levels... non-metastatic disease... Gleason score 6/7/8","Clinical plausibility of ITE drivers discussed with beta coefficients",
   1L,"no code repository mentioned","SEER data publicly available but no analysis code shared"
+)
+
+ev_Pan_2024$page_ref <- c(
+  "p.2",        # study_design
+  "p.2",        # patient_population
+  "p.2–4",      # comparators
+  "p.3–4",      # confounders_identified
+  "p.3–4",      # confounding_adjustment
+  "p.3–4",      # balance_diagnostics
+  "p.9",        # unmeasured_confounding
+  "p.3",        # predefined_effect_mod
+  "p.4, p.6–8", # posthoc_effect_mod
+  "p.3",        # method_type
+  "p.3",        # method_clarity
+  "p.3–4",      # outcome_method_alignment
+  "p.3",        # hyperparameter_tuning
+  "p.3",        # sample_splitting
+  "p.3–6",      # multi_model_comparison
+  "p.3",        # causal_estimand
+  "p.3–6",      # survival_estimand
+  "p.4, p.7–9", # clinical_decision_readiness
+  "p.4–6",      # uncertainty_quantification
+  "p.6–8",      # effect_mod_plausibility
+  "p.9"         # code_availability
 )
 
 ev_Ge_2020b <- make_evidence("Ge_2020b",
