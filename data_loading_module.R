@@ -188,7 +188,56 @@ papers <- tribble(
   "Evaluation of machine-learning models to measure individualized treatment effects from randomized clinical trial data with time-to-event outcomes",
   "arXiv:2506.12277",
   "Roblin E, Cournède PH, Michiels S",
-  "RCT; methods evaluation paper; CoxCC/CoxTime/IF vs ALASSO; two breast cancer datasets (taxane n=614, trastuzumab n=1574); simulation study; C-for-benefit metrics"
+  "RCT; methods evaluation paper; CoxCC/CoxTime/IF vs ALASSO; two breast cancer datasets (taxane n=614, trastuzumab n=1574); simulation study; C-for-benefit metrics",
+
+"Liu_2022",
+"Liu",
+2022,
+1L,
+"Nasopharyngeal carcinoma",
+"China",
+809L,
+"Radiotherapy and Oncology",
+"Impact of salvage radiotherapy on survival of patients with advanced locally recurrent nasopharyngeal carcinoma: Derivation and validation of a predictive model",
+"10.1016/j.radonc.2021.12.046",
+"Ting Liu, Bo-Wen Shen, Li-Ting Liu, Zhen-Chong Yang, Shi-Qian Wang, Da-Feng Lin, Xue-Song Sun, Shan-Shan Guo, Sai-Lan Liu, Mei-Juan Luo, Qiu-Yan Chen, Lin-Quan Tang, Hai-Qiang Mai",
+"Observational retrospective cohort; advanced locally recurrent nasopharyngeal carcinoma; salvage radiotherapy versus palliative chemotherapy; IPTW-matched training and validation cohorts; Cox interaction model-derived SARTOS score predicts heterogeneous survival benefit from salvage RT.",
+
+"Li_2024", "Li", 2024, 1L,
+"Head and neck squamous cell carcinoma", "USA", 4276L,
+"Medicine",
+"Tailoring nonsurgical therapy for elderly patients with head and neck squamous cell carcinoma: A deep learning-based approach",
+"10.1097/MD.0000000000039659",
+"Yang Li, Qinyu Xiao, Haiqi Chen, Enzhao Zhu, Xin Wang, Jianmeng Dai, Xu Zhang, Qiuyi Lu, Yanming Zhu, Guangliang Yang",
+"Observational SEER elderly HNSCC cohort; deep learning-based nonsurgical treatment recommendation; radiotherapy versus chemoradiotherapy; SNB, BITES, CMHE, DeepSurv and CPH compared; ITE defined using time-at-risk difference; IPTW-adjusted recommendation evaluation; internal and external testing sets; SurvSHAP(t) interpretation.",
+
+"Lavery_2025", "Lavery", 2025, 1L,
+"Non-small cell lung cancer", "USA/Canada", 535L,
+"Journal of the National Cancer Institute",
+"Unveiling non-small cell lung cancer treatment effect heterogeneity: a comparative analysis of statistical methods",
+"10.1093/jnci/djaf176",
+"Jessica A. Lavery, Yuan Chen, Katherine S. Panageas, Yuanjia Wang",
+"Observational clinicogenomic cohort using AACR Project GENIE BPC plus institutional MSKCC data; advanced NSCLC without EGFR/ALK targetable alterations; immunotherapy alone versus chemoimmunotherapy; compares finite mixture model, causal survival forest, accelerated failure time model, and Cox model for detecting heterogeneous survival treatment effects; primary endpoint PFS.",
+
+  "Li_2024_PRL", "Li", 2024, 1L,
+"Breast", "China / public breast cancer dataset", 393L,
+"Journal of Applied Statistics",
+"Penalized robust learning for optimal treatment regimes with heterogeneous individualized treatment effects",
+"10.1080/02664763.2023.2180167",
+"Canhui Li, Weirong Li, Wensheng Zhu",
+"Statistical methods paper proposing penalized robust learning for optimal treatment regimes in heterogeneous high-dimensional populations; includes simulations and real Tamoxifen breast cancer application using GSE6532; treatment is Tamoxifen versus no systemic adjuvant treatment; outcome is relapse-free survival time; method estimates subgroup-specific individualized treatment regimes with variable selection and coefficient fusion.",
+
+  "Grabner_2011", "Grabner", 2011, 1L,
+"Prostate", "USA", 3888L,
+"The American Journal of Managed Care",
+"Racial Variation in the Cost-effectiveness of Chemotherapy for Prostate Cancer",
+NA,
+"Michael Grabner, Eberechukwu Onukwugha, Rahul Jain, C. Daniel Mullins",
+"Retrospective SEER-Medicare cost-effectiveness analysis of chemotherapy versus no chemotherapy in elderly patients with metastatic prostate cancer; evaluates racial/ethnic variation in ICERs, costs, and life-years gained; not an ITE/CATE or ML treatment-effect estimation paper.",
+  
+
+  
+  
 )
 
 # ============================================================
@@ -447,7 +496,62 @@ scores <- tribble(
   2L,
   2L, 3L,
   1L, 3L,
-  1L, 1L
+  1L, 1L,
+
+  "Liu_2022",
+  1L, 4L, 4L,
+  3L, 2L, 3L, 2L,
+  4L, 3L,
+  2L, 4L, 3L,
+  2L, 2L,
+  1L,
+  3L, 4L,
+  3L, 2L,
+  1L, 1L,
+
+  "Li_2024",
+  1L, 3L, 2L,
+  2L, 2L, 3L, 2L,
+  1L, 3L,
+  3L, 4L, 3L,
+  3L, 2L,
+  2L,
+  2L, 4L,
+  2L, 2L,
+  1L, 3L,
+
+  "Lavery_2025",
+  1L, 3L, 2L,
+  3L, 2L, 2L, 3L,
+  4L, 3L,
+  3L, 4L, 3L,
+  2L, 1L,
+  2L,
+  3L, 3L,
+  2L, 2L,
+  1L, 2L,
+
+  "Li_2024_PRL",
+  1L, 2L, 2L,
+  2L, 3L, 1L, 2L,
+  1L, 3L,
+  3L, 4L, 2L,
+  3L, 2L,
+  2L,
+  2L, 1L,
+  3L, 1L,
+  1L, 1L,
+
+  "Grabner_2011",
+  1L, 3L, 2L,
+  2L, 2L, 1L, 3L,
+  3L, 0L,
+  1L, 4L, 3L,
+  1L, 1L,
+  1L,
+  1L, 4L,
+  3L, 2L,
+  1L, 1L,
 )
 
 # ============================================================
@@ -2043,6 +2147,549 @@ ev_Roblin_2025b$page_ref <- c(
   "p.6, p.13"        # code_availability
 )
 
+ev_Liu_2022 <- tibble::tribble(
+  ~paper_id, ~dimension, ~score, ~evidence, ~page_ref, ~notes,
+
+  "Liu_2022", "study_design", 1L,
+  "A retrospective cohort of patients with advanced locally recurrent NPC treated with salvage radiotherapy or palliative chemotherapy at Sun Yat-sen University Cancer Center was analyzed.",
+  "p.1–2",
+  "Observational retrospective cohort",
+
+  "Liu_2022", "patient_population", 4L,
+  "Patients had advanced locally recurrent NPC, rT3–4, diagnosed from 2011 to 2019; eligibility included no distant metastases, DFI >6 months, surgery-ineligible status, adequate organ function, and ECOG PS 0–1.",
+  "p.2–3",
+  "Clear IC/EC, timeframe, eligibility, treatment suitability, training/validation split",
+
+  "Liu_2022", "comparators", 4L,
+  "Comparators were salvage RT versus palliative CT. Salvage RT used full-course IMRT with 60.0–66.0 Gy in 27–33 fractions; palliative CT used cisplatin-based chemotherapy for 3–6 cycles, with maintenance therapy in some patients.",
+  "p.2",
+  "Protocol-level comparator detail",
+
+  "Liu_2022", "confounders_identified", 3L,
+  "Matching was based on age, sex, ECOG PS, BMI, recurrent T stage, synchronous nodal recurrence, DFI, prior RT-induced grade >=3 late toxicities, hemoglobin, albumin, and CRP.",
+  "p.2–3",
+  "Confounders listed and clinically justified",
+
+  "Liu_2022", "confounding_adjustment", 2L,
+  "Inverse probability of treatment weighting was used to balance baseline characteristics between patients receiving salvage RT and palliative CT.",
+  "p.2–3",
+  "Standard IPTW adjustment",
+
+  "Liu_2022", "balance_diagnostics", 3L,
+  "After matching, baseline characteristics were reported as well balanced between treatment arms in the matched training and validation cohorts, with detailed covariate comparisons shown in Table 1.",
+  "p.4–5",
+  "Reported post-matching balance table",
+
+  "Liu_2022", "unmeasured_confounding", 2L,
+  "The authors acknowledged that despite detailed baseline variables and IPTW matching, unknown confounders could not be fully balanced between treatment arms.",
+  "p.7",
+  "Unmeasured confounding acknowledged; no sensitivity analysis",
+
+  "Liu_2022", "predefined_effect_mod", 4L,
+  "Candidate predictors and their interaction terms with treatment arm were tested in Cox models to identify heterogeneous treatment effects.",
+  "p.2–4",
+  "Formal treatment interaction testing",
+
+  "Liu_2022", "posthoc_effect_mod", 3L,
+  "The final SARTOS score stratified patients into high- and low-benefit subgroups, and treatment effects of salvage RT versus palliative CT were tested separately in training and validation cohorts.",
+  "p.3–4, p.7",
+  "Subgroup splits directly linked to HTE and validated",
+
+  "Liu_2022", "method_type", 2L,
+  "The study used Cox regression with treatment-by-covariate interaction terms to derive a treatment-benefit prediction score, rather than a custom CATE or causal ML estimator.",
+  "p.3–4",
+  "Outcome modelling with treatment interactions",
+
+  "Liu_2022", "method_clarity", 4L,
+  "The paper describes univariate interaction screening, multivariable Cox modeling, backward AIC selection, SARTOS score construction, C-index, calibration plots, and validation in an independent split.",
+  "p.3–4, p.6–7",
+  "Fully described model development and validation",
+
+  "Liu_2022", "outcome_method_alignment", 3L,
+  "The primary outcome was overall survival, analyzed using Cox models, Kaplan-Meier curves, 3-year OS rates, HRs, and interaction tests.",
+  "p.2–4, p.7",
+  "Survival-aware method for OS",
+
+  "Liu_2022", "hyperparameter_tuning", 2L,
+  "Backward selection minimized AIC for the multivariable Cox model, but no cross-validated hyperparameter search or ML tuning strategy was used.",
+  "p.3",
+  "AIC model selection; no ML-style tuning",
+
+  "Liu_2022", "sample_splitting", 2L,
+  "The original sample was randomly split into a training set and validation set at an 8:2 ratio, and the final model was tested in the matched validation cohort.",
+  "p.2–4",
+  "Training/validation split used",
+
+  "Liu_2022", "multi_model_comparison", 1L,
+  "The paper contrasts SARTOS conceptually with prior prognostic models, but does not benchmark against alternative HTE or causal ML models.",
+  "p.5–6",
+  "Limited comparison only",
+
+  "Liu_2022", "causal_estimand", 3L,
+  "For each patient, predicted benefit from salvage RT was estimated as the difference between the prediction under salvage RT and the prediction under palliative CT, then converted into SARTOS.",
+  "p.3",
+  "Formal counterfactual-style treatment-benefit prediction",
+
+  "Liu_2022", "survival_estimand", 4L,
+  "The survival estimand was overall survival benefit from salvage RT versus palliative CT, reported using 3-year OS, HRs, SARTOS subgroup treatment effects, and clinical interpretation.",
+  "p.1, p.3–4, p.7",
+  "Fully specified OS benefit with time horizon and clinical interpretation",
+
+  "Liu_2022", "clinical_decision_readiness", 3L,
+  "High-SARTOS patients had significant OS benefit from salvage RT in both training and validation cohorts, while low-SARTOS patients did not benefit and showed possible harm.",
+  "p.4, p.7",
+  "Formal treatment-selection subgroup evaluation",
+
+  "Liu_2022", "uncertainty_quantification", 2L,
+  "The paper reported HRs with 95% CIs, 3-year OS with 95% CIs, interaction p-values, and C-index with 95% CIs, but no individual-level uncertainty intervals.",
+  "p.1, p.4, p.6–7",
+  "Summary-level uncertainty",
+
+  "Liu_2022", "effect_mod_plausibility", 1L,
+  "The authors discussed sex, prior RT-induced grade >=3 late toxicities, and ECOG PS as markers of baseline condition and tolerance to aggressive salvage treatment.",
+  "p.6–7",
+  "Clinical plausibility discussed",
+
+  "Liu_2022", "code_availability", 1L,
+  "Data were available from corresponding authors on reasonable request, but no public code repository or analysis scripts were reported.",
+  "p.8",
+  "Data on request; no public code"
+)
+
+ev_Li_2024 <- tibble::tribble(
+  ~paper_id, ~dimension, ~score, ~evidence, ~page_ref, ~notes,
+
+  "Li_2024", "study_design", 1L,
+  "This was a population-based retrospective cohort study using SEER 18 data to develop personalized nonsurgical treatment recommendations for elderly HNSCC patients.",
+  "p.2",
+  "Observational retrospective SEER cohort",
+
+  "Li_2024", "patient_population", 3L,
+  "The study included elderly patients aged 65 or above with HNSCC from the oral cavity, sinonasal cavity, pharynx, or larynx, diagnosed as a single primary malignant cancer between 2004 and 2015, who received definitive RT or CRT; multiple exclusions for missing demographics, tumor features, treatment modality, surgery, follow-up, and multiple malignancies were applied.",
+  "p.2–3",
+  "Clear IC/EC, SEER dataset, timeframe, and key eligibility",
+
+  "Li_2024", "comparators", 2L,
+  "The treatment comparison was definitive radiotherapy versus definitive chemoradiotherapy; however, the sequencing of chemotherapy was not studied and detailed RT dose or chemotherapy regimen information was not provided.",
+  "p.2–3",
+  "RT vs CRT named; protocol-level details limited",
+
+  "Li_2024", "confounders_identified", 2L,
+  "Baseline variables used for IPTW adjustment included demographic and tumor-related characteristics such as age, sex, marital status, tumor location, laterality, histologic grade, TNM stage, and tumor size.",
+  "p.3–4",
+  "Confounders listed; limited justification",
+
+  "Li_2024", "confounding_adjustment", 2L,
+  "Inverse probability treatment weighting was applied to address baseline imbalance between model-consistent and model-inconsistent groups.",
+  "p.3–5",
+  "Standard IPTW adjustment",
+
+  "Li_2024", "balance_diagnostics", 3L,
+  "The paper reports standardized mean differences before and after IPTW correction in supplemental figures and states that covariates were balanced after IPTW with SMD values below 0.1.",
+  "p.5",
+  "Reported SMD balance diagnostics",
+
+  "Li_2024", "unmeasured_confounding", 2L,
+  "The limitations section notes that retrospective data, unrecorded variables, single-database design, and inconsistent observation periods could introduce bias.",
+  "p.8",
+  "Unmeasured confounding/bias acknowledged; no formal sensitivity analysis",
+
+  "Li_2024", "predefined_effect_mod", 1L,
+  "Treatment heterogeneity was primarily explored through model-derived ITE and post-hoc interpretation; no formal pre-specified clinical HTE hypothesis was stated.",
+  "p.2–3, p.5–8",
+  "Data/model-driven effect modification",
+
+  "Li_2024", "posthoc_effect_mod", 3L,
+  "Patients were categorized into chemoradiotherapy-recommended and chemoradiotherapy-not-recommended groups based on SNB predictions, and treatment heterogeneity was evaluated using HR and IPTW-adjusted HR for CRT versus RT in these subgroups.",
+  "p.5–7",
+  "Post-hoc subgroup analysis directly linked to HTE",
+
+  "Li_2024", "method_type", 3L,
+  "The study trained custom survival ITE-style models including SNB, BITES, and CMHE, along with DeepSurv and CPH in a T-learner structure.",
+  "p.3",
+  "Custom survival ITE/CATE-style models",
+
+  "Li_2024", "method_clarity", 4L,
+  "The paper describes the T-learner, BITES, SNB architecture, TaR-based ITE definition, model training, internal and external testing, fivefold cross-validation, early stopping, IPTW evaluation, survival metrics, and code repository.",
+  "p.2–4",
+  "Fully described modelling and evaluation pipeline",
+
+  "Li_2024", "outcome_method_alignment", 3L,
+  "The primary endpoint was overall survival, and the models estimated survival distributions, time-at-risk, HR, RD, and DRMST.",
+  "p.3–5",
+  "Survival-aware method for OS/TaR",
+
+  "Li_2024", "hyperparameter_tuning", 3L,
+  "Fivefold cross-validation was used during training, and training stopped when validation loss failed to improve for 1000 iterations.",
+  "p.3",
+  "CV and early stopping described",
+
+  "Li_2024", "sample_splitting", 2L,
+  "Patients diagnosed in 2004 were used as an external testing cohort; the remaining patients were split into a 70% training set and 30% test set.",
+  "p.3",
+  "Internal test set plus external 2004 cohort",
+
+  "Li_2024", "multi_model_comparison", 2L,
+  "The study compared SNB, BITES, CMHE, DeepSurv, CPH, and NCCN guideline recommendations in both testing and external testing sets.",
+  "p.3–5",
+  "Systematic benchmarking against multiple models and NCCN",
+
+  "Li_2024", "causal_estimand", 2L,
+  "ITE was explicitly defined as the difference in time-at-risk between CRT and RT, where TaR represents the time for an individual patient's mortality risk to reach 50%.",
+  "p.3",
+  "Explicit ITE defined; no formal potential-outcomes notation",
+
+  "Li_2024", "survival_estimand", 4L,
+  "The survival estimand used TaR, defined as the time for mortality risk to reach 50%, comparing CRT versus RT; model performance was evaluated over a 10-year horizon using RD and DRMST.",
+  "p.3–5",
+  "Fully specified survival scale, horizon, treatment contrast, and interpretation",
+
+  "Li_2024", "clinical_decision_readiness", 2L,
+  "Patients whose actual treatment was consistent with model recommendations were compared with inconsistent patients, and SNB-recommended CRT versus non-CRT subgroups were evaluated; however, no formal policy-value or decision-curve analysis was performed.",
+  "p.3–7",
+  "Recommendation-consistency evaluation; no formal policy-value analysis",
+
+  "Li_2024", "uncertainty_quantification", 2L,
+  "The study reported 95% confidence intervals for HR, IPTW-adjusted HR, RD, IPTW-adjusted RD, DRMST, IPTW-adjusted DRMST, and IBS, but did not report individual-level treatment-effect uncertainty.",
+  "p.4–5",
+  "Summary-level uncertainty only",
+
+  "Li_2024", "effect_mod_plausibility", 1L,
+  "The discussion interprets treatment heterogeneity in relation to tumor size, advanced stage, distant metastasis, tumor subsite, age, stage I disease, sex, and CRT toxicity considerations.",
+  "p.7–8",
+  "Clinical plausibility discussed",
+
+  "Li_2024", "code_availability", 3L,
+  "The authors state that model codes, ITE calculations, and associated methodologies are available in a public GitHub repository.",
+  "p.3",
+  "Full public repository mentioned"
+)
+
+ev_Lavery_2025 <- tibble::tribble(
+  ~paper_id, ~dimension, ~score, ~evidence, ~page_ref, ~notes,
+
+  "Lavery_2025", "study_design", 1L,
+  "The study used an observational clinicogenomic cohort from AACR Project GENIE BPC, supplemented with institutional MSKCC data curated under the same PRISSMM data model.",
+  "p.3–4",
+  "Observational clinicogenomic cohort",
+
+  "Lavery_2025", "patient_population", 3L,
+  "Patients had advanced NSCLC, PD-L1 positivity, no EGFR or ALK targetable alterations, and received first-line immunotherapy monotherapy or chemoimmunotherapy; 535 patients with complete PD-L1 and covariate data were included.",
+  "p.3–6",
+  "Clear eligibility, dataset, disease setting, and treatment-line definition",
+
+  "Lavery_2025", "comparators", 2L,
+  "The treatment comparison was immunotherapy monotherapy versus chemoimmunotherapy as first-line treatment for advanced NSCLC.",
+  "p.3–4",
+  "Treatments named; regimen-level dose/timing not protocol-specified",
+
+  "Lavery_2025", "confounders_identified", 3L,
+  "The propensity model adjusted for PD-L1, tumor mutation burden, cancer sequence, age, stage, histology, institution, sex, race, ethnicity, smoking status, year of diagnosis, regimen number, and recurrently altered genes.",
+  "p.4",
+  "Detailed clinical/genomic confounder set listed",
+
+  "Lavery_2025", "confounding_adjustment", 2L,
+  "Inverse probability of treatment weights from a logistic propensity-score model were incorporated into the models, with weights trimmed at the 97th percentile.",
+  "p.4–5",
+  "Standard IPTW with trimming",
+
+  "Lavery_2025", "balance_diagnostics", 2L,
+  "The distribution of propensity scores was visualized for immunotherapy monotherapy versus chemoimmunotherapy to assess overlap and exchangeability.",
+  "p.4",
+  "Overlap assessed; no full before/after SMD table in main paper",
+
+  "Lavery_2025", "unmeasured_confounding", 3L,
+  "The discussion addresses observational-data limitations, delayed-entry/immortal-time bias due to genomic sequencing, subsequent treatment lines, treatment crossover, and clinicogenomic selection issues.",
+  "p.8–11",
+  "Unmeasured bias discussed with detailed reasoning",
+
+  "Lavery_2025", "predefined_effect_mod", 4L,
+  "PD-L1, tumor mutation burden, and stage at diagnosis were clinically motivated moderators of interest and were formally evaluated using mixture models, causal survival forests, AFT models, and Cox interaction models.",
+  "p.2–5",
+  "Pre-specified moderators formally tested",
+
+  "Lavery_2025", "posthoc_effect_mod", 3L,
+  "The mixture model identified latent treatment-response subgroups, and the causal survival forest ranked variables such as tumor mutation burden and PD-L1 for treatment-effect heterogeneity.",
+  "p.5–7",
+  "Subgroup discovery and variable importance directly linked to HTE",
+
+  "Lavery_2025", "method_type", 3L,
+  "The study compared finite mixture models, causal survival forests, accelerated failure time models, and Cox models to detect heterogeneous treatment effects.",
+  "p.4–5",
+  "Custom HTE/survival treatment-effect methods",
+
+  "Lavery_2025", "method_clarity", 4L,
+  "The paper describes data sources, eligibility, endpoints, propensity weighting, IPCW, finite mixture model structure, causal survival forest estimand, AFT and Cox interaction models, BIC subgroup selection, and simulation settings.",
+  "p.3–7, p.15–18",
+  "Fully described real-world and simulation methods",
+
+  "Lavery_2025", "outcome_method_alignment", 3L,
+  "The primary endpoint was PFS-I-and-M, with OS as a secondary endpoint; censoring was handled using survival models and inverse probability of censoring weights for the mixture model.",
+  "p.4–5",
+  "Survival-aware methods for time-to-event outcomes",
+
+  "Lavery_2025", "hyperparameter_tuning", 2L,
+  "The number of mixture-model subgroups was selected using BIC, but no broad cross-validated hyperparameter search was applied in the real-world analysis.",
+  "p.5–6",
+  "Model selection described but limited",
+
+  "Lavery_2025", "sample_splitting", 1L,
+  "The authors state that cross-validation and external validation were not applied for the real-world application because the primary goal was associational analysis.",
+  "p.10",
+  "No train/test split or external validation for empirical cohort",
+
+  "Lavery_2025", "multi_model_comparison", 2L,
+  "The study systematically compared mixture model, causal survival forest, AFT model, and Cox model in both the real-world NSCLC application and simulation study.",
+  "p.4–7, p.15–18",
+  "Systematic benchmarking across methods",
+
+  "Lavery_2025", "causal_estimand", 3L,
+  "The causal survival forest estimated conditional treatment effects as differences in 1-year survival probability, and the study used inverse probability weighting to compare treatment effects.",
+  "p.5–6",
+  "Formal causal survival treatment-effect framework",
+
+  "Lavery_2025", "survival_estimand", 3L,
+  "The study defined PFS-I-and-M as the primary endpoint, OS as secondary, and estimated treatment effects using average PFS differences, 1-year survival probability differences, AFT acceleration factors, and Cox hazard ratios.",
+  "p.4–6",
+  "Defined survival outcomes and treatment-effect scales, but no single fully specified clinical estimand",
+
+  "Lavery_2025", "clinical_decision_readiness", 2L,
+  "The mixture model identified subgroups with different PFS benefit patterns for immunotherapy alone versus chemoimmunotherapy, but the paper did not perform formal policy-value, uplift, or decision-curve evaluation.",
+  "p.6–8",
+  "Treatment-benefit subgroups identified; no policy-value analysis",
+
+  "Lavery_2025", "uncertainty_quantification", 2L,
+  "The study reported 95% confidence intervals for subgroup treatment effects, odds ratios for subgroup membership, treatment-effect ratios, causal survival forest estimates, AFT estimates, and Cox estimates.",
+  "p.1, p.5–7",
+  "Summary-level uncertainty only",
+
+  "Lavery_2025", "effect_mod_plausibility", 1L,
+  "The discussion interprets tumor mutation burden, PD-L1, BRAF, and stage in relation to NSCLC biology, immunotherapy response, NCCN biomarker context, and existing literature.",
+  "p.8–10",
+  "Clinical/genomic plausibility discussed",
+
+  "Lavery_2025", "code_availability", 2L,
+  "GENIE BPC data are publicly available through Synapse and cBioPortal, and the simulation study code is available on GitHub; full real-world analysis code is not clearly stated as available.",
+  "p.11–12",
+  "Public data and simulation code; real-world analysis code unclear"
+)
+
+ev_Li_2024_PRL <- tibble::tribble(
+  ~paper_id, ~dimension, ~score, ~evidence, ~page_ref, ~notes,
+
+  "Li_2024_PRL", "study_design", 1L,
+  "The breast cancer application used observational GSE6532 cohort data, with Tamoxifen treatment compared against no systemic adjuvant treatment.",
+  "p.15–16",
+  "Observational breast cancer application",
+
+  "Li_2024_PRL", "patient_population", 2L,
+  "The real-data application used the GSE6532 breast cancer cohort; after excluding observations with missing outcomes, 393 observations were analyzed, with histologic grade used to define four units.",
+  "p.15–16",
+  "Named dataset and analytic sample; limited IC/EC detail",
+
+  "Li_2024_PRL", "comparators", 2L,
+  "The treatment comparison was Tamoxifen treatment versus no systemic adjuvant treatment.",
+  "p.15–16",
+  "Treatments named only; no dose/timing detail",
+
+  "Li_2024_PRL", "confounders_identified", 2L,
+  "The application used high-dimensional gene-expression features plus clinical predictors including age and tumor size; histologic grade was used to define units.",
+  "p.15–16",
+  "Covariates listed; limited clinical justification as confounders",
+
+  "Li_2024_PRL", "confounding_adjustment", 3L,
+  "The proposed penalized robust learning framework estimates propensity scores, removes main covariate effects through centralized outcomes, uses cross-fitting for nuisance estimation, and is designed to reduce residual confounding from misspecified main-effect models.",
+  "p.3–6",
+  "Advanced robust adjustment using centralized outcome, propensity estimation, and cross-fitting",
+
+  "Li_2024_PRL", "balance_diagnostics", 1L,
+  "No covariate balance diagnostics, standardized mean differences, or pre/post-adjustment balance plots were reported for the breast cancer application.",
+  "p.15–17",
+  "No balance assessment reported",
+
+  "Li_2024_PRL", "unmeasured_confounding", 2L,
+  "The paper discusses residual confounding caused by misspecification of main-effect models and notes that treatment was not randomly assigned in the Tamoxifen application, requiring propensity-score estimation.",
+  "p.3–6, p.16",
+  "Residual confounding acknowledged and methodologically addressed; no formal sensitivity analysis",
+
+  "Li_2024_PRL", "predefined_effect_mod", 1L,
+  "Effect modifiers were selected from high-dimensional gene-expression measurements and clinical variables using penalized robust learning; no pre-specified clinical HTE hypothesis was stated.",
+  "p.15–17",
+  "Data-driven effect-modifier selection",
+
+  "Li_2024_PRL", "posthoc_effect_mod", 3L,
+  "The method identified subgroup/unit-specific treatment-decision coefficients and selected prescriptive genes, including IFIT1, PVALB, and MSMB, which were directly linked to Tamoxifen treatment decisions across units.",
+  "p.16–17",
+  "Selected variables and subgroup-specific coefficients directly linked to heterogeneous ITRs",
+
+  "Li_2024_PRL", "method_type", 3L,
+  "The paper proposes penalized robust learning to estimate optimal individualized treatment regimes in heterogeneous high-dimensional populations.",
+  "p.3–7",
+  "Custom individualized treatment regime / heterogeneous ITE method",
+
+  "Li_2024_PRL", "method_clarity", 4L,
+  "The paper fully specifies the model framework, centralized outcome, interaction-effect coefficient matrix, double-penalty objective, cross-fitting, ADMM optimization, BIC tuning, theoretical properties, simulations, and real-data application.",
+  "p.3–11, p.15–17",
+  "Fully described method, optimization, tuning, theory, and application",
+
+  "Li_2024_PRL", "outcome_method_alignment", 2L,
+  "The breast cancer application used relapse-free survival time as the outcome, but the proposed method treats it as a general outcome and does not explicitly model censoring with a survival-specific likelihood or RMST/survival-probability estimand.",
+  "p.15–16",
+  "Partially aligned; relapse-free survival time used but not survival-specific",
+
+  "Li_2024_PRL", "hyperparameter_tuning", 3L,
+  "The tuning parameters lambda and gamma were selected by minimizing a BIC criterion; fivefold cross-fitting was used for nuisance estimation.",
+  "p.6–8",
+  "BIC tuning and cross-fitting described",
+
+  "Li_2024_PRL", "sample_splitting", 2L,
+  "The implementation used fivefold cross-fitting, and the breast cancer application repeatedly split data into half training and half testing sets 500 times for method comparison.",
+  "p.6, p.17",
+  "Cross-fitting plus repeated train/test evaluation",
+
+  "Li_2024_PRL", "multi_model_comparison", 2L,
+  "The paper compared PRL-reg and PRL-Xg against penalized Q-learning, unit-specific Q-learning, D-learning, IPWE, and AIPWE in simulations, and compared PRL-reg, PRL-Xg, 1-PLS, and US-QL in the breast cancer application.",
+  "p.11–17",
+  "Systematic benchmarking against multiple methods",
+
+  "Li_2024_PRL", "causal_estimand", 2L,
+  "The paper explicitly defines the optimal individualized treatment regime as a function mapping covariates to treatment decisions and estimates treatment-covariate interaction effects that determine the optimal rule.",
+  "p.3–5",
+  "Explicit individualized treatment regime defined; no formal potential-outcomes notation",
+
+  "Li_2024_PRL", "survival_estimand", 1L,
+  "Although relapse-free survival time was used as the outcome in the breast cancer application, no formal survival estimand such as RMST, survival probability, hazard ratio, or AFT treatment contrast was defined.",
+  "p.15–16",
+  "No formal survival estimand",
+
+  "Li_2024_PRL", "clinical_decision_readiness", 3L,
+  "The paper evaluated estimated optimal treatment regimes using empirical value functions on held-out test data, comparing PRL-reg, PRL-Xg, 1-PLS, and US-QL.",
+  "p.17",
+  "Formal value-function evaluation of treatment rules",
+
+  "Li_2024_PRL", "uncertainty_quantification", 1L,
+  "The real-data application reported selected variables, treatment-rule patterns, and empirical value functions, but did not report confidence intervals or individual-level uncertainty for treatment effects.",
+  "p.16–17",
+  "Minimal uncertainty reporting",
+
+  "Li_2024_PRL", "effect_mod_plausibility", 1L,
+  "The paper discusses selected genes such as PVALB and IFIT1 in relation to breast cancer or cancer biology literature.",
+  "p.16–17",
+  "Biological plausibility briefly discussed",
+
+  "Li_2024_PRL", "code_availability", 1L,
+  "The paper states that supplemental data are available online, but no clear public GitHub repository or full reproducible analysis code is reported in the main text.",
+  "p.1",
+  "Supplemental material mentioned; no clear public code repository"
+)
+ev_Grabner_2011 <- tibble::tribble(
+  ~paper_id, ~dimension, ~score, ~evidence, ~page_ref, ~notes,
+
+  "Grabner_2011", "study_design", 1L,
+  "The study was a retrospective observational analysis using linked SEER-Medicare data for elderly patients with metastatic prostate cancer.",
+  "p.1–2",
+  "Observational SEER-Medicare analysis",
+
+  "Grabner_2011", "patient_population", 3L,
+  "Patients were age 66 years or older, diagnosed with metastatic M1 prostate cancer between 2000 and 2005, enrolled in Medicare Part A and B, not enrolled in HMO during the baseline window, and received androgen deprivation therapy; detailed exclusion criteria were listed in the appendix.",
+  "p.1–2, p.7",
+  "Clear cohort, dataset, timeframe, disease stage, enrollment criteria, and exclusions",
+
+  "Grabner_2011", "comparators", 2L,
+  "The treatment comparison was any chemotherapy versus no chemotherapy; chemotherapy included agents such as docetaxel and mitoxantrone, but the analysis did not model specific treatment protocols, doses, or timing as the comparator definition.",
+  "p.1–3",
+  "Treatment named; no protocol-level regimen definition",
+
+  "Grabner_2011", "confounders_identified", 2L,
+  "The propensity-score model included age, race/ethnicity, marital status, tumor differentiation, Charlson comorbidity index, PSA testing, urban residence, poor-performance-status proxy, census-level socioeconomic measures, diagnosis year, and SEER registry indicators.",
+  "p.7",
+  "Confounders listed in appendix; limited clinical justification one-by-one",
+
+  "Grabner_2011", "confounding_adjustment", 2L,
+  "The authors calculated ICERs in propensity-score-matched samples stratified by subgroup to account for observable selection into chemotherapy treatment.",
+  "p.3–4, p.9",
+  "Standard propensity-score matching used in sensitivity analysis",
+
+  "Grabner_2011", "balance_diagnostics", 1L,
+  "Baseline characteristics were reported by treatment and race/ethnicity groups, but no formal post-matching balance diagnostics, SMD tables, or balance plots were reported.",
+  "p.7–8",
+  "No formal balance assessment",
+
+  "Grabner_2011", "unmeasured_confounding", 3L,
+  "The discussion notes selection into treatment, lack of adjustment for all potential confounders, limitations of observational SEER-Medicare data, and generalizability beyond the Medicare population; PS matching was used as a sensitivity analysis.",
+  "p.5–6",
+  "Unmeasured/remaining confounding discussed with reasoning; no formal sensitivity metric",
+
+  "Grabner_2011", "predefined_effect_mod", 3L,
+  "Race/ethnicity subgroup analysis was motivated in the introduction by prostate cancer racial disparities in mortality, access, screening, treatment, and outcomes, and subgroup ICERs were estimated for non-Hispanic whites, non-Hispanic blacks, and others.",
+  "p.1–3",
+  "Pre-specified subgroup heterogeneity based on clinical/economic rationale",
+
+  "Grabner_2011", "posthoc_effect_mod", 0L,
+  "No post-hoc effect-modifier discovery, feature-importance method, causal tree, SHAP analysis, or exploratory modifier search was performed.",
+  "p.2–6",
+  "No post-hoc effect modification analysis",
+
+  "Grabner_2011", "method_type", 1L,
+  "The paper performs subgroup cost-effectiveness analysis using costs, life-years gained, ICERs, bootstrapping, CEACs, and sensitivity analyses, not prediction modelling, CATE estimation, or causal ML.",
+  "p.2–5",
+  "Cost-effectiveness subgroup analysis; not ML/ITE/CATE",
+
+  "Grabner_2011", "method_clarity", 4L,
+  "The paper clearly describes cost estimation from Medicare reimbursements, censoring adjustment using Bang-Tsiatis inverse probability weighting, survival/effect estimation from Kaplan-Meier area, ICER calculation, bootstrap confidence intervals, CEACs, and sensitivity analyses.",
+  "p.2–4",
+  "Fully described health-economic methods",
+
+  "Grabner_2011", "outcome_method_alignment", 3L,
+  "The methods were appropriate for the cost-effectiveness question: costs were adjusted for censoring, life-years gained were estimated from the area under the Kaplan-Meier survival curve, and ICERs summarized incremental costs per life-year gained.",
+  "p.2–4",
+  "Appropriate for cost-effectiveness and censored survival/cost data",
+
+  "Grabner_2011", "hyperparameter_tuning", 1L,
+  "No machine-learning model or hyperparameter tuning was performed.",
+  "p.2–6",
+  "No tuning",
+
+  "Grabner_2011", "sample_splitting", 1L,
+  "No train/test split, honesty framework, independent validation dataset, or sample splitting was used.",
+  "p.2–6",
+  "No sample splitting",
+
+  "Grabner_2011", "multi_model_comparison", 1L,
+  "The study included sensitivity analyses using alternate cost definitions, time horizons, survival requirements, and PS-matched samples, but did not systematically benchmark multiple causal or HTE models.",
+  "p.3–4, p.9",
+  "Limited comparison through sensitivity analysis",
+
+  "Grabner_2011", "causal_estimand", 1L,
+  "The paper defines incremental costs, incremental effectiveness, and ICERs for chemotherapy versus no chemotherapy, but does not define an ITE/CATE or formal potential-outcomes causal estimand.",
+  "p.2–3",
+  "Implicit treatment-effect comparison only",
+
+  "Grabner_2011", "survival_estimand", 4L,
+  "Effectiveness was measured as life-years gained, estimated from the area under the Kaplan-Meier survival curve over the 24-month baseline time horizon, with a 36-month sensitivity analysis.",
+  "p.2–3, p.9",
+  "Fully specified survival/economic effect scale and time horizon",
+
+  "Grabner_2011", "clinical_decision_readiness", 3L,
+  "The paper provides formal policy/economic evaluation using ICERs, willingness-to-pay thresholds, and cost-effectiveness acceptability curves to assess whether chemotherapy is cost-effective in race/ethnicity subgroups.",
+  "p.3–5",
+  "Formal ICER/WTP/CEAC policy evaluation",
+
+  "Grabner_2011", "uncertainty_quantification", 2L,
+  "The study reports bootstrap 95% confidence intervals for incremental costs, incremental effects, and ICERs, and uses CEACs to summarize sampling uncertainty across willingness-to-pay thresholds.",
+  "p.3–5, p.9",
+  "Summary-level uncertainty",
+
+  "Grabner_2011", "effect_mod_plausibility", 1L,
+  "The introduction and discussion link race/ethnicity subgroup differences to known prostate cancer disparities in mortality, diagnosis stage, screening, aggressive treatment, access to care, tumor biology, health knowledge, and provider relationships.",
+  "p.1, p.5–6",
+  "Clinical/social plausibility of subgroup heterogeneity discussed",
+
+  "Grabner_2011", "code_availability", 1L,
+  "No public code repository, reproducible scripts, or code availability statement was reported.",
+  "p.6–9",
+  "No public code"
+)
 # ============================================================
 # 4. COMBINE ALL EVIDENCE
 # ============================================================
