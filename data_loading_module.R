@@ -98,23 +98,23 @@ papers <- tribble(
 "Liangyuan Hu, Jiayi Ji, Fan Li",
 "Methods paper with simulation study plus NCDB observational prostate cancer case study; compares machine-learning survival HTE estimators including AFT-BART-NP, AFT-BART-NP-PS, AFT-BART-SP, RSF, DeepSurv, DR-DL, BJ-DL, TSHEE, GAPH, AFT, and Cox; case study estimates heterogeneous survival effects of EBRT + AD versus EBRT + brachytherapy ± AD in high-risk localized prostate cancer.",
 
-  "Sauerbrei_2022", "Sauerbrei",    2022,  2L,
-  "Breast",         "Multi-country", 5727L,
-  "Journal of Clinical Oncology",
-  "Personalizing adjuvant treatment of early breast cancer: A multivariable approach using the EBCTCG meta-analysis",
-  "10.1200/JCO.21.01078",
-  "Sauerbrei W, Royston P, Zapien K, Henson KE, et al.",
-  "RCT meta-analysis; metaTEF/MFPI; population TEF not ITE/CATE — excluded from ML/ITE scoring but retained",
+ "Sauerbrei_2022", "Sauerbrei", 2022, 2L,
+"Breast", "Multi-country", 5727L,
+"BMC Medical Research Methodology",
+"Investigating treatment-effect modification by a continuous covariate in IPD meta-analysis: an approach using fractional polynomials",
+"10.1186/s12874-022-01516-w",
+"Willi Sauerbrei, Patrick Royston",
+"RCT IPD meta-analysis methods paper; eight breast cancer randomized trials from Breast Cancer DataMart; metaTEF/MFPI approach; chemotherapy vs no chemotherapy among tamoxifen-treated patients; investigates ER as continuous treatment-effect modifier for DFS/log-HR.",
 
   # ── BATCH 2 (7 papers) ──────────────────────────────────
 
-  "Hu_2021",        "Hu",           2021,  2L,
-  "Lung",           "USA",          50062L,
-  "Annals of Epidemiology",
-  "Estimating heterogeneous survival treatment effects of lung cancer screening approaches: A causal machine learning analysis",
-  "10.1016/j.annepidem.2021.06.008",
-  "Hu L, Lin JY, Sigel K, Kale M",
-  "RCT (NLST); AFT-BART; LDCT vs CXR screening; survival TEH",
+  "Hu_2021", "Hu", 2021, 2L,
+"Lung", "USA", 50062L,
+"Annals of Epidemiology",
+"Estimating heterogeneous survival treatment effects of lung cancer screening approaches: A causal machine learning analysis",
+"10.1016/j.annepidem.2021.06.008",
+"Liangyuan Hu, Jung-Yi (Joyce) Lin, Keith Sigel, Minal Kale",
+"RCT-based as-treated NLST analysis; AFT-BART causal machine learning; LDCT versus CXR lung cancer screening; estimates ITE/TEH for lung cancer-specific survival and overall survival.",
 
   "Zhang_2012",     "Zhang",        2012,  2L,
   "Breast",         "USA",          1276L,
@@ -310,27 +310,27 @@ scores <- tribble(
   1L, 3L,
 
   "Sauerbrei_2022",
-  2L, 4L, 4L,
+  2L, 3L, 3L,
   NA, NA, NA, NA,
-  3L, 0L,
-  1L, 4L, 1L,
+  3L, 3L,
+  1L, 4L, 3L,
   3L, 1L,
   2L,
-  1L, 2L,
+  2L, 3L,
   2L, 2L,
-  1L, 2L,
-
+  1L, 3L,
+  
   # ── BATCH 2 ─────────────────────────────────────────────
 
   "Hu_2021",
   2L, 4L, 3L,
   NA, NA, NA, NA,
-  2L, 2L,
+  2L, 3L,
   3L, 4L, 3L,
-  3L, 2L,
+  3L, 1L,
   1L,
-  3L, 4L,
-  2L, 4L,
+  3L, 3L,
+  2L, 3L,
   1L, 1L,
 
   "Zhang_2012",
@@ -1075,7 +1075,7 @@ ev_Schrod_2022$page_ref <- c(
   "p.1, p.4"         # code_availability
 )
 
-ev_Tabib_2020 <- make_evidence("Tabib_2020",
+ev_Hu_2021b <- make_evidence("Tabib_2020",
   1L,
 "Methods paper with simulation study plus an observational NCDB case study of high-risk localized prostate cancer patients.",
 "Methods paper with observational case study",
@@ -1183,25 +1183,97 @@ ev_Hu_2021b$page_ref <- c(
 )
 
 ev_Sauerbrei_2022 <- make_evidence("Sauerbrei_2022",
-  2L,"EBCTCG meta-analysis of randomised trials; 5727 patients with early breast cancer","RCT meta-analysis",
-  4L,"early breast cancer patients from multiple RCTs; full eligibility defined by EBCTCG protocol","Full IC/EC + RCT",
-  4L,"chemotherapy regimens vs no chemotherapy; protocol-defined doses and timing","Protocol-level",
+  2L,
+"Individual participant data meta-analysis using eight randomized breast cancer trials from Breast Cancer DataMart; 5,727 tamoxifen-treated patients with estrogen receptor data were analyzed.",
+"RCT IPD meta-analysis",
+
+3L,
+"Tamoxifen-treated early breast cancer patients from eight randomized trials were included; the paper reports patient/event counts by trial and ER distributions, but full trial-level eligibility criteria are not reproduced.",
+"Clear RCT datasets and analysis population; full IC/EC not reproduced",
+
+3L,
+"Comparator was chemotherapy versus no chemotherapy among tamoxifen-treated patients, with disease-free survival analyzed by treatment group.",
+"Comparators clearly defined; regimen-level protocol details not provided",
+,
   NA_integer_,NA_character_,"RCT",NA_integer_,NA_character_,"RCT",
   NA_integer_,NA_character_,"RCT",NA_integer_,NA_character_,"RCT",
-  3L,"MFPI/metaTEF pre-specified with clinical rationale from prior literature","Pre-specified with clinical rationale",
-  0L,"no posthoc effect mod; TEF approach is population-level","None",
-  1L,"metaTEF/MFPI: population treatment effect function, not ITE/CATE","Prediction only",
-  4L,"MFPI and metaTEF fully described including fractional polynomial transformations, meta-analytic combination","Fully described",
-  1L,"Cox model-based TEF; not survival-aware ITE","Inappropriate — population TEF not ITE",
-  3L,"fractional polynomial selection via systematic search; bootstrap validation","Proper CV + search",
-  1L,"no sample splitting","No",
-  2L,"MFPI and metaTEF compared","Limited comparison",
-  1L,"treatment effect function (TEF) estimated; not ITE per patient","Implicit only",
-  2L,"overall survival; continuous TEF as function of covariates","Informal",
-  2L,"TEF identifies subgroups; clinical recommendation implicit","Recommended vs non-recommended",
-  2L,"CIs for TEF estimates","Summary-level CI",
-  1L,"ER status and grade as TEF modifiers; briefly discussed","Briefly discussed",
-  2L,"code partially available from authors","Partial"
+  3L,
+"The study specifically investigated estrogen receptor value as a continuous treatment-effect modifier for chemotherapy benefit, motivated by prior breast cancer literature and concerns about categorizing continuous ER values.",
+"Pre-specified continuous effect modifier with clinical rationale",
+
+3L,
+"The paper performed additional subgroup checks and sensitivity analyses, including ER subgroup analyses, studywise and pooled FP1/FP2 treatment-effect functions, and fixed versus random effects metaTEF comparisons.",
+"Post-hoc/sensitivity effect-modification analyses linked to TEF",
+
+1L,
+"MFPI/metaTEF estimates a population-level treatment-effect function over estrogen receptor values; it does not estimate individual-level ITE/CATE.",
+"Population-level treatment-effect function, not ITE/CATE",
+
+4L,
+"MFPI and metaTEF are fully described, including fractional polynomial transformations, treatment-effect function estimation, studywise TEFs, pointwise weighted meta-analysis, and fixed/random effects sensitivity analyses.",
+"Fully described methods paper",
+
+3L,
+"The method is aligned with the survival outcome because DFS was analyzed using Cox/log-HR treatment-effect functions over continuous ER values, although the estimand is population/subgroup-level rather than individual ITE.",
+"Survival-aware TEF; not individualized ITE",
+  3L,
+"Fractional-polynomial model selection was performed systematically using FP1/FP2 choices and flex variants, with FP2 and fixed/random effects metaTEF analyses used as sensitivity checks.",
+"Systematic FP model selection and sensitivity analysis; not ML CV",
+
+1L,
+"No sample splitting, train/test validation, or cross-fitting was used; this was an IPD meta-analysis methods application rather than a prediction model.",
+"No sample splitting",
+
+2L,
+"The paper compared studywise subgroup analyses, FP1 and FP2 treatment-effect functions, fixed and random effects metaTEF, and discussed metaTEF relative to meta-STEPP.",
+"Limited method/sensitivity comparison",
+
+2L,
+"The estimand was an explicit treatment-effect function: the log-hazard ratio for chemotherapy versus no chemotherapy as a continuous function of estrogen receptor values.",
+"Explicit population-level TEF; not individual ITE/CATE",
+
+3L,
+"Disease-free survival was the outcome, and treatment effects were estimated using Cox/log-hazard-ratio treatment-effect functions over continuous estrogen receptor values.",
+"Defined survival TEF using DFS/log-HR",
+ 2L,
+"The metaTEF identifies how chemotherapy benefit varies across continuous ER values and can inform subgroup/cutpoint discussions, but it does not implement a clinical treatment recommendation rule.",
+"TEF can inform decisions; no explicit recommendation rule",
+
+2L,
+"Pointwise variances, weights, and 95% confidence intervals were reported for treatment-effect functions/metaTEF estimates.",
+"TEF-level uncertainty reported",
+
+1L,
+"The clinical plausibility of ER as a chemotherapy effect modifier is discussed using prior breast cancer literature, but detailed biological interpretation is limited.",
+"ER plausibility briefly discussed",
+
+3L,
+"The Stata program metatef is available on the SSC archive, and an annotated Stata do-file creating Figure 3 is provided in the appendix.",
+"Public Stata code/tool available"
+                                  )
+
+ev_Sauerbrei_2022$page_ref <- c(
+  "p.1, p.3–5",      # study_design
+  "p.3–5",           # patient_population
+  "p.3–5",           # comparators
+  NA,                # confounders_identified
+  NA,                # confounding_adjustment
+  NA,                # balance_diagnostics
+  NA,                # unmeasured_confounding
+  "p.1–3, p.5",      # predefined_effect_mod
+  "p.7–9",           # posthoc_effect_mod
+  "p.6–8",           # method_type
+  "p.6–10",          # method_clarity
+  "p.3–8",           # outcome_method_alignment
+  "p.6–9",           # hyperparameter_tuning
+  "p.6–9",           # sample_splitting
+  "p.7–11",          # multi_model_comparison
+  "p.3, p.6–8",      # causal_estimand
+  "p.3–8",           # survival_estimand
+  "p.9–12",          # clinical_decision_readiness
+  "p.7–9",           # uncertainty_quantification
+  "p.3, p.5, p.9–10",# effect_mod_plausibility
+  "p.12"             # code_availability
 )
 
 ev_Hu_2021 <- make_evidence("Hu_2021",
@@ -1213,19 +1285,58 @@ ev_Hu_2021 <- make_evidence("Hu_2021",
   NA_integer_,NA_character_,"RCT — confounding dims NA",
   NA_integer_,NA_character_,"RCT — confounding dims NA",
   2L,"we included nine predictors... that have been shown to be key risk factors for LC in previous NLST analyses","Predictors pre-specified from prior literature but clinical rationale is cited rather than formally pre-registered HTE hypothesis",
-  2L,"we used the 'fit-the-fit' strategy, by which we fitted a classification and regression tree (CART) to the posterior mean ITE","CART applied post-hoc to ITE posterior means; partially linked to HTE exploration",
-  3L,"AFT-BART model... counterfactual framework... draw MCMC samples of the individual treatment effect for each participant","Custom CATE via AFT-BART + g-computation",
+  3L,
+"Posterior mean ITEs from AFT-BART were analyzed using a stepwise CART 'fit-the-fit' strategy to identify subgroups with enhanced or reduced LDCT versus CXR treatment effects.",
+"CART subgroup discovery directly linked to ITE/HTE",
+                            3L,"AFT-BART model... counterfactual framework... draw MCMC samples of the individual treatment effect for each participant","Custom CATE via AFT-BART + g-computation",
   4L,"log T = f(A, X) + W, where f(A,X) is the sum-of-trees AFT-BART model... centered Dirichlet process mixture... 1250 iterations with first 250 as burn-in","Architecture, loss, training fully described",
   3L,"AFT-BART model for censored survival data... censored failure times handled through data augmentation","Survival-aware; AFT handles censoring explicitly",
   3L,"we used cross-validation to select the optimal values for the operating parameters in AFT-BART... two settings for sigma prior, two values for m, three values for k","CV + grid search described; default justified",
-  2L,"drew L=1000 posterior predictive distributions of counterfactual failure time... for each individual","Bayesian posterior used for ITE; no train/test split but MCMC provides internal regularisation",
+  1L,
+"No train/test split, cross-fitting, or external validation was reported; posterior MCMC sampling was used for uncertainty estimation, not sample splitting.",
+"No sample splitting/cross-fitting",
   1L,"The BART model has been shown to have better prediction performance than many alternative ML techniques","References to prior comparisons but no head-to-head in this paper",
-  3L,"ATE0,1 = E[T(1)/T(0)]... T(a) is the counterfactual failure time under treatment A=a... g-computation","Formal potential outcomes notation with ratio ITE defined",
-  4L,"ratio of failure time comparing LDCT and CXR... ITE distribution for each i, theta_i = T_i(1)/T_i(0)... LC-specific survival and overall survival","Scale (AFT ratio), dual outcomes, fully specified interpretation",
-  2L,"the Asian and Black... population were shown to have enhanced overall mortality benefit from LDCT... inform treatment decision and planning targeted clinical trials","Subgroups recommended but no formal policy/uplift evaluation",
-  4L,"Posterior distributions of the ITE... credible intervals (gray lines) for both LC survival and overall survival","Individual-level credible intervals from MCMC posterior; high quality",
-  1L,"Asian and Black (particularly those with pack-year >= 37 years and without emphysema) population benefited from LDCT","Clinical plausibility briefly discussed in relation to race and smoking",
+  3L,
+"ATE and ITE were formally defined in a potential-outcomes framework using counterfactual failure times under LDCT versus CXR, with ITE defined as T_i(1) / T_i(0) and estimated by g-computation.",
+"Formal potential-outcomes survival ITE estimand",
+
+3L,
+"The survival estimand was a ratio of counterfactual failure times comparing LDCT versus CXR, estimated separately for lung cancer-specific survival and overall survival.",
+"Fully specified AFT/failure-time ratio estimand",
+
+2L,
+"The model identified subgroups, especially Asian and Black participants, with potentially enhanced overall survival benefit from LDCT, and the authors discuss implications for targeted trials and individualized screening, but no formal clinical decision rule was implemented.",
+"Subgroup decision insight; no formal policy evaluation",
+
+3L,
+"Posterior distributions of ITE were obtained from MCMC counterfactual failure-time draws, with individual-level credible intervals plotted for lung cancer-specific and overall survival.",
+"Individual-level Bayesian credible intervals",
+                            1L,"Asian and Black (particularly those with pack-year >= 37 years and without emphysema) population benefited from LDCT","Clinical plausibility briefly discussed in relation to race and smoking",
   1L,"Statistical code for replication will be available from the corresponding author upon request","On-request only"
+)
+
+ev_Hu_2021$page_ref <- c(
+  "p.3, p.12",          # study_design
+  "p.3, p.12, p.16",   # patient_population
+  "p.1, p.3",          # comparators
+  NA,                  # confounders_identified
+  NA,                  # confounding_adjustment
+  NA,                  # balance_diagnostics
+  NA,                  # unmeasured_confounding
+  "p.3, p.16",         # predefined_effect_mod
+  "p.5–6, p.13–15",    # posthoc_effect_mod
+  "p.4–5",             # method_type
+  "p.4–6",             # method_clarity
+  "p.4–5",             # outcome_method_alignment
+  "p.5",               # hyperparameter_tuning
+  "p.4–6",             # sample_splitting
+  "p.3",               # multi_model_comparison
+  "p.4–5",             # causal_estimand
+  "p.3–6, p.13",       # survival_estimand
+  "p.6–8, p.14–15",    # clinical_decision_readiness
+  "p.4–6, p.13–15",    # uncertainty_quantification
+  "p.6–8, p.14–15",    # effect_mod_plausibility
+  "p.1"                # code_availability
 )
 
 ev_Zhang_2012 <- make_evidence("Zhang_2012",
