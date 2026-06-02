@@ -1510,7 +1510,7 @@ ev_Zhang_2012 <- make_evidence("Zhang_2012",
 
 1L,
 "No public code repository or software implementation was mentioned.",
-"No code repository""
+"No code repository"
 )
 
 ev_Zhang_2012$page_ref <- c(
