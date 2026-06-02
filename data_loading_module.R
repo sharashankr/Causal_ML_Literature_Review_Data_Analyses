@@ -2817,16 +2817,19 @@ ev_Fukuokaya_2026 <- tibble::tribble(
 # 4. COMBINE ALL EVIDENCE
 # ============================================================
 
+# AFTER
 evidence <- bind_rows(
   # Batch 1
   ev_Saad_2025, ev_Pryce_2025, ev_Ge_2020, ev_Roblin_2025,
   ev_Zhang_2025, ev_Zhu_2023, ev_Zhu_2024, ev_Schrod_2022,
-  ev_Tabib_2020, ev_Sauerbrei_2022,
+  ev_Hu_2021b, ev_Sauerbrei_2022,
   # Batch 2
   ev_Hu_2021, ev_Zhang_2012, ev_Shen_2018, ev_Jo_2024,
   ev_Pan_2024, ev_Ge_2020b, ev_Dusseldorp_2016,
   # Batch 3 (new)
-  ev_Lopez_2023, ev_Ma_2018, ev_Roblin_2025b
+  ev_Lopez_2023, ev_Ma_2018, ev_Roblin_2025b,
+  # Additional papers
+  ev_Liu_2022, ev_Li_2024, ev_Lavery_2025, ev_Li_2024_PRL, ev_Grabner_2011, ev_Fukuokaya_2026
 )
 
 # ============================================================
