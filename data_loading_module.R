@@ -1359,8 +1359,7 @@ ev_Sauerbrei_2022 <- make_evidence("Sauerbrei_2022",
 
 3L,
 "The Stata program metatef is available on the SSC archive, and an annotated Stata do-file creating Figure 3 is provided in the appendix.",
-"Public Stata code/tool available"
-                                  )
+)
 
 ev_Sauerbrei_2022$page_ref <- c(
   "p.1, p.3–5",      # study_design
