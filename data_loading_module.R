@@ -799,7 +799,7 @@ ev_Zhang_2025 <- make_evidence("Zhang_2025",
 
 3L,
 "Treatment recommendations were evaluated in two phases: phase one compared definitive CRT versus surgery plus postoperative RT/CRT; phase two compared surgery plus postoperative RT versus surgery plus postoperative CRT.",
-"Comparators clearly defined; dose-level protocol details unavailable"
+"Comparators clearly defined; dose-level protocol details unavailable",
                                2L,"age, sex, race, tumour site, T/N stage, grade, marital status, insurance listed","Listed and justified",
   2L,
 "Ethnicity, sex, marital status, age, histological grade, laterality, tumor site, TNM stage, tumor size, lymph-node variables, and lymph-node surgery were included as efficacy-related variables.",
