@@ -2786,7 +2786,7 @@ evidence <- bind_rows(
   ev_Hu_2021b, ev_Sauerbrei_2022,
   # Batch 2
   ev_Hu_2021, ev_Zhang_2012, ev_Shen_2018, ev_Jo_2024,
-  ev_Pan_2024, ev_Ge_2020b, ev_Dusseldorp_2016,
+  ev_Pan_2024, ev_Dusseldorp_2016,
   # Batch 3 (new)
   ev_Lopez_2023, ev_Ma_2018, ev_Roblin_2025b,
   # Additional papers
