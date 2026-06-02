@@ -796,7 +796,6 @@ ev_Zhang_2025 <- make_evidence("Zhang_2025",
   3L,
 "Patients with HNSCC from oral cavity, sinonasal cavity, pharynx, and larynx, diagnosed as stage III to IVa from 1 January 2004 to 31 December 2015, and treated with definitive CRT or radical resection plus postoperative RT/CRT were included.",
 "Clear dataset, timeframe, cancer sites, stage, treatments, and exclusion criteria",
-
 3L,
 "Treatment recommendations were evaluated in two phases: phase one compared definitive CRT versus surgery plus postoperative RT/CRT; phase two compared surgery plus postoperative RT versus surgery plus postoperative CRT.",
 "Comparators clearly defined; dose-level protocol details unavailable",
