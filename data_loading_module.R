@@ -166,22 +166,22 @@ papers <- tribble(
 
   # ── BATCH 3 (3 new papers) ──────────────────────────────
 
-  "Lopez_2023",     "Lopez",        2023,  2L,
-  "Prostate",       "Australia/Netherlands/USA", 560L,
-  "Journal of Geriatric Oncology",
-  "Moderators of resistance-based exercise programs' effect on sarcopenia-related measures in men with prostate cancer previously or currently undergoing androgen deprivation therapy: An individual patient data meta-analysis",
-  "10.1016/j.jgo.2023.101535",
-  "Lopez P, Newton RU, Taaffe DR, Winters-Stone K, Galvao DA, Buffart LM",
-  "RCT IPD meta-analysis; linear mixed models; exercise vs control; moderator analysis; non-survival outcomes (lean mass, strength, physical function); no ITE/CATE ML method",
-
-  "Ma_2018",        "Ma",           2018,  1L,
-  "Lung (LUSC)",    "USA",          116L,
-  "Statistical Methods in Medical Research",
-  "Integrating genomic signatures for treatment selection with Bayesian predictive failure time models",
-  "10.1177/0962280216675373",
-  "Ma J, Hobbs BP, Stingo FC",
-  "Obs (TCGA; propensity-matched); BPFT (Bayesian predictive failure time); targeted vs non-targeted therapy; genomic signatures; n=116 matched pairs",
-
+ "Lopez_2023", "Lopez", 2023, 2L,
+"Prostate", "Australia/Netherlands/USA", 560L,
+"Journal of Geriatric Oncology",
+"Moderators of resistance-based exercise programs' effect on sarcopenia-related measures in men with prostate cancer previously or currently undergoing androgen deprivation therapy: An individual patient data meta-analysis",
+"10.1016/j.jgo.2023.101535",
+"Pedro Lopez, Robert U. Newton, Dennis R. Taaffe, Kerri Winters-Stone, Daniel A. Galvao, Laurien M. Buffart",
+"RCT individual patient data meta-analysis from POLARIS; resistance-based exercise versus control in men with prostate cancer previously or currently treated with ADT; linear mixed models tested moderators of exercise effects on lean mass, strength, and physical function; non-survival outcomes; no ITE/CATE ML method.",
+  
+  "Ma_2018", "Ma", 2018, 1L,
+"Lung (LUSC)", "USA", 116L,
+"Statistical Methods in Medical Research",
+"Integrating genomic signatures for treatment selection with Bayesian predictive failure time models",
+"10.1177/0962280216675373",
+"Junsheng Ma, Brian P. Hobbs, Francesco C. Stingo",
+"Observational TCGA lung squamous cell carcinoma case study; propensity-matched targeted versus non-targeted therapy cohort; Bayesian predictive failure time model using genomic signatures and tumor-similarity power priors for personalized treatment selection; survival/time-to-failure endpoint; n = 116 after matching, i.e., 58 matched pairs.",
+  
   "Roblin_2025b",   "Roblin",       2025,  2L,
   "Breast",         "Meta Analysis",       2188L,
   "arXiv preprint (arXiv:2506.12277)",
@@ -401,18 +401,12 @@ scores <- tribble(
 
   # ── BATCH 3 (3 new papers) ──────────────────────────────
 
-  # Lopez_2023: RCT IPD meta-analysis; linear mixed models; moderator analysis
-  # No causal ML method; non-survival outcome; exercise intervention
-  # study_design=2 (RCT), confounding dims → NA (RCT)
-  # method_type=1 (prediction only / moderator analysis via LMM, not ITE/CATE)
-  # survival_estimand=1 (no survival outcome; lean mass, strength, function)
-  # causal_estimand=1 (implicit only — moderator not ITE)
   "Lopez_2023",
   2L, 3L, 3L,
   NA, NA, NA, NA,
-  3L, 1L,
-  1L, 3L, 1L,
-  2L, 1L,
+  3L, 2L,
+  1L, 4L, 1L,
+  1L, 1L,
   1L,
   1L, 1L,
   2L, 2L,
@@ -427,15 +421,14 @@ scores <- tribble(
   # code_availability=1 (no public code; authors acknowledged sharing from Wang et al.)
   "Ma_2018",
   1L, 2L, 2L,
-  2L, 3L, 2L, 2L,
-  1L, 1L,
-  3L, 3L, 3L,
-  2L, 2L,
+  2L, 2L, 2L, 2L,
+  1L, 2L,
+  3L, 4L, 3L,
+  3L, 2L,
   2L,
   2L, 3L,
   2L, 2L,
   1L, 1L,
-
   # Roblin_2025b: RCT; methods evaluation; CoxCC/CoxTime/IF vs ALASSO
   # Two breast cancer RCT datasets (taxane n=614; trastuzumab n=1574)
   # study_design=2 (RCT); confounding dims → NA
@@ -1751,28 +1744,28 @@ ev_Lopez_2023 <- make_evidence("Lopez_2023",
   NA_integer_,NA_character_,"RCT IPD meta-analysis — confounding dims NA",
   # predefined_effect_mod
   3L,
-  "Potential moderators of exercise response included age... baseline values of outcomes... body mass index... low skeletal muscle index... time since diagnosis... ADT duration... exercise type... total number of exercise sessions",
-  "Pre-specified moderator list with clinical rationale; pre-registered under PROSPERO CRD42013003805",
-  # posthoc_effect_mod
-  1L,
-  "Stratified analyses were undertaken if the interaction terms were statistically significant (P<=0.05) or approaching statistical significance",
-  "Interaction-term-driven stratification; not SHAP or causal ML HTE exploration",
-  # method_type
-  1L,
-  "Linear mixed model analyses with a two-level structure... effects were evaluated by regressing the study group on the post-intervention value of the outcome adjusted for the baseline value",
-  "Standard LMM moderator analysis; no CATE estimator; prediction only / subgroup identification",
-  # method_clarity
-  3L,
-  "One-step complete-case IPD meta-analyses... linear mixed model analyses with a two-level structure... clustering of patients within studies by using a random intercept on the study level... Within- and between-trial interactions were separated by centring the individual value of the covariate around the mean study value",
-  "LMM approach fully described including centering strategy to reduce ecological bias; one-step IPD",
-  # outcome_method_alignment
-  1L,
-  "whole-body and appendicular lean mass, skeletal muscle index, physical function, and muscle strength",
-  "Non-survival outcomes; lean mass, strength, physical function; LMM appropriate for these but irrelevant to TTE ITE scoring",
+"Potential moderators were pre-specified and clinically motivated, including age, baseline outcome values, BMI, low skeletal muscle index, time since diagnosis, ADT duration, exercise type, and total number of exercise sessions.",
+"Pre-specified moderator list with clinical rationale",
+
+2L,
+"Stratified analyses were performed when moderator-by-intervention interaction terms were significant or near-significant, identifying subgroups with differential exercise effects.",
+"Interaction-driven subgroup analysis; not causal ML HTE",
+
+1L,
+"The study used linear mixed models to estimate exercise effects and moderator interactions, but did not estimate individual-level ITE/CATE or an optimal treatment rule.",
+"Standard LMM moderator analysis; no CATE estimator",
+
+4L,
+"The one-step IPD meta-analysis was clearly specified using two-level linear mixed models with random study intercepts, baseline adjustment, moderator-by-intervention terms, within- and between-trial centering to reduce ecological bias, likelihood ratio tests, and stratified analyses.",
+"Fully described IPD LMM moderator approach",
+
+1L,
+"Outcomes were non-survival sarcopenia-related measures, including lean mass, skeletal muscle index, muscle strength, and physical function tests.",
+"Non-survival outcomes; not TTE/ITE aligned",
   # hyperparameter_tuning
-  2L,
-  "All analyses were conducted in R Core Team (2013) using the package lme4",
-  "Standard LMM; no hyperparameter tuning required; appropriate for method but not ML tuning",
+  1L,
+"No hyperparameter tuning was performed; analyses used standard linear mixed models implemented in R with the lme4 package.",
+"No ML-style hyperparameter tuning",
   # sample_splitting
   1L,
   "No sample splitting or cross-fitting described",
@@ -1807,6 +1800,30 @@ ev_Lopez_2023 <- make_evidence("Lopez_2023",
   "Standard package referenced but no analysis scripts or data shared publicly"
 )
 
+ev_Lopez_2023$page_ref <- c(
+  "p.1–2, p.4",      # study_design
+  "p.1–4",           # patient_population
+  "p.2–3",           # comparators
+  NA,                # confounders_identified
+  NA,                # confounding_adjustment
+  NA,                # balance_diagnostics
+  NA,                # unmeasured_confounding
+  "p.3",             # predefined_effect_mod
+  "p.3–4",           # posthoc_effect_mod
+  "p.3–4",           # method_type
+  "p.3–4",           # method_clarity
+  "p.3",             # outcome_method_alignment
+  "p.3–4",           # hyperparameter_tuning
+  "p.3–4",           # sample_splitting
+  "p.3–4",           # multi_model_comparison
+  "p.3–4",           # causal_estimand
+  "p.3",             # survival_estimand
+  "p.6–9",           # clinical_decision_readiness
+  "p.3–8",           # uncertainty_quantification
+  "p.6–8",           # effect_mod_plausibility
+  "p.3–4, p.9"       # code_availability
+)
+
 ## ── Ma_2018 ────────────────────────────────────────────────────────────
 # Obs (TCGA propensity-matched); BPFT; Lung LUSC; n=116
 # Genomic signatures + Bayesian predictive failure time model
@@ -1829,9 +1846,9 @@ ev_Ma_2018 <- make_evidence("Ma_2018",
   "we matched the data with the baseline covariates of gender, age, tumor stage and initial year of pathological diagnosis (IYPD)",
   "Four confounders identified and used for matching; limited set for genomic study; clinical justification implicit",
   # confounding_adjustment
-  3L,
-  "we matched 58 pairs of patients with the 30-day landmark using the R package of MatchIt (with the default settings)... all standardized mean differences were less than 0.25",
-  "Propensity score matching via MatchIt; caliper-based; SMD threshold applied; advanced adjustment for observational oncology",
+  2L,
+"The study used propensity-score matching with MatchIt default settings and reported standardized mean differences below 0.25 after matching; no caliper, doubly robust adjustment, or sensitivity analysis was specified.",
+"Standard propensity matching; SMD threshold reported",
   # balance_diagnostics
   2L,
   "the resultant standardized differences were -0.037, 0.212, 0.000, and 0.028 for gender, age, tumor stage and IYPD, respectively. All standardized mean differences were less than 0.25",
@@ -1845,29 +1862,29 @@ ev_Ma_2018 <- make_evidence("Ma_2018",
   "we follow the same procedure as described in Section 3.3 and include the genes with the highest marginal association with the clinical outcome as a signature for data analysis",
   "Data-driven signature selection based on marginal gene-treatment interaction p-values; no pre-specified HTE hypothesis",
   # posthoc_effect_mod
-  1L,
-  "we evaluated the predictive performance of BFPT and its competing approaches by comparing treatment effects among the stratified subgroups defined by each method",
-  "Subgroup comparison post-hoc based on recommendation concordance; no SHAP or formal HTE exploration",
+  2L,
+"Predictive performance was evaluated by stratifying patients according to whether they received their model-recommended treatment and comparing survival/RMST outcomes across these post-hoc subgroups.",
+"Post-hoc recommendation-concordance subgroup evaluation",
   # method_type
   3L,
   "Bayesian predictive framework for optimal treatment selection... the extent to which a patient contributes to the outcome prediction of another is determined by the extent to which their tumors exhibit molecular similarity... power prior model",
   "Custom CATE via Bayesian predictive failure time model with nonexchangeable power prior",
   # method_clarity
-  3L,
-  "p(theta_j|D_k, t_k, delta_k) proportional to f(t_k|theta_j)^delta_k [1-F(t_k|theta_j)]^{1-delta_k} prod_i f(t_i|theta_j)^{delta_i} [1-F(t_i|theta_j)]^{1-delta_i}^{S_{ik}} g(theta_j)... exponential distribution assumed... Gamma(alpha, beta) prior... closed-form predictive probability derived in Appendix B",
-  "Mathematical framework fully stated; power prior derivation in appendix; exponential + Gamma conjugate gives closed form; clustering described",
-  # outcome_method_alignment
-  3L,
-  "We consider time-to-failure endpoints with treatment allocation strategies that endeavor to prolong the patient's duration from treatment to disease progression/recurrence or death... survival and density functions... exponential survival model",
-  "Survival-aware; time-to-failure endpoints; exponential model with censoring handled via likelihood",
-  # hyperparameter_tuning
-  2L,
-  "we explored all signatures with all clustering methods with ranks of 2-15... we implemented the proposed BPFT approach by first selecting the optimal number of clusters (rank) via evaluating the 5-year restricted mean survival times (RMSTs) on the training data with one patient excluded",
-  "Rank (cluster number) selected via LOOCV RMST on training data; hyperparameters alpha=beta=0.01 with sensitivity analysis; systematic but limited grid",
-  # sample_splitting
-  2L,
-  "we conducted leave-one-out cross-validation (LOOCV) analyses... the patient cohort that is used to train the statistical model and select an optimal treatment excludes the patient for which the prediction is taking place",
-  "LOOCV used throughout; reflects actual clinical practice; no cross-fitting of nuisance models",
+  4L,
+"The BPFT framework is fully specified, including the power-prior posterior, similarity-weighted likelihood contribution, exponential failure-time model, Gamma prior, closed-form predictive probability derivation, and clustering-based tumor similarity construction.",
+"Fully specified Bayesian predictive failure-time framework",
+
+3L,
+"The method is designed for time-to-failure endpoints, using survival and density functions with censoring indicators, exponential survival likelihoods, and treatment selection based on predicted probability of prolonging failure time.",
+"Survival-aware time-to-failure model",
+
+3L,
+"The analysis systematically explored genomic signatures, clustering methods, and ranks 2–15; the optimal cluster rank was selected using LOOCV-based RMST on training data, and prior hyperparameters were checked in sensitivity analysis.",
+"Systematic rank/model-selection and sensitivity analysis",
+
+2L,
+"Leave-one-out cross-validation was used so that the patient being predicted was excluded from the training cohort and from rank/model selection.",
+"LOOCV validation; no causal cross-fitting",
   # multi_model_comparison
   2L,
   "we evaluate the performance of a simplified version of our Bayesian predictive modeling approach where all observations are considered exchangeable (naive method)... BPFT-e... RAFT... OTR... Performance for all methods compared using various sampling models",
@@ -1896,6 +1913,30 @@ ev_Ma_2018 <- make_evidence("Ma_2018",
   1L,
   "no code repository mentioned... The authors thank the authors of Wang et al. (2014) for sharing their code",
   "No public code; external code acknowledged; TCGA data publicly available but analysis not reproducible"
+)
+
+ev_Ma_2018$page_ref <- c(
+  "p.3, p.8",          # study_design
+  "p.8",               # patient_population
+  "p.3, p.8",          # comparators
+  "p.8",               # confounders_identified
+  "p.8",               # confounding_adjustment
+  "p.8",               # balance_diagnostics
+  "p.8, p.11–12",      # unmeasured_confounding
+  "p.8–9",             # predefined_effect_mod
+  "p.9–11, p.19–20",   # posthoc_effect_mod
+  "p.3–5, p.11–15",    # method_type
+  "p.3–5, p.13–15",    # method_clarity
+  "p.3–5, p.8–10",     # outcome_method_alignment
+  "p.7–11",            # hyperparameter_tuning
+  "p.7, p.10–11",      # sample_splitting
+  "p.6–11, p.17–20",   # multi_model_comparison
+  "p.3–5",             # causal_estimand
+  "p.3–5, p.8–10",     # survival_estimand
+  "p.9–11, p.19–20",   # clinical_decision_readiness
+  "p.9–11, p.19–20",   # uncertainty_quantification
+  "p.11–12",           # effect_mod_plausibility
+  "p.12"               # code_availability
 )
 
 ## ── Roblin_2025b ───────────────────────────────────────────────────────
