@@ -1562,12 +1562,14 @@ ev_Shen_2018 <- make_evidence("Shen_2018",
 3L,
 "RSFWB models treatment-specific counterfactual survival curves using inverse-probability weighted random survival forests and assigns treatment using g_opt(X) = I{mu1(X) > mu0(X)}.",
 "Custom counterfactual survival optimal-regime method",
-                               4L,"weighted bootstrap procedure... cforest() function... IBS-based 5-fold CV for tuning... B=200 bootstrap samples","Architecture, loss, training, tuning fully described",
-  3L,"maximizing the restricted mean survival time... S^1(t) and S^0(t) from Kaplan-Meier on weighted bootstrap","Survival-aware; censoring handled via weighted RSF",
-  3L,"5-fold cross-validation... grid search for mtry in {2,4,8,16} and ntree in {50,100}... smallest IBS applied","CV + grid search described; systematic",
-  2L,"5-fold cross-validation used to avoid potential issue of overfitting","CV used for tuning; no formal cross-fitting of ITE estimates",
-  2L,"compare results with Cox model, weighted Cox, regular RSF, and RSFWB","Systematic benchmarking against 3 competing methods",
-  3L, "The optimal regime was formally defined in a counterfactual framework as the treatment rule maximizing restricted mean survival time: g_opt(X) = arg max_g mu_g, with mu_g based on E[min(T^g, tau)].", "Formal potential-outcomes RMST optimal-regime estimand",
+
+4L,"weighted bootstrap procedure... cforest() function... IBS-based 5-fold CV for tuning... B=200 bootstrap samples","Architecture, loss, training, tuning fully described",
+3L,"maximizing the restricted mean survival time... S^1(t) and S^0(t) from Kaplan-Meier on weighted bootstrap","Survival-aware; censoring handled via weighted RSF",
+3L,"5-fold cross-validation... grid search for mtry in {2,4,8,16} and ntree in {50,100}... smallest IBS applied","CV + grid search described; systematic",
+2L,"5-fold cross-validation used to avoid potential issue of overfitting","CV used for tuning; no formal cross-fitting of ITE estimates",
+2L,"compare results with Cox model, weighted Cox, regular RSF, and RSFWB","Systematic benchmarking against 3 competing methods",
+
+3L,"The optimal regime was formally defined in a counterfactual framework as the treatment rule maximizing restricted mean survival time: g_opt(X) = arg max_g mu_g, with mu_g based on E[min(T^g, tau)].","Formal potential-outcomes RMST optimal-regime estimand",
 
 3L,
 "The survival estimand was restricted mean survival time to clinical failure, using tau = 12 years in the prostate application and comparing mu1(X) versus mu0(X).",
@@ -1576,9 +1578,10 @@ ev_Shen_2018 <- make_evidence("Shen_2018",
 3L,
 "The prostate application produced an explicit treatment recommendation rule, including a 0.1-year minimum RMST-gain threshold for switching treatment, and estimated how many observed radiation and surgery patients would switch.",
 "Explicit treatment-switch recommendation rule",
+
 2L,"95% confidence interval for mu_g - mu_0 which is (0.032, 0.207)","ATE-level CI via bootstrap; no individual-level CI",
-  1L,"for PNI positive group, radiation therapy is preferred for a large portion of the patient population","Clinical plausibility briefly discussed for age and PNI",
-  1L,"we implement the proposed method in R, where we use cforest() function","No public repository mentioned; code described but not shared"
+1L,"for PNI positive group, radiation therapy is preferred for a large portion of the patient population","Clinical plausibility briefly discussed for age and PNI",
+1L,"we implement the proposed method in R, where we use cforest() function","No public repository mentioned; code described but not shared"
 )
 
 ev_Shen_2018$page_ref <- c(
