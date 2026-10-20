@@ -1,3 +1,12 @@
+<table>
+<tr>
+<td width="40%" valign="top">
+
+<!-- Left side: empty for now -->
+
+</td>
+<td width="60%" valign="top">
+
 ## How to Use This Repository
 
 For most users, the easiest way to start is to download and follow the R Markdown user guide:
@@ -19,3 +28,8 @@ source(
   "https://raw.githubusercontent.com/sharashankr/Causal_ML_Literature_Review_Data_Analyses/main/data_loading_module.R",
   encoding = "UTF-8"
 )
+```
+
+</td>
+</tr>
+</table>
