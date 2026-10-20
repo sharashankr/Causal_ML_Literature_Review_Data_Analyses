@@ -2,7 +2,9 @@
 <tr>
 <td width="40%" valign="top">
 
-<!-- Left side: empty for now -->
+## Important links
+
+<!-- Add links here -->
 
 </td>
 <td width="60%" valign="top">
