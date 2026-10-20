@@ -4,9 +4,9 @@
 
 ## Important links
 
-1. [Search Strategy](#)
-2. Abstract Screening
-3. Full Text Review
+1. [Search Strategy]([https://example.com/search-strategy](https://uwnetid-my.sharepoint.com/:f:/r/personal/dhankhar_uw_edu/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fdhankhar%5Fuw%5Fedu%2FDocuments%2FHTE%20Scoping%20Review%20Project%2FFinal%20Stretch%2FSearch%20Strategy&share=cgrJ0bMi99nZQIJf81IIuwDnEgUCa0%5FyrBq4pFYJMHZ%5Ffz59MA))
+2. [Abstract Screening](abstract_screening.md)
+3. [Full Text Review](docs/full_text_review.pdf)
 
 </td>
 </tr>
