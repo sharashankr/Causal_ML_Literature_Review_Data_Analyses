@@ -1,6 +1,6 @@
 <table width="100%">
 <tr>
-<td width="50%" valign="top">
+<td valign="top">
 
 ## Important links
 
@@ -9,7 +9,9 @@
 3. Full Text Review
 
 </td>
-<td width="50%" valign="top">
+</tr>
+<tr>
+<td valign="top">
 
 ## How to Use This Repository
 
