@@ -4,7 +4,9 @@
 
 ## Important links
 
-<!-- Add links here -->
+1. [Search Strategy](#)
+2. Abstract Screening
+3. Full Text Review
 
 </td>
 <td width="60%" valign="top">
